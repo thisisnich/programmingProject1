@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e43a643-585f-42ec-b1d6-bcaa9ecff911" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/teamProject1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/4NicholasDubsProject1D1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/4NicholasDubsUITestFile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" beforeDir="false" afterPath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,16 +31,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.4NicholasDubsProject1D1.executor": "Run",
-    "Python.4NicholasDubsProject1D2.executor": "Run",
-    "Python.4NicholasDubsUITestFile.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/user/OneDrive/Nicholas/NYP/y1s1/Engineering/EGX154/teamProject1"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.4NicholasDubsProject1D1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.4NicholasDubsProject1D2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.4NicholasDubsUITestFile.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/OneDrive/Nicholas/NYP/y1s1/Engineering/EGX154/teamProject1&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\user\OneDrive\Nicholas\NYP\y1s1\Engineering\EGX154\teamProject1" />

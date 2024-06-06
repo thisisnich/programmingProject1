@@ -125,7 +125,7 @@ def calculate_sum():
     afterDiscount = total*(1-discounts[selectedDiscount][1])
     print(f'Total after discount ${afterDiscount}')
 
-    discountAmountLabel.configure(text=f'Discount amount: {discountAmount:.2f}')
+    discountAmountLabel.configure(text=f'Discount amount: ${discountAmount:.2f}')
 
     subtotalLabel.configure(text=f'subtotal: ${subtotal:.2f}')
     totalLabel.configure(text=f'total: ${total:.2f}')
@@ -139,9 +139,6 @@ def update_labels():
     codeLabel.configure(text=menu[selectedCat][1][selectedSn][1])
     itemCountLabel.configure(text=str(read_cart()))
     discountLabel.configure(text=f'Discount: {(discounts[selectedDiscount][1]*100)}%')
-    afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount}')
-    discountAmountLabel.configure(text=f'Discount amount: ${discountAmount}')
-    afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount}')
     priceLabel.configure(text = f'${menu[selectedCat][1][selectedSn][2]}')
     show_cart()
     calculate_sum()
@@ -162,7 +159,7 @@ def show_cart():
                 itemCost = cart[i][y]*menu[i][1][y][2]
                 # print(itemCost)
                 # print(f'{menu[i][1][y][0]:.<16}{cart[i][y]:.^8}${itemCost}')
-                cartOut += f'{menu[i][1][y][0]:<16}{cart[i][y]:^8}${itemCost}\n'
+                cartOut += f'{menu[i][1][y][0]:<16}{cart[i][y]:^8}${itemCost:.2f}\n'
     cartLabel.configure(text=cartOut)
 
 
@@ -220,9 +217,9 @@ codeLabel = customtkinter.CTkLabel(master=rightFrame, text=menu[selectedCat][1][
 codeLabel.pack(padx=10, pady=12)
 priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${menu[selectedCat][1][selectedSn][2]}')
 priceLabel.pack(padx=10,pady=12)
-subtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=('subtotal: $' + str(subtotal)))
+subtotalLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=('subtotal: $' + str(subtotal)))
 subtotalLabel.pack(padx=10,pady=12)
-totalLabel = customtkinter.CTkLabel(master=rightFrame, text=('total: $' + str(total)))
+totalLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=('total: $' + str(total)))
 gstLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=f"GST: ${gstAmt:.2f}")
 discountComboBox = customtkinter.CTkComboBox(master=mainFrame.tab('checkout'), values=[i[0] for i in discounts], command=discount_callback)
 discountLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=f'Discount: {(discounts[selectedDiscount][1] * 100)}%')
