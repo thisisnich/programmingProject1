@@ -14,7 +14,7 @@ frozen = [["frozen 1", "C11", 3],["frozen 2","C12",2.85]]
 household = [["Household 1", "C11", 3],["Household 2","C12",2.85]]
 snacks = [["Snack 1", "C11", 3],["Snack 2","C12",2.85]]
 
-menu = [["Drinks", drinks,"CD20"],["Beer", beer,"CB20"],["Frozen", frozen,"CF30"],["Household", household,"CH40"],["Snacks", snacks,"CS50"]]
+catalog = [["Drinks", drinks, "CD20"], ["Beer", beer, "CB20"], ["Frozen", frozen, "CF30"], ["Household", household, "CH40"], ["Snacks", snacks, "CS50"]]
 cart = []
 selectedSn = 0
 selectedCat = 0
@@ -37,21 +37,21 @@ def subtract_button():
     else:
         print("cant go below 0")
     print(cart)
-for item in menu:
+for item in catalog:
     print(item)
 # def login():
 #     print("Test")
 def cat_callback(choice):
     global selectedCat
-    for i in menu:
+    for i in catalog:
         print(i[0])
         if choice == i[0]:
-            selectedCat = menu.index(i)
+            selectedCat = catalog.index(i)
     print(selectedCat)
-    print(f'combobox dropdown clicked{choice}{menu[0][0]}')
+    print(f'combobox dropdown clicked{choice}{catalog[0][0]}')
 
 def get_items(cat):
-    for i in menu[cat]:
+    for i in catalog[cat]:
         print(i)
 def sn_callback(choice):
     global selectedSn
@@ -61,7 +61,7 @@ def sn_callback(choice):
 frame = customtkinter.CTkFrame(master=root)
 frame.pack(pady=20, padx=20, fill = "both", expand = True)
 
-catComboBox = customtkinter.CTkComboBox(master=frame, values=[cat[0] for cat in menu] , command=cat_callback)
+catComboBox = customtkinter.CTkComboBox(master=frame, values=[cat[0] for cat in catalog], command=cat_callback)
 catComboBox.pack(pady=12, padx=10)
 snComboBox = customtkinter.CTkComboBox(master=frame, values=['1'], command=sn_callback)
 snComboBox.pack(pady=12, padx=10)

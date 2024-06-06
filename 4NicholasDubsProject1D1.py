@@ -15,7 +15,7 @@ frozen = [["frozen 1", "C15", 3],["frozen 2","C16",2.85]]
 household = [["Household 1", "C17", 3],["Household 2","C18",2.85]]
 snacks = [["Snack 1", "C19", 3],["Snack 2","C20",2.85]]
 
-menu = [["Drinks", drinks,"CD20"],["Beer", beer,"CB20"],["Frozen", frozen,"CF30"],["Household", household,"CH40"],["Snacks", snacks,"CS50"]]
+catalog = [["Drinks", drinks, "CD20"], ["Beer", beer, "CB20"], ["Frozen", frozen, "CF30"], ["Household", household, "CH40"], ["Snacks", snacks, "CS50"]]
 cart = []
 discounts = [["None",0],["Senior", 0.1],['Member',.08],["NS man",.05]]
 
@@ -30,8 +30,8 @@ afterDiscount = 0
 
 # print(menu)
 
-for i in range(len(menu)):
-    a = len(menu[i][1])
+for i in range(len(catalog)):
+    a = len(catalog[i][1])
     b = [0]*a
     print(b)
     cart.append(b)
@@ -62,11 +62,11 @@ def subtract_button():
 def cat_callback(choice):
     global selectedCat
     global itemList
-    for i in menu:
+    for i in catalog:
         print(i)
         # print(i[0])
         if choice == i[0]:
-            selectedCat = menu.index(i)
+            selectedCat = catalog.index(i)
     # print(selectedCat)
     print(f'combobox dropdown clicked {choice}'
           #f' : {menu[selectedCat][0]}'
@@ -79,10 +79,10 @@ def cat_callback(choice):
 def sn_callback(choice):
     global selectedSn
     # print(choice)
-    for i in menu[selectedCat][1]:
+    for i in catalog[selectedCat][1]:
         print(i)
         if choice == i[0]:
-            selectedSn=menu[selectedCat][1].index(i)
+            selectedSn=catalog[selectedCat][1].index(i)
     print(selectedSn)
 
     print(f'combobox dropdown clicked {choice}'
@@ -98,7 +98,7 @@ def discount_callback(choice):
     update_labels()
 def get_items():
     tempList = []
-    for i in menu[selectedCat][1]:
+    for i in catalog[selectedCat][1]:
         tempList.append(i[0])
 
 
@@ -110,7 +110,7 @@ def calculate_sum():
         for y in range(len(cart[i])):
             # print(cart[i][y])
             # print(menu[i][1][y][2])
-            tempCost += (cart[i][y])*(menu[i][1][y][2])
+            tempCost += (cart[i][y])*(catalog[i][1][y][2])
             # print(tempCost)
     subtotal=tempCost
     print(f'Subtotal ${subtotal}')
@@ -133,7 +133,7 @@ def calculate_sum():
 
 
 def update_labels():
-    global itemList, menu,selectedSn,selectedCat
+    global itemList, catalog,selectedSn,selectedCat
     snComboBox.configure(values=itemList)
     codeLabel.configure(text=menu[selectedCat][1][selectedSn][1])
     itemCountLabel.configure(text=str(read_cart()))
@@ -178,7 +178,7 @@ root.columnconfigure(0,weight =1)
 root.columnconfigure(1,weight =1)
 leftFrame.grid(column = 0, row=0, sticky='nsew')
 rightFrame.grid(column=1, row=0, sticky ='nsew')
-catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=[cat[0] for cat in menu], command=cat_callback)
+catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=[cat[0] for cat in catalog], command=cat_callback)
 catComboBox.pack(pady=12, padx=10)
 snComboBox = customtkinter.CTkComboBox(master=leftFrame, values=itemList, command=sn_callback)
 snComboBox.pack(padx=10,pady=12)
@@ -188,7 +188,7 @@ addButton = customtkinter.CTkButton(master=leftFrame, text='+', font = ('Roboto'
 addButton.pack(padx=10,pady=12)
 subtractButton = customtkinter.CTkButton(master=leftFrame, text='-', font = ('Roboto', 24), command=subtract_button)
 subtractButton.pack(padx=10,pady=12)
-codeLabel = customtkinter.CTkLabel(master=rightFrame, text=menu[selectedCat][1][selectedSn][1])
+codeLabel = customtkinter.CTkLabel(master=rightFrame, text=catalog[selectedCat][1][selectedSn][1])
 codeLabel.pack(padx=10, pady=12)
 subtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=('subtotal: $' + str(subtotal)))
 subtotalLabel.pack(padx=10,pady=12)

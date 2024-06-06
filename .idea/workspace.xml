@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e43a643-585f-42ec-b1d6-bcaa9ecff911" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" beforeDir="false" afterPath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" afterDir="false" />
+    <list default="true" id="1e43a643-585f-42ec-b1d6-bcaa9ecff911" name="Changes" comment="small changes and code cleanup">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +22,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "thisisnich"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/thisisnich/programmingProject1.git",
+    "accountId": "603259b9-28bb-4a03-8c78-eb1bc4a2978d"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -62,7 +74,20 @@
       <option name="presentableId" value="Default" />
       <updated>1717552959054</updated>
     </task>
+    <task id="LOCAL-00001" summary="small changes and code cleanup">
+      <option name="closed" value="true" />
+      <created>1717657706218</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1717657706218</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="small changes and code cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="small changes and code cleanup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
