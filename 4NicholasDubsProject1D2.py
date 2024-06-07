@@ -50,7 +50,7 @@ def plus_buton():
     cart[selectedCat][selectedSn] += 1
     print(cart)
     update_labels()
-def subtract_button():
+def sub_button():
     if cart[selectedCat][selectedSn]>0:
         cart[selectedCat][selectedSn] -= 1
     else:
@@ -140,6 +140,9 @@ def update_labels():
     itemCountLabel.configure(text=str(read_cart()))
     discountLabel.configure(text=f'Discount: {(discounts[selectedDiscount][1]*100)}%')
     priceLabel.configure(text = f'${catalog[selectedCat][1][selectedSn][2]}')
+    # amountEntry.delete(0,last_index='end')
+    amountEntry.configure(placeholder_text=cart[selectedCat][selectedSn])
+
     show_cart()
     calculate_sum()
 
@@ -171,6 +174,7 @@ def validate_key(event):
 
 def set_amt(event):
     print('WOW')
+    print(amountEntry.get())
     cart[selectedCat][selectedSn]=int(amountEntry.get())
     update_labels()
 
@@ -198,21 +202,29 @@ mainFrame.tab('shopping').rowconfigure(0,weight = 1)
 mainFrame.tab('shopping').columnconfigure(0,weight =2)
 mainFrame.tab('shopping').columnconfigure(1,weight =1)
 
+buttonFrame = customtkinter.CTkFrame(master=leftFrame)
 
 catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=[cat[0] for cat in catalog], command=cat_callback)
 catComboBox.pack(pady=12, padx=10)
 snComboBox = customtkinter.CTkComboBox(master=leftFrame, values=itemList, command=sn_callback)
 snComboBox.pack(padx=10,pady=12)
-itemCountLabel = customtkinter.CTkLabel(master=rightFrame, text=str(read_cart()))
-itemCountLabel.pack(padx=12, pady=12)
+buttonFrame.pack(padx=10,pady=12)
+buttonFrame.columnconfigure(0,weight=1)
+buttonFrame.columnconfigure(1,weight=1)
+buttonFrame.columnconfigure(2,weight=1)
+addButton = customtkinter.CTkButton(master=buttonFrame, text='+', font = ('Roboto', 24), command=plus_buton, width=50)
+addButton.grid(column = 0,row = 0)
+itemCountLabel = customtkinter.CTkLabel(master=buttonFrame, text=str(read_cart()))
+itemCountLabel.grid(column = 1, row = 0, padx=12)
+subButton = customtkinter.CTkButton(master=buttonFrame, text='-', font = ('Roboto', 24), command=sub_button, width=50)
+subButton.grid(column = 2, row=0)
+
 amountEntry=customtkinter.CTkEntry(master=leftFrame,placeholder_text=str(cart[selectedCat][selectedSn]))
 amountEntry.pack(padx=12,pady=12)
 amountEntry.bind('<KeyPress>',validate_key)
 amountEntry.bind('<Return>',set_amt)
-# addButton = customtkinter.CTkButton(master=leftFrame, text='+', font = ('Roboto', 24), command=plus_buton)
-# addButton.pack(padx=10,pady=12)
-# subtractButton = customtkinter.CTkButton(master=leftFrame, text='-', font = ('Roboto', 24), command=subtract_button)
-# subtractButton.pack(padx=10,pady=12)
+
+
 codeLabel = customtkinter.CTkLabel(master=rightFrame, text=catalog[selectedCat][1][selectedSn][1])
 codeLabel.pack(padx=10, pady=12)
 priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selectedCat][1][selectedSn][2]}')
@@ -225,9 +237,9 @@ discountComboBox = customtkinter.CTkComboBox(master=mainFrame.tab('checkout'), v
 discountLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=f'Discount: {(discounts[selectedDiscount][1] * 100)}%')
 discountAmountLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=f'Discount amount: ${discountAmount}')
 afterDiscountLabel = customtkinter.CTkLabel(master=mainFrame.tab('checkout'), text=f'Total after discount ${afterDiscount}')
+gstLabel.pack(padx=10,pady=12)
 totalLabel.pack(padx=10, pady=12)
 discountComboBox.pack(padx=10,pady=12)
-gstLabel.pack(padx=10,pady=12)
 discountLabel.pack(padx=10,pady=12)
 discountAmountLabel.pack(padx=10,pady=12)
 afterDiscountLabel.pack(padx=10,pady=12)
