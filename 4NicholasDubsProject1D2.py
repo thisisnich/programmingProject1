@@ -1,7 +1,7 @@
 ###################################
 #4NicholasDubsUITestFile
 #Nicholas Dubs
-#ECE2404 Group ____
+#ECE2404 Group 5
 #Group Project 1
 #Refinging UI adding rest of functionality i.e cart view
 #Using TabView instead of forgetting nd repacking frames
@@ -9,7 +9,7 @@
 ##################################
 import customtkinter
 
-drinks = [["Neo's Green Tea", "N32", 3],["Drink 2","C12",2.85]]
+drinks = [["Neo's Green Tea", "N32", 3],["Drink 2","C12",2.85],["Drink 3","D120",4]]
 beer = [["Beer 1", "C13", 3],["Beer 2","C14",2.85]]
 frozen = [["frozen 1", "C15", 3],["frozen 2","C16",2.85]]
 household = [["Household 1", "C17", 3],["Household 2","C18",2.85]]
@@ -34,9 +34,9 @@ cartOut = ''
 for i in range(len(catalog)):
     a = len(catalog[i][1])
     b = [0]*a
-    # print(b)
+    print(b)
     cart.append(b)
-    # print(cart)
+    print(cart)
 
 # print(cart)
 
@@ -140,7 +140,8 @@ def update_labels():
     itemCountLabel.configure(text=str(read_cart()))
     discountLabel.configure(text=f'Discount: {(discounts[selectedDiscount][1]*100)}%')
     priceLabel.configure(text = f'${catalog[selectedCat][1][selectedSn][2]}')
-    # amountEntry.delete(0,last_index='end')
+    if amountEntry.get()!='':
+        amountEntry.delete(0,'end')
     amountEntry.configure(placeholder_text=cart[selectedCat][selectedSn])
 
     show_cart()
@@ -167,7 +168,8 @@ def show_cart():
 
 
 def validate_key(event):
-    if not event.char.isdigit() and event.keysym != 'BackSpace' and event.keysym!='Return':
+    print(event.keysym)
+    if not event.char.isdigit() and event.keysym != 'BackSpace' and event.keysym!=('Return' or 'Down' or 'Up' or'Left' or 'Right'):
         print('n')
         return 'break'
 
@@ -175,6 +177,7 @@ def validate_key(event):
 def set_amt(event):
     print('WOW')
     print(amountEntry.get())
+    print('WOW')
     cart[selectedCat][selectedSn]=int(amountEntry.get())
     update_labels()
 
@@ -182,7 +185,7 @@ def set_amt(event):
 
 
 itemList = get_items()
-mainFrame = customtkinter.CTkTabview(master=root)
+mainFrame = customtkinter.CTkTabview(master=root,)
 
 # root.rowconfigure(0,weight = 1)
 # root.columnconfigure(0,weight =3)
@@ -193,7 +196,6 @@ mainFrame.pack()
 mainFrame.add('shopping')
 mainFrame.add('cart')
 mainFrame.add('checkout')
-mainFrame.set('shopping')
 leftFrame = customtkinter.CTkFrame(master=mainFrame.tab('shopping'))
 leftFrame.grid(column=0, row=0, sticky ='nsew', pady=19)
 rightFrame = customtkinter.CTkFrame(master=mainFrame.tab('shopping'))

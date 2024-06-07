@@ -9,7 +9,7 @@
 ##################################
 import customtkinter
 
-drinks = [["Neo's Green Tea", "N32", 3],["Drink 2","C12",2.85]]
+drinks = [["Neo's Green Tea", "N32", 3],["Drink 2","C12",2.85],["Drink 3","D120",4]]
 beer = [["Beer 1", "C13", 3],["Beer 2","C14",2.85]]
 frozen = [["frozen 1", "C15", 3],["frozen 2","C16",2.85]]
 household = [["Household 1", "C17", 3],["Household 2","C18",2.85]]
