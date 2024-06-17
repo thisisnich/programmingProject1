@@ -7,30 +7,46 @@
 #Using TabView instead of forgetting nd repacking frames
 #06/06/24
 ##################################
+#import customTkinter for ui
 import customtkinter
 
+#Items in each category, each item has name, serial number and price as float
 drinks = [["Neo's Green Tea", "N32", 3],["Drink 2","C12",2.85],["Drink 3","D120",4]]
 beer = [["Beer 1", "C13", 3],["Beer 2","C14",2.85]]
 frozen = [["frozen 1", "C15", 3],["frozen 2","C16",2.85]]
 household = [["Household 1", "C17", 3],["Household 2","C18",2.85]]
 snacks = [["Snack 1", "C19", 3],["Snack 2","C20",2.85]]
 
+#final catalog with category names, category items and category serial number
 catalog = [["Drinks", drinks, "CD20"], ["Beer", beer, "CB20"], ["Frozen", frozen, "CF30"], ["Household", household, "CH40"], ["Snacks", snacks, "CS50"]]
+#initialize cart as an empty list
 cart = []
+
+#Discounts with name, and discount amount as a percentage % = value*100
 discounts = [["None",0],["Senior", 0.1],['Member',.08],["NS man",.05]]
 
+#Declaring variables
+#Selected item from category
 selectedSn = 0
+#Selected Category
 selectedCat = 0
+#Selected discount type
 selectedDiscount = 0
+#Subtotal before gst
 subtotal = 0
+#Total after gst
 total = 0
+#Amount of gst
 gstAmt = 0
+#Amount of discount
 discountAmount = 0
+#Total after discount
 afterDiscount = 0
+#Debug value to print cart
 cartOut = ''
 
-# print(menu)
-
+#set the size of cart as an array that has the same dimensions as catalog
+#so if catalog size chagnes cart changes automatically
 for i in range(len(catalog)):
     a = len(catalog[i][1])
     b = [0]*a
@@ -38,65 +54,89 @@ for i in range(len(catalog)):
     cart.append(b)
     print(cart)
 
-# print(cart)
-
+#print(cart) #Debug print cart to console
+#appearance mode set to dark
 customtkinter.set_appearance_mode("dark")
+#colour theme set to dark blue
 customtkinter.set_default_color_theme("dark-blue")
 
+#define root window
 root = customtkinter.CTk()
+#set default size
 root.geometry("500x350")
 
+#function run when plus button is pressed
 def plus_buton():
+    #find location in cart that corresponds to selected category and item and increment by 1
     cart[selectedCat][selectedSn] += 1
-    print(cart)
+    #print(cart) #Debug print cart
+    #duh
     update_labels()
+
+    # function run when plus button is pressed
+
 def sub_button():
+    #if the value of the corresponding spot in cart is more than 0 subtract by 1
     if cart[selectedCat][selectedSn]>0:
         cart[selectedCat][selectedSn] -= 1
+    #if it is 0 then print 'cant go below 0' and dont reduce by 1
     else:
         print("cant go below 0")
-    print(cart)
-    update_labels()
-# for item in menu:
-#     print(item)
+    #print(cart) #Debug print cart
 
+#function called when category dropbox value is selected
 def cat_callback(choice):
+    #set global variables
     global selectedCat
     global itemList
+    #while there are categories in the catalog
     for i in catalog:
-        print(i)
-        # print(i[0])
+        #print(i) #Debug print i
+        # print(i[0]) #Debug print category name
+        #check which value matches the selected item
         if choice == i[0]:
+            #set selectedCat to that value
             selectedCat = catalog.index(i)
-    # print(selectedCat)
-    print(f'combobox dropdown clicked {choice}'
-          #f' : {menu[selectedCat][0]}'
+    # print(selectedCat) #Debug print the selected category
+
+    print(f'combobox dropdown clicked {choice}' #debug print the selected cat
+          #f' : {menu[selectedCat][0]}' #Debug print the name
           )
+    #set item list to the new items in the selected cat
     itemList = get_items()
     update_labels()
 
 
-
+#Function called when item dropdown is selected
 def sn_callback(choice):
+    #declaring global vars
     global selectedSn
-    # print(choice)
+    # print(choice) #debug pritn selected item
+    #check which item name matches an item in the selected category
     for i in catalog[selectedCat][1]:
-        print(i)
+        #print(i) #Debug print i
+        #when the selected item is matched set the selected item to selectedSbn
         if choice == i[0]:
             selectedSn=catalog[selectedCat][1].index(i)
-    print(selectedSn)
+    #print(selectedSn) #Debub print the selected sn
 
-    print(f'combobox dropdown clicked {choice}'
-          #f' : {menu[selectedCat][0]}'
+    print(f'combobox dropdown clicked {choice}' #Debug print choice
+          #f' : {menu[selectedCat][0]}' #Debug print choice name
           )
     update_labels()
 
+#Function called when discount dropdown selected
 def discount_callback(choice):
+    #Declare globals
     global selectedDiscount
+    #check which discount name matches the selected discount
     for i in discounts:
         if choice == i[0]:
+            #set selected discount to the correspnding precentage
             selectedDiscount = discounts.index(i)
     update_labels()
+
+
 def get_items():
     tempList = []
     for i in catalog[selectedCat][1]:
