@@ -326,27 +326,37 @@ amountEntry.bind('<KeyPress>',validate_key)
 #on enter press run set_amt
 amountEntry.bind('<Return>',set_amt)
 
-
+#label that displays item code in right frame of shopping tap
 codeLabel = customtkinter.CTkLabel(master=rightFrame, text=catalog[selectedCat][1][selectedSn][1])
 codeLabel.pack(padx=10, pady=12)
+#Label that displays price of item in right frame of shopping tab
 priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selectedCat][1][selectedSn][2]}')
 priceLabel.pack(padx=10,pady=12)
+#label that displays subtotal in checkout tab
 subtotalLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=('subtotal: $' + str(subtotal)))
 subtotalLabel.pack(padx=10,pady=12)
+#label to display total after gst in checkout tab
 totalLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=('total: $' + str(total)))
 totalLabel.pack(padx=10, pady=12)
+#Label to display GST amount in checkout tab
 gstLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f"GST: ${gstAmt:.2f}")
 gstLabel.pack(padx=10,pady=12)
+#Combo box to select discount. calls discount_Callback function
 discountComboBox = customtkinter.CTkComboBox(master=masterFrame.tab('checkout'), values=[i[0] for i in discounts], command=discount_callback)
 discountComboBox.pack(padx=10,pady=12)
+#label to show selected discount in checkout tab
 discountLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f'Discount: {(discounts[selectedDiscount][1] * 100)}%')
 discountLabel.pack(padx=10,pady=12)
+#label to show amount of discount given
 discountAmountLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f'Discount amount: ${discountAmount}')
 discountAmountLabel.pack(padx=10,pady=12)
+#label to show final cost after discount
 afterDiscountLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f'Total after discount ${afterDiscount}')
 afterDiscountLabel.pack(padx=10,pady=12)
+#label that displays the cart
 cartLabel = customtkinter.CTkLabel(master=masterFrame.tab('cart'), text = cartOut)
 cartLabel.pack(padx=10,pady=12)
 
 
+#start customtkinter window
 root.mainloop()
