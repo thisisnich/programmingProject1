@@ -5,33 +5,54 @@
 #Group Project 1
 #Refinging UI adding rest of functionality i.e cart view
 #Using TabView instead of forgetting nd repacking frames
-#02/07/24
+#03/07/24
 ##################################
 #import customTkinter for ui
 import customtkinter
+from customtkinter import *
+catalog = {
+    "Drinks": {
+        "N32": {"name": "Neo's Green Tea", "price": 3},
+        "C12": {"name": "Drink 2", "price": 2.85},
+        "D120": {"name": "Drink 3", "price": 4},
+        "N14": {"name": "Nirigold UHT Milk", "price": 4.5}
+    },
+    "Beer": {
+        "C13": {"name": "Beer 1", "price": 3},
+        "C14": {"name": "Beer 2", "price": 2.85}
+    },
+    "Frozen": {
+        "C15": {"name": "Frozen 1", "price": 3},
+        "C16": {"name": "Frozen 2", "price": 2.85}
+    },
+    "Household": {
+        "C17": {"name": "Household 1", "price": 3},
+        "C18": {"name": "Household 2", "price": 2.85}
+    },
+    "Snacks": {
+        "C19": {"name": "Snack 1", "price": 3},
+        "C20": {"name": "Snack 2", "price": 2.85}
+    }
+}
 
-#Items in each category, each item has name, serial number and price as float
-drinks = [["Neo's Green Tea", "N32", 3],["Drink 2","C12",2.85],["Drink 3","D120",4],["Nirigold UHT Milk","N14",4.5]]
-beer = [["Beer 1", "C13", 3],["Beer 2","C14",2.85]]
-frozen = [["frozen 1", "C15", 3],["frozen 2","C16",2.85]]
-household = [["Household 1", "C17", 3],["Household 2","C18",2.85]]
-snacks = [["Snack 1", "C19", 3],["Snack 2","C20",2.85]]
-
-#final catalog with category names, category items and category serial number
-catalog = [["Drinks", drinks, "CD20"], ["Beer", beer, "CB20"], ["Frozen", frozen, "CF30"], ["Household", household, "CH40"], ["Snacks", snacks, "CS50"]]
-#initialize cart as an empty list
-cart = []
+print(catalog)
+cart = {category: {sn: 0 for sn in items} for category, items in catalog.items()}
+print(cart)
 
 #Discounts with name, and discount amount as a percentage % = value*100
-discounts = [["None",0],["Senior", 0.1],['Member',.08],["NS man",.05]]
+discounts = {"None" : 0,
+             "Senior" : 0.1,
+             "Member" : 0.08,
+             "NS man": 0.05}
+
 
 #Declaring variables
 #Selected item from category
-selectedSn = 0
+selectedSn = "N32"
 #Selected Category
-selectedCat = 0
+selectedCat = "Drinks"
 #Selected discount type
-selectedDiscount = 0
+selectedDiscount = "None"
 #Subtotal before gst
 subtotal = 0
 #Total after gst
@@ -45,16 +66,8 @@ afterDiscount = 0
 #Debug value to print cart
 cartOut = ''
 
-#set the size of cart as an array that has the same dimensions as catalog
-#so if catalog size chagnes cart changes automatically
-for i in range(len(catalog)):
-    a = len(catalog[i][1])
-    b = [0]*a
-    #print(b) #Debug: priny empty list of each cat
-    cart.append(b)
-    #print(cart) #Debug: Print empty cart up to that point
 
-#print(cart) #Debug print cart to console
+
 #appearance mode set to dark
 customtkinter.set_appearance_mode("dark")
 #colour theme set to dark blue
@@ -63,7 +76,11 @@ customtkinter.set_default_color_theme("dark-blue")
 #define root window
 root = customtkinter.CTk()
 #set default size
-root.geometry("500x350")
+root.geometry("410x360")
+#set icon
+root.iconbitmap('f.ico')
+#set minimum window size
+root.minsize(410,360)
 
 #function run when plus button is pressed
 def plus_buton():
@@ -88,23 +105,17 @@ def sub_button():
 #function called when category dropbox value is selected
 def cat_callback(choice):
     #set global variables
-    global selectedCat
-    global itemList
-    #while there are categories in the catalog
-    for i in catalog:
-        #print(i) #Debug print i
-        # print(i[0]) #Debug print category name
-        #check which value matches the selected item
-        if choice == i[0]:
-            #set selectedCat to that value
-            selectedCat = catalog.index(i)
-    # print(selectedCat) #Debug print the selected category
-
-    print(f'combobox dropdown clicked {choice}' #debug print the selected cat
-          #f' : {menu[selectedCat][0]}' #Debug print the name
+    global selectedCat, itemList,selectedSn
+    print(f'combobox dropdown clicked {choice}'  # debug print the selected cat
+          # f' : {menu[selectedCat][0]}' #Debug print the name
           )
+    selectedCat = choice
     #set item list to the new items in the selected cat
     itemList = get_items()
+    temp = list(catalog[selectedCat])
+    selectedSn=temp[0]
+
+
     update_labels()
 
 
@@ -112,14 +123,15 @@ def cat_callback(choice):
 def sn_callback(choice):
     #declaring global vars
     global selectedSn
-    # print(choice) #debug pritn selected item
+    print(choice) #debug pritn selected item
     #check which item name matches an item in the selected category
-    for i in catalog[selectedCat][1]:
-        #print(i) #Debug print i
+    for sn in catalog[selectedCat]:
+        # print(sn) #Debug print sn
         #when the selected item is matched set the selected item to selectedSbn
-        if choice == i[0]:
-            selectedSn=catalog[selectedCat][1].index(i)
-    #print(selectedSn) #Debub print the selected sn
+        # print(catalog[selectedCat][sn]['name']) #debug: print name of item at 'sn'
+        if choice == catalog[selectedCat][sn]['name']:
+            selectedSn=sn
+    print(selectedSn) #Debub print the selected sn
 
     print(f'combobox dropdown clicked {choice}' #Debug print choice
           #f' : {menu[selectedCat][0]}' #Debug print choice name
@@ -131,21 +143,13 @@ def discount_callback(choice):
     #Declare globals
     global selectedDiscount
     #check which discount name matches the selected discount
-    for i in discounts:
-        if choice == i[0]:
-            #set selected discount to the correspnding precentage
-            selectedDiscount = discounts.index(i)
+    selectedDiscount=choice
     update_labels()
 
 
 #function to get items in a category
 def get_items():
-    #initialise a temporary list
-    tempList = []
-    #while there is items in the selected category, add the item to the temp list
-    for i in catalog[selectedCat][1]:
-        tempList.append(i[0])
-    return tempList
+    return [catalog[selectedCat][sn]["name"] for sn in catalog[selectedCat]]
 
 #calculation function
 def calculate_sum():
@@ -154,39 +158,43 @@ def calculate_sum():
     #declare workig value
     tempCost = 0
     #while there are items in cart, find the corresponding price, and multiply number of items in cart by price
-    for i in range(len(cart)):
-        for y in range(len(cart[i])):
+    for cat in cart:
+        for sn in cart[cat]:
+            #print(cat,sn)
             # print(cart[i][y])         #Debug: print value in cart
             # print(menu[i][1][y][2])   #Debug: print corresponding price
             #add the total price to tempCost
-            tempCost += (cart[i][y])*(catalog[i][1][y][2])
+
+            tempCost += cart[cat][sn]*catalog[cat][sn]['price']
             # print(tempCost)           #Debug: print current temporary Value
     #Set subtotal to the temporary cost
     subtotal=tempCost
     #Print subtotal
-    print(f'Subtotal ${subtotal:.2f}')
+    # print(f'Subtotal ${subtotal:.2f}') #Debug print new subtotal
     #Calculate toatal with GST
     total=subtotal*1.09
     #Print total after GST
-    print(f'Total ${total:.2f}')
+    # print(f'Total ${total:.2f}') # Debug: print new total
     #calculate the amount of gst charged
     gstAmt = subtotal*.09
     #Pring amount of gst charged
-    print(f'GST ${gstAmt:.2f}')
+    # print(f'GST ${gstAmt:.2f}') #Debug: print new gst amount
     #print(discounts[selectedDiscount])  #Debug: print selected discount
     #Calculate the amount of discount given based on the selected discount
-    discountAmount = total*discounts[selectedDiscount][1]
+    # print(selectedDiscount) #Debug: print selected discount
+    discountAmount = total*discounts[selectedDiscount]
     #Print the amount of discount deducted
-    print(f'Discount amt: {discountAmount:.2f}')
+    # print(f'Discount amt: {discountAmount:.2f}') #Debug: print new discount amount
     #calculate total after discount
-    afterDiscount = total*(1-discounts[selectedDiscount][1])
+    afterDiscount = total*(1-discounts[selectedDiscount])
     #print total after discount
-    print(f'Total after discount ${afterDiscount:.2f}')
+    # print(f'Total after discount ${afterDiscount:.2f}') #new price after discount
 
     #update labels to reflect the totals
     discountAmountLabel.configure(text=f'Discount amount: ${discountAmount:.2f}')
-    subtotalLabel.configure(text=f'subtotal: ${subtotal:.2f}')
-    totalLabel.configure(text=f'total: ${total:.2f}')
+    subtotalLabel.configure(text=f'Subtotal: ${subtotal:.2f}')
+    shopSubtotalLabel.configure(text=f'Subtotal: ${subtotal:.2f}')
+    totalLabel.configure(text=f'Total: ${total:.2f}')
     gstLabel.configure(text=f"GST: ${gstAmt:.2f}")
     afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount:.2f}')
 
@@ -198,13 +206,13 @@ def update_labels():
     #update the item combobox options
     snComboBox.configure(values=itemList)
     #update the label that displays the item code
-    codeLabel.configure(text=catalog[selectedCat][1][selectedSn][1])
+    codeLabel.configure(text=selectedSn)
     #update the label that shows number of items in cart
     itemCountLabel.configure(text=str(read_cart()))
     #update the label that shows selected discount
-    discountLabel.configure(text=f'Discount: {(discounts[selectedDiscount][1]*100)}%')
+    discountLabel.configure(text=f'Discount: {(discounts[selectedDiscount]*100)}%')
     #update label that shows price of item
-    priceLabel.configure(text = f'${catalog[selectedCat][1][selectedSn][2]}')
+    priceLabel.configure(text = f'${catalog[selectedCat][selectedSn]['price']}')
     #if the value in amount entry is not empty, clear it
     #When using amountEntry.delete() subsequent entries return empty when enter is pressed
     # if amountEntry.get()!='':
@@ -219,8 +227,10 @@ def update_labels():
 
 #function to read cart at selected category and selected item
 def read_cart():
-    output=cart[selectedCat][selectedSn]
-    return output
+    # print(cart)
+    # print(selectedCat)
+    # print(selectedSn)
+    return cart[selectedCat][selectedSn]
 
 #function to update label to show cart to user
 def show_cart():
@@ -229,18 +239,11 @@ def show_cart():
     #initialise empty cart output
     cartOut=''
     #while there are items in cart get the value and item name
-    for i in range(len(cart)):
-        for y in range(len(cart[i])):
-            # print(cart[i][y]) #Debug print amount in cart
-            #check if the value in cart is more than 0
-            if cart[i][y] >=1:
-                # print(menu[i][1][y][0])       #Debug print item name
-                #total cost of item is the amount of items in cart, multiplied by cost per item
-                itemCost = cart[i][y] * catalog[i][1][y][2]
-                # print(itemCost)           #Debug: Print total item cost
-                # print(f'{menu[i][1][y][0]:.<16}{cart[i][y]:.^8}${itemCost}')      #Debug: Print a the line that will be added to cart
-                #add item name, amount, and total cost of item to cart out as well as a new line
-                cartOut += f'{catalog[i][1][y][0]:<16}{cart[i][y]:^8}${itemCost:.2f}\n'
+    for cat in cart:
+        for sn in cart[cat]:
+            if cart[cat][sn] >=1:
+                itemCost = cart[cat][sn]*catalog[cat][sn]['price']
+                cartOut += f'{catalog[cat][sn]["name"]:<16}{cart[cat][sn]:^8}${itemCost:.2f}\n'
     #Update cart label to show cartOut
     cartLabel.configure(text=cartOut)
 
@@ -272,15 +275,18 @@ def set_amt(event):
 #call get_items to set itemList
 itemList = get_items()
 #master frame that contains all the tabs
-masterFrame = customtkinter.CTkTabview(master=root,)
+masterFrame = customtkinter.CTkTabview(master=root)
 
 #pack master frame to window
-masterFrame.pack()
+masterFrame.place(anchor= 'center', relheight = .85, relwidth=.85, relx=.5, rely=.5)
+masterFrame.pack_propagate(False)
 
 #add tabs to master frame
 masterFrame.add('shopping')
 masterFrame.add('cart')
 masterFrame.add('checkout')
+checkoutFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('checkout'))
+checkoutFrame.place(anchor= 'center', relheight = .8, relwidth=.65, relx=.5, rely=.5)
 
 #frame on the left of the shopping tab, with inputs
 leftFrame = customtkinter.CTkFrame(master=masterFrame.tab('shopping'))
@@ -297,7 +303,7 @@ masterFrame.tab('shopping').columnconfigure(1,weight =1)
 buttonFrame = customtkinter.CTkFrame(master=leftFrame)
 
 #combo box to select category, calls cat_callback function when an option is selected
-catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=[cat[0] for cat in catalog], command=cat_callback)
+catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=list(catalog.keys()), command=cat_callback)
 catComboBox.pack(pady=12, padx=10)
 #combo box to select item, calls sn_callback function when an option is selected
 snComboBox = customtkinter.CTkComboBox(master=leftFrame, values=itemList, command=sn_callback)
@@ -327,31 +333,33 @@ amountEntry.bind('<KeyPress>',validate_key)
 amountEntry.bind('<Return>',set_amt)
 
 #label that displays item code in right frame of shopping tap
-codeLabel = customtkinter.CTkLabel(master=rightFrame, text=catalog[selectedCat][1][selectedSn][1])
+codeLabel = customtkinter.CTkLabel(master=rightFrame, text=selectedSn)
 codeLabel.pack(padx=10, pady=12)
 #Label that displays price of item in right frame of shopping tab
-priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selectedCat][1][selectedSn][2]}')
+priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selectedCat][selectedSn]['price']}')
 priceLabel.pack(padx=10,pady=12)
+shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=('Subtotal: $' + str(subtotal)))
+shopSubtotalLabel.pack(padx=10,pady=12)
 #label that displays subtotal in checkout tab
-subtotalLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=('subtotal: $' + str(subtotal)))
+subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=('Subtotal: $' + str(subtotal)))
 subtotalLabel.pack(padx=10,pady=12)
 #label to display total after gst in checkout tab
-totalLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=('total: $' + str(total)))
+totalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=('Total: $' + str(total)))
 totalLabel.pack(padx=10, pady=12)
 #Label to display GST amount in checkout tab
-gstLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f"GST: ${gstAmt:.2f}")
+gstLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f"GST: ${gstAmt:.2f}")
 gstLabel.pack(padx=10,pady=12)
 #Combo box to select discount. calls discount_Callback function
-discountComboBox = customtkinter.CTkComboBox(master=masterFrame.tab('checkout'), values=[i[0] for i in discounts], command=discount_callback)
+discountComboBox = customtkinter.CTkComboBox(master=checkoutFrame, values=list(discounts), command=discount_callback)
 discountComboBox.pack(padx=10,pady=12)
 #label to show selected discount in checkout tab
-discountLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f'Discount: {(discounts[selectedDiscount][1] * 100)}%')
+discountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Discount: {(discounts[selectedDiscount] * 100)}%')
 discountLabel.pack(padx=10,pady=12)
 #label to show amount of discount given
-discountAmountLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f'Discount amount: ${discountAmount}')
+discountAmountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Discount amount: ${discountAmount}')
 discountAmountLabel.pack(padx=10,pady=12)
 #label to show final cost after discount
-afterDiscountLabel = customtkinter.CTkLabel(master=masterFrame.tab('checkout'), text=f'Total after discount ${afterDiscount}')
+afterDiscountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Total after discount ${afterDiscount}')
 afterDiscountLabel.pack(padx=10,pady=12)
 #label that displays the cart
 cartLabel = customtkinter.CTkLabel(master=masterFrame.tab('cart'), text = cartOut)
