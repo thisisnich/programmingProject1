@@ -8,28 +8,39 @@
 ##################################
 import customtkinter
 from customtkinter import *
+import photos
+from PIL import Image
+
 catalog = {
     "Drinks": {
         "N32": {"name": "Neo's Green Tea", "price": 3},
-        "C12": {"name": "Drink 2", "price": 2.85},
-        "D120": {"name": "Drink 3", "price": 4},
-        "N14": {"name": "Nirigold UHT Milk", "price": 4.5}
+        "M13": {"name": "Melo Chocolate Malt Drink", "price": 2.85},
+        "V76": {"name": "Very-Fair Full Cream Milk", "price": 3.5},
+        "N14": {"name": "Nirigold UHT Milk", "price": 4.15}
     },
     "Beer": {
-        "C13": {"name": "Beer 1", "price": 3},
-        "C14": {"name": "Beer 2", "price": 2.85}
+        "L11": {"name": "Lion (24 x 320 ml)", "price": 52},
+        "P21": {"name": "Panda (24 x 320 ml)", "price": 78},
+        "A54": {"name": "Axe (24 x 320 ml)", "price": 58},
+        "H91": {"name": "Henekan (24 x 320 ml)", "price": 68}
     },
     "Frozen": {
-        "C15": {"name": "Frozen 1", "price": 3},
-        "C16": {"name": "Frozen 2", "price": 2.85}
+        "E11": {"name": "Edker Ristorante Pizza 355g", "price": 6.95},
+        "F43": {"name": "Fazzler Frozen Soup 500g", "price": 5.15},
+        "CP31": {"name": "CP Frozen Ready Meal 250g", "price": 4.12},
+        "D72": {"name": "Duitoni Cheese 270g", "price": 5.6}
     },
     "Household": {
-        "C17": {"name": "Household 1", "price": 3},
-        "C18": {"name": "Household 2", "price": 2.85}
+        "FP78": {"name": "FP Facial Tissues", "price": 9.5},
+        "FP32": {"name": "FP Premium Kitchen Towel", "price": 5.85},
+        "K22": {"name": "Klinex Toilet Tissue Rolls", "price": 7.5},
+        "D14": {"name": "Danny Softener", "price": 9.85}
     },
     "Snacks": {
-        "C19": {"name": "Snack 1", "price": 3},
-        "C20": {"name": "Snack 2", "price": 2.85}
+        "SS93": {"name": "Slingshot Seaweed", "price": 3.1},
+        "MC14": {"name": "Mei Crab Cracker", "price": 2.05},
+        "R35": {"name": "Reo Pokemon Cookie", "price": 4.8},
+        "HS11": {"name": "Huat Seng Crackers", "price": 3.55}
     }
 }
 
@@ -74,11 +85,12 @@ customtkinter.set_default_color_theme("dark-blue")
 #define root window
 root = customtkinter.CTk()
 #set default size
-root.geometry("410x360")
+root.geometry("410x370")
 #set icon
 root.iconbitmap('f.ico')
 #set minimum window size
-root.minsize(410,360)
+root.minsize(410,370)
+
 
 #function run when plus button is pressed
 def plus_buton():
@@ -87,6 +99,7 @@ def plus_buton():
     #print(cart) #Debug print cart
     #duh
     update_labels()
+
 
 def sub_button():
     #if the value of the corresponding spot in cart is more than 0 subtract by 1
@@ -97,6 +110,7 @@ def sub_button():
         print("can't go below 0")
     update_labels() #####
     #print(cart) #Debug print cart
+
 
 #function called when category dropbox value is selected
 def cat_callback(choice):
@@ -111,6 +125,7 @@ def cat_callback(choice):
     temp = list(catalog[selectedCat])
     selectedItem=temp[0]
     update_labels()
+
 
 #Function called when item dropdown is selected
 def item_callback(choice):
@@ -131,6 +146,7 @@ def item_callback(choice):
           )
     update_labels()
 
+
 #Function called when discount dropdown selected
 def discount_callback(choice):
     #Declare globals
@@ -142,6 +158,7 @@ def discount_callback(choice):
 #function to get items in a category
 def get_items():
     return [catalog[selectedCat][sn]["name"] for sn in catalog[selectedCat]]
+
 
 #calculation function
 def calculate_sum():
@@ -190,14 +207,33 @@ def calculate_sum():
     gstLabel.configure(text=f"GST: ${gstAmt:.2f}")
     afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount:.2f}')
 
-#function to update labels
-def update_labels():
+
+def update_img():
+    print(f'height: {root.winfo_height()}')
+    print(f'width: {root.winfo_width()}')
+    maxImgHeight = int(root.winfo_height()/7)
+    maxImgWidth = int(root.winfo_width()/8)
+    print(f'img height: {maxImgHeight}')
+    print(f'img width: {maxImgWidth}')
+    imgSize = min(maxImgWidth, maxImgHeight)
+
     #declare global variables
     global itemList, catalog,selectedItem,selectedCat
     #update the item combobox options
+    show_cart()
+    itemImage.configure(light_image=get_image(),
+                        dark_image=get_image(),
+                        size=(imgSize,imgSize))
+    imageLabel.configure(image=itemImage)
+
+
+#function to update labels
+def update_labels():
+    update_img()
     snComboBox.configure(values=itemList)
     #update the label that displays the item code
     codeLabel.configure(text=selectedItem)
+    snComboBox.set(catalog[selectedCat][selectedItem]['name'])
     #update the label that shows number of items in cart
     itemCountLabel.configure(text=str(read_cart()))
     #update the label that shows selected discount
@@ -212,9 +248,9 @@ def update_labels():
     amountEntry.configure(placeholder_text=cart[selectedCat][selectedItem])
 
     #Run function to update cart label to show item names
-    show_cart()
     #run function to calculate sum
     calculate_sum()
+
 
 #function to read cart at selected category and selected item
 def read_cart():
@@ -222,6 +258,7 @@ def read_cart():
     # print(selectedCat)
     # print(selectedSn)
     return cart[selectedCat][selectedItem]
+
 
 #function to update label to show cart to user
 def show_cart():
@@ -235,15 +272,10 @@ def show_cart():
             if cart[cat][sn] >=1:
                 itemCost = cart[cat][sn]*catalog[cat][sn]['price']
                 cartOut += f'{catalog[cat][sn]["name"]:<16}{cart[cat][sn]:^8}${itemCost:.2f}\n'
-                make_cart_label(cart[cat][sn],itemCost,catalog[cat][sn]["name"],globals_namespace)
-###############################################################################
-    '''TODO
-        fix make button function update label if it already exixts
-        remove buttion aslo clears cart
-        change master frame to cart tab'''
-###############################################################################
+                make_cart_label(cart[cat][sn],itemCost,catalog[cat][sn]["name"],globals_namespace,sn)
     #Update cart label to show cartOut
-    cartLabel.configure(text=cartOut)
+    # cartLabel.configure(text=cartOut)
+
 
 #function to check that only accepted keys are registered
 def validate_key(event):
@@ -255,6 +287,7 @@ def validate_key(event):
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
     ####??? After using delete function amountEntry.get() always returns ''
 
+
 #function called when enter key is pressed
 # sets cart at selected category and selected item to value that is in the entry box
 def set_amt(event):
@@ -265,6 +298,7 @@ def set_amt(event):
     cart[selectedCat][selectedItem]=int(amountEntry.get())
     #call update labels function
     update_labels()
+
 
 ###ADD
 def checkout_button():
@@ -284,26 +318,54 @@ def back_button():
     checkoutFrame.place_forget()
     masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
 
+
 #change appearance of ui
 def appearance_callback(choice: str):
     customtkinter.set_appearance_mode(choice)
+
+
 def scaling_callback(choice: str):
     new_scaling_float = int(choice.replace("%", "")) / 100
     customtkinter.set_widget_scaling(new_scaling_float)
 
-def make_cart_label(amt, price, name, namespace):
-    namespace[f'{name}Frame'] = customtkinter.CTkFrame(root)
-    namespace[f'{name}Frame'].pack(pady=1)
-    namespace[f'{name}Frame'].columnconfigure(0, weight=3)
-    # namespace[f'{name}Frame'].columnconfigure(1, weight=1)
-    namespace[f'{name}Label'] = customtkinter.CTkLabel(namespace[f'{name}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
-    namespace[f'{name}Label'].grid(column=0, row = 0)
-    namespace[f'{name}Button'] = customtkinter.CTkButton(namespace[f'{name}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(name, namespace))
-    namespace[f'{name}Button'].grid(column=2, row=0, padx=10, pady=5)
 
-def remove_cart_label(name, namespace):
+def make_cart_label(amt, price, name, namespace, sn):
+    global selectedItem
+    try:
+        namespace[f'{sn}Label'].configure(text=f'{name:<16}{amt:^8}${price:.2f}')
+        #print('label already exists')      #Debug: if label already exists
+    except:
+        # print('Making new frame')  #Debug: print if a new label is made
+        namespace[f'{sn}Frame'] = customtkinter.CTkFrame(cartFrame)
+        namespace[f'{sn}Frame'].columnconfigure(0, weight=3)
+        # namespace[f'{name}Frame'].columnconfigure(1, weight=1)
+        namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
+        namespace[f'{sn}Label'].grid(column=0, row = 0)
+        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace))
+        namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
+    namespace[f'{sn}Frame'].pack(pady=1)
+
+
+def remove_cart_label(sn, namespace):
     print("ive run")
-    namespace[f'{name}Frame'].pack_forget()
+    namespace[f'{sn}Frame'].pack_forget()
+    for cat in cart:
+        print(cat)
+        for item in cart[cat]:
+            print(item)
+            if sn == item:
+                cart[cat][item]= 0
+                print(cart[cat][sn])
+    update_labels()
+
+def get_image():
+    try:
+        output = Image.open(f'photos/{selectedItem}.jpg')
+        return output
+    except:
+        output = Image.open('photos/default.jpg')
+        return output
+
 
 #call get_items to set itemList
 itemList = get_items()
@@ -319,6 +381,8 @@ masterFrame.add('shopping')
 masterFrame.add('cart')
 masterFrame.add('settings')
 checkoutFrame = customtkinter.CTkScrollableFrame(master=root) ###edited
+cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
+cartFrame.pack(side='top',fill='both', expand=True)
 # checkoutFrame.place(anchor= 'center', relheight = .8, relwidth=.65, relx=.5, rely=.5)
 
 #frame on the left of the shopping tab, with inputs
@@ -373,14 +437,22 @@ amountEntry.bind('<KeyPress>',validate_key)
 #on enter press run set_amt
 amountEntry.bind('<Return>',set_amt)
 
+itemImage = customtkinter.CTkImage(light_image=get_image(),
+                                   dark_image = get_image(),
+                                   size=(90,90))
+imageLabel = customtkinter.CTkLabel(rightFrame, image=itemImage, text='')
+imageLabel.pack(padx=10, pady=0)
 #label that displays item code in right frame of shopping tap
 codeLabel = customtkinter.CTkLabel(master=rightFrame, text=selectedItem)
-codeLabel.pack(padx=10, pady=12)
+codeLabel.pack(padx=10, pady=10)
 #Label that displays price of item in right frame of shopping tab
 priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selectedCat][selectedItem]['price']}')
-priceLabel.pack(padx=10,pady=12)
+priceLabel.pack(padx=10,pady=10)
 shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: ${subtotal:.2f}'))
-shopSubtotalLabel.pack(padx=10,pady=12)
+shopSubtotalLabel.pack(padx=10,pady=10)
+
+
+
 
 #label that displays subtotal in checkout tab
 subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=(f'Subtotal: ${subtotal:.2f}'))
@@ -418,7 +490,8 @@ scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), value
                                                                command=scaling_callback)
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
+#
+# root.bind('<Configure>', update_img)
 
 #start customtkinter window
 root.mainloop()
-
