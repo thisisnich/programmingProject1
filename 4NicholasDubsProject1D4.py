@@ -7,8 +7,6 @@
 #09/07/24
 ##################################
 import customtkinter
-from customtkinter import *
-import photos
 from PIL import Image
 
 catalog = {
@@ -103,12 +101,15 @@ def plus_buton():
 
 def sub_button():
     #if the value of the corresponding spot in cart is more than 0 subtract by 1
-    if cart[selectedCat][selectedItem]>0:
+    if cart[selectedCat][selectedItem]>1:
         cart[selectedCat][selectedItem] -= 1
+        #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remover the label in cart that is now 0
+        if cart[selectedCat][selectedItem] == 0:
+            remove_cart_label(selectedItem, globals_namespace)
     #if it is 0 then print 'cant go below 0' and dont reduce by 1
     else:
         print("can't go below 0")
-    update_labels() #####
+    update_labels()
     #print(cart) #Debug print cart
 
 
@@ -208,19 +209,20 @@ def calculate_sum():
     afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount:.2f}')
 
 
+#function to update image
 def update_img():
-    print(f'height: {root.winfo_height()}')
-    print(f'width: {root.winfo_width()}')
-    maxImgHeight = int(root.winfo_height()/7)
-    maxImgWidth = int(root.winfo_width()/8)
-    print(f'img height: {maxImgHeight}')
-    print(f'img width: {maxImgWidth}')
+    #get height and width of root window
+    # print(f'height: {root.winfo_height()}')     #Debug: print window height
+    # print(f'width: {root.winfo_width()}')       #Debug: print window width
+    #get max width and height the image can be
+    maxImgHeight = int(root.winfo_height()/5)
+    maxImgWidth = int(root.winfo_width()/6)
+    # print(f'img height: {maxImgHeight}')        #Debug: print max image height
+    # print(f'img width: {maxImgWidth}')          #Debug: print max image width
+    #because square image, set image size to be the smallest of teh maximum values
     imgSize = min(maxImgWidth, maxImgHeight)
 
-    #declare global variables
-    global itemList, catalog,selectedItem,selectedCat
-    #update the item combobox options
-    show_cart()
+    #update image  with selected item serial number and set image size to maximum size
     itemImage.configure(light_image=get_image(),
                         dark_image=get_image(),
                         size=(imgSize,imgSize))
@@ -246,8 +248,8 @@ def update_labels():
     #     amountEntry.delete(0,'end')
     #update the placeholder text in the entry to the amount in cart: doesnt do anything if entry isnt cleared
     amountEntry.configure(placeholder_text=cart[selectedCat][selectedItem])
-
-    #Run function to update cart label to show item names
+    #Run function to make new cart labels
+    show_cart()
     #run function to calculate sum
     calculate_sum()
 
@@ -270,22 +272,20 @@ def show_cart():
     for cat in cart:
         for sn in cart[cat]:
             if cart[cat][sn] >=1:
-                itemCost = cart[cat][sn]*catalog[cat][sn]['price']
-                cartOut += f'{catalog[cat][sn]["name"]:<16}{cart[cat][sn]:^8}${itemCost:.2f}\n'
-                make_cart_label(cart[cat][sn],itemCost,catalog[cat][sn]["name"],globals_namespace,sn)
-    #Update cart label to show cartOut
-    # cartLabel.configure(text=cartOut)
+                #calculate cost of item
+                item_cost = cart[cat][sn]*catalog[cat][sn]['price']
+                #run make cart label function with the item sn and as well as item name, and cost
+                make_cart_label(cart[cat][sn],item_cost,catalog[cat][sn]["name"],globals_namespace,sn)
 
 
 #function to check that only accepted keys are registered
 def validate_key(event):
-    #print(event.keysym) #Debug:print key that was pressed
+    # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
-    if not event.char.isdigit() and event.keysym!=('BackSpace' or 'Return' or 'Left' or 'Right'):
-        #print('key not accepted')  #Debug: print message when keypress is not accepted
+    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right'):
+        # print('key not accepted')  #Debug: print message when keypress is not accepted
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
-    ####??? After using delete function amountEntry.get() always returns ''
 
 
 #function called when enter key is pressed
@@ -297,6 +297,8 @@ def set_amt(event):
     #set cart value to the value stored in Entry
     cart[selectedCat][selectedItem]=int(amountEntry.get())
     #call update labels function
+    if cart[selectedCat][selectedItem] == 0:
+        remove_cart_label(selectedItem, globals_namespace)
     update_labels()
 
 
@@ -319,45 +321,60 @@ def back_button():
     masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
 
 
-#change appearance of ui
+#function called when appearance menu is selected sets appearance to the selected type
 def appearance_callback(choice: str):
     customtkinter.set_appearance_mode(choice)
 
 
+#function called when item in scaling menu is selected, sets scaling to selected number
 def scaling_callback(choice: str):
+    #removes % from string
     new_scaling_float = int(choice.replace("%", "")) / 100
     customtkinter.set_widget_scaling(new_scaling_float)
 
 
+#function to make labels for cart
 def make_cart_label(amt, price, name, namespace, sn):
     global selectedItem
+    #try to configure an existing label with the serial number. i.e. sn = N32 frame = N32Frame
     try:
         namespace[f'{sn}Label'].configure(text=f'{name:<16}{amt:^8}${price:.2f}')
         #print('label already exists')      #Debug: if label already exists
+    #if label doesnt exist, create a new label
     except:
         # print('Making new frame')  #Debug: print if a new label is made
+        #make new frame for this item
         namespace[f'{sn}Frame'] = customtkinter.CTkFrame(cartFrame)
         namespace[f'{sn}Frame'].columnconfigure(0, weight=3)
         # namespace[f'{name}Frame'].columnconfigure(1, weight=1)
+        #Display name, amount ordered and cost of this item
         namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
         namespace[f'{sn}Label'].grid(column=0, row = 0)
+        #Button to remove item from cart, runs remove_cart_label function, passes serial number
         namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace))
         namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
+    #pack label
     namespace[f'{sn}Frame'].pack(pady=1)
 
 
+#functino to remove label
 def remove_cart_label(sn, namespace):
-    print("ive run")
-    namespace[f'{sn}Frame'].pack_forget()
+    #try forgetting
+    try:
+        namespace[f'{sn}Frame'].pack_forget()
+    #uf label does not exist, continue
+    except:
+        pass
+    #check which item needs to be removed, set that item in cart to 0
     for cat in cart:
-        print(cat)
         for item in cart[cat]:
-            print(item)
             if sn == item:
                 cart[cat][item]= 0
-                print(cart[cat][sn])
+    #update labels
     update_labels()
 
+
+#get image
 def get_image():
     try:
         output = Image.open(f'photos/{selectedItem}.jpg')
