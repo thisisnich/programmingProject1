@@ -28,6 +28,8 @@ catalog = {
 print(catalog)
 cart = {category: {sn: 0 for sn in items} for category, items in catalog.items()}
 print(cart)
+#for cart buttons
+globals_namespace = globals() #add
 
 #Discounts with name, and discount amount as a percentage % = value*100
 discounts = {"None" : 0,
@@ -55,6 +57,9 @@ discountAmount = 0
 afterDiscount = 0
 #Debug value to print cart
 cartOut = ''
+
+###ADD
+payment_method= ["Debit Card","Credit Card"]
 
 #appearance mode set to dark
 customtkinter.set_appearance_mode("dark")
@@ -225,6 +230,7 @@ def show_cart():
             if cart[cat][sn] >=1:
                 itemCost = cart[cat][sn]*catalog[cat][sn]['price']
                 cartOut += f'{catalog[cat][sn]["name"]:<16}{cart[cat][sn]:^8}${itemCost:.2f}\n'
+                make_cart_label(cart[cat][sn], itemCost, catalog[cat][sn]["name"], globals_namespace) #add
     #Update cart label to show cartOut
     cartLabel.configure(text=cartOut)
 
@@ -264,6 +270,50 @@ def checkout_button():
 ###ADD
 def back_button():
     checkoutFrame.place_forget()
+    masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+# def ShowChoice():
+#     choice= radio_var.get()
+#     print(choice,payment_method[choice])
+
+def payment_button():
+    global choice
+    choice = radio_var.get()
+    # print(choice+1, payment_method[choice])
+    choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+    choice1.place(anchor='center', relx= 0.5, rely= 0.5)
+    choice2.place(anchor='center', relx= 0.5, rely= 0.6)
+
+def pay_method():
+    paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+    choice = radio_var.get()
+    # print(choice, payment_method[choice])
+    card_label.grid(row=0, column=0)
+    password_label.grid(row=1, column=0)
+    cardEntry.grid(row= 0, column= 2)
+    passwordEntry.grid(row=1, column=2)
+
+#nich add #ask
+#change appearance of ui
+def appearance_callback(choice: str):
+    customtkinter.set_appearance_mode(choice)
+def scaling_callback(choice: str):
+    new_scaling_float = int(choice.replace("%", "")) / 100
+    customtkinter.set_widget_scaling(new_scaling_float)
+
+def make_cart_label(amt, price, name, namespace):
+    namespace[f'{name}Frame'] = customtkinter.CTkFrame(root)
+    namespace[f'{name}Frame'].pack(pady=1)
+    namespace[f'{name}Frame'].columnconfigure(0, weight=3)
+    # namespace[f'{name}Frame'].columnconfigure(1, weight=1)
+    namespace[f'{name}Label'] = customtkinter.CTkLabel(namespace[f'{name}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
+    namespace[f'{name}Label'].grid(column=0, row = 0)
+    namespace[f'{name}Button'] = customtkinter.CTkButton(namespace[f'{name}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(name, namespace))
+    namespace[f'{name}Button'].grid(column=2, row=0, padx=10, pady=5)
+
+def remove_cart_label(name, namespace):
+    print("ive run")
+    namespace[f'{name}Frame'].pack_forget()
+
 
 #call get_items to set itemList
 itemList = get_items()
@@ -277,9 +327,14 @@ masterFrame.pack_propagate(False)
 #add tabs to master frame
 masterFrame.add('shopping')
 masterFrame.add('cart')
+masterFrame.add('settings') #add
 # masterFrame.add('checkout')
 checkoutFrame = customtkinter.CTkScrollableFrame(master=root) ###edited
 # checkoutFrame.place(anchor= 'center', relheight = .8, relwidth=.65, relx=.5, rely=.5)
+
+###ADD
+choiceFrame = customtkinter.CTkFrame(master= root)
+paymentFrame = customtkinter.CTkFrame(master= root)
 
 #frame on the left of the shopping tab, with inputs
 leftFrame = customtkinter.CTkFrame(master=masterFrame.tab('shopping'))
@@ -300,7 +355,7 @@ checkoutButton = customtkinter.CTkButton(master=masterFrame.tab("cart"),text='Ch
 checkoutButton.pack(side="bottom",padx=10,pady=12)
 backButton = customtkinter.CTkButton(master=checkoutFrame,text="Back",command=back_button)
 backButton.pack(side="bottom",padx=10,pady=12)
-paymentButton = customtkinter.CTkButton(master=checkoutFrame,text="Continue Payment")
+paymentButton = customtkinter.CTkButton(master=checkoutFrame,text="Continue Payment",command=payment_button)
 paymentButton.pack(side="bottom",padx=10,pady=12)
 
 #combo box to select category, calls cat_callback function when an option is selected
@@ -332,6 +387,16 @@ amountEntry.pack(padx=12,pady=12)
 amountEntry.bind('<KeyPress>',validate_key)
 #on enter press run set_amt
 amountEntry.bind('<Return>',set_amt)
+
+###ADD
+radio_var = customtkinter.IntVar(value=0)
+choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_var, value= 1, command=pay_method)
+choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_var, value= 2, command=pay_method)
+
+card_label = customtkinter.CTkLabel(master=paymentFrame, text= "Card Number")
+password_label = customtkinter.CTkLabel(master=paymentFrame, text= "Password")
+cardEntry = customtkinter.CTkEntry(master=paymentFrame)
+passwordEntry = customtkinter.CTkEntry(master=paymentFrame)
 
 #label that displays item code in right frame of shopping tap
 codeLabel = customtkinter.CTkLabel(master=rightFrame, text=selectedItem)
@@ -365,8 +430,17 @@ afterDiscountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Total a
 ### afterDiscountLabel.pack(padx=10,pady=12)
 #label that displays the cart
 cartLabel = customtkinter.CTkLabel(master=masterFrame.tab('cart'), text = cartOut)
-### cartLabel.pack(padx=10,pady=12)
+cartLabel.pack(padx=10,pady=12)
 
+#SETTINGS TAB #add
+appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('settings'), values=["Light", "Dark", "System"],
+                                                          command=appearance_callback)
+appearanceComboBox.pack(pady=10)
+appearanceComboBox.set("Dark")
+scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), values=["80%", "90%", "100%", "110%", "120%","130%","140%","150%"],
+                                                               command=scaling_callback)
+scalingComboBox.pack(pady=10)
+scalingComboBox.set("100%")
 
 #start customtkinter window
 root.mainloop()
