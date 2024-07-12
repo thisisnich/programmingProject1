@@ -4,9 +4,21 @@
 #ECE2404 Group Team 7
 #Group Project 1
 #Finalizing UI
-#09/07/24
+#12/07/24
+##################################
+#TODO
+#REmove frames when opening a new one Doris
+#Add logo Doris
+#Thank you for shopping with us Doris
+#Error message when no items in cart Nicholas       DONE
+#Confirmation when removing from cart Nicholas      DONE
+#Debug options Doris
+#Save Card info Nicholas                            WIP
+#Clean up comments Nicholas
+#clean up payment method radio buttons Nicholas     DONE
 ##################################
 import customtkinter
+from CTkMessagebox import CTkMessagebox
 from PIL import Image
 
 catalog = {
@@ -86,6 +98,8 @@ root = customtkinter.CTk()
 root.geometry("410x370")
 #set icon
 root.iconbitmap('f.ico')
+#set window name
+root.title("DorNick")
 #set minimum window size
 root.minsize(410,370)
 
@@ -304,15 +318,24 @@ def set_amt(event):
 
 ###ADD
 def checkout_button():
-    masterFrame.place_forget()
-    checkoutFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
-    subtotalLabel.pack(padx=10,pady=12)
-    totalLabel.pack(padx=10, pady=12)
-    gstLabel.pack(padx=10,pady=12)
-    discountComboBox.pack(padx=10,pady=12)
-    discountLabel.pack(padx=10,pady=12)
-    discountAmountLabel.pack(padx=10,pady=12)
-    afterDiscountLabel.pack(padx=10,pady=12)
+    cartExists = False
+    for cat in cart:
+        for item in cart[cat]:
+            if cart[cat][item] >=1:
+                cartExists = True
+    if cartExists:
+        masterFrame.place_forget()
+        checkoutFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+        subtotalLabel.pack(padx=10,pady=12)
+        totalLabel.pack(padx=10, pady=12)
+        gstLabel.pack(padx=10,pady=12)
+        discountComboBox.pack(padx=10,pady=12)
+        discountLabel.pack(padx=10,pady=12)
+        discountAmountLabel.pack(padx=10,pady=12)
+        afterDiscountLabel.pack(padx=10,pady=12)
+    else:
+        CTkMessagebox(title="Error", message="No items in cart",icon="warning", option_1="Back")
+
 
 
 ###ADD
@@ -359,19 +382,22 @@ def make_cart_label(amt, price, name, namespace, sn):
 
 #functino to remove label
 def remove_cart_label(sn, namespace):
-    #try forgetting
-    try:
-        namespace[f'{sn}Frame'].pack_forget()
-    #uf label does not exist, continue
-    except:
-        pass
-    #check which item needs to be removed, set that item in cart to 0
-    for cat in cart:
-        for item in cart[cat]:
-            if sn == item:
-                cart[cat][item]= 0
-    #update labels
-    update_labels()
+    confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
+    response = confirmDelete.get()
+    if response == "Yes":
+        #try forgetting
+        try:
+            namespace[f'{sn}Frame'].pack_forget()
+        #uf label does not exist, continue
+        except:
+            pass
+        #check which item needs to be removed, set that item in cart to 0
+        for cat in cart:
+            for item in cart[cat]:
+                if sn == item:
+                    cart[cat][item]= 0
+        #update labels
+        update_labels()
 
 
 #get image
