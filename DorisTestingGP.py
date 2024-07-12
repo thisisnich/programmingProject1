@@ -318,7 +318,7 @@ def pay_method():
     dateEntry.grid(row= 1, column= 1, padx=5, pady=5)
     date_placeholder(dateEntry, "MM/YY")
     cvvEntry.grid(row=2, column=1, padx=5, pady=5)
-    save_card.grid(sticky= 's', padx=10, pady=(19,5))
+    save_card.grid(sticky= 'EW', columnspan=2 , padx=10, pady=(19,5))
     place_order.grid(sticky= 's', padx=10, pady=19)
 
 #Function called when the "place order" button
@@ -338,6 +338,18 @@ def card_validation():
     else:
         paymentFrame.place_forget()
         masterFrame.tab("shopping")
+
+
+def debit_selected():
+    selectedCard = 'Debit'
+    print(f'Selected card: {selectedCard}')
+    pay_method()
+
+
+def credit_selected():
+    selectedCard = 'Credit'
+    print(f'Selected card: {selectedCard}')
+    pay_method()
 
 #Function to add placeholder to entries
 def date_placeholder(entry,placeholder):
@@ -465,10 +477,11 @@ paymentButton.pack(side="bottom",padx=10,pady=12)
 
 ###ADD
 radio_default = customtkinter.IntVar(value=0)
-choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=pay_method)
-choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2, command=pay_method)
+choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=debit_selected)
+choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2, command=credit_selected)
 
 card_label = customtkinter.CTkLabel(master=paymentFrame, text= "Card Number")
+
 date_label = customtkinter.CTkLabel(master=paymentFrame, text= "Expiry Date")
 cvv_label = customtkinter.CTkLabel(master=paymentFrame, text= "CVV")
 cardEntry = customtkinter.CTkEntry(master=paymentFrame)
