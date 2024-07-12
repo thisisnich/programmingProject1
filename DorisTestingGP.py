@@ -335,9 +335,9 @@ def card_validation():
     expiry_date = dateEntry.get()
     cvv = cvvEntry.get()
     if not card_number or not expiry_date or not cvvEntry:
-        CTkMessagebox(title="Error", message="All fields are required!",icon="warning", option_1="Retry",width="400", height="100", button_width="50", button_height="30")
+        CTkMessagebox(title="Error", message="All fields are required!",icon="warning", option_1="Retry",width=400, height=100, button_width=50, button_height=30)
         return
-    msg= CTkMessagebox(title="Order Confirmation", message="Your purchase is successfully made!", icon="check", option_1="Leave", option_2="Purchase More",width="400", height="100", button_width="75", button_height="30")
+    msg= CTkMessagebox(title="Order Confirmation", message="Your purchase is successfully made!", icon="check", option_1="Leave", option_2="Purchase More",width=400, height=100, button_width=75, button_height=30)
     response = msg.get()
     if response =="Leave":
         paymentFrame.place_forget()
@@ -477,7 +477,7 @@ paymentButton.pack(side="bottom",padx=10,pady=12)
 ###ADD
 #Displays Label and Radio Buttons in the "choice frame"
 choiceLabel= customtkinter.CTkLabel(master=choiceFrame,text="Choose Payment Method")
-choiceLabel.pack(anchor='center', relx= 0.5, rely= 0.3)
+choiceLabel.place(anchor='center', relx= 0.5, rely= 0.3)
 radio_default = customtkinter.IntVar(value=0)
 choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=pay_method)
 choice1.place(anchor='center', relx= 0.5, rely= 0.5)
@@ -492,11 +492,11 @@ date_label.grid(row=1, column=0, padx=5, pady=5)
 cvv_label = customtkinter.CTkLabel(master=paymentFrame, text= "CVV")
 cvv_label.grid(row=2, column=0, padx=5, pady=5)
 #Displays Entry Widgets in column 1 of the "payment frame"
-cardEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="eg- 1234 5678 9123 4567",width="180")
+cardEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="eg- 1234 5678 9123 4567",width=180)
 cardEntry.grid(row= 0, column= 1, padx=5, pady=5)
-dateEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "MM/YY",width="180")
+dateEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "MM/YY",width=180)
 dateEntry.grid(row= 1, column= 1, padx=5, pady=5)
-cvvEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "777",width="180")
+cvvEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "777",width=180)
 cvvEntry.grid(row=2, column=1, padx=5, pady=5)
 save_card = customtkinter.CTkCheckBox(master=paymentFrame, text= "Save this card for next purchase")
 save_card.grid(sticky= 'EW', columnspan= 2 , padx=19, pady=(19,5))
