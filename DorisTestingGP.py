@@ -71,6 +71,8 @@ customtkinter.set_default_color_theme("dark-blue")
 root = customtkinter.CTk()
 #set default size
 root.geometry("410x360")
+#set window name
+root.title("DorNick")
 #set icon
 root.iconbitmap('f.ico')
 #set minimum window size
@@ -311,15 +313,15 @@ def payment_button():
 #Function called when payment method is chosen
 def pay_method():
     paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
-    card_label.grid(row=0, column=0, padx=5, pady=5)
-    date_label.grid(row=1, column=0, padx=5, pady=5)
-    cvv_label.grid(row=2, column=0, padx=5, pady=5)
+    # card_label.grid(row=0, column=0, padx=5, pady=5)
+    # date_label.grid(row=1, column=0, padx=5, pady=5)
+    # cvv_label.grid(row=2, column=0, padx=5, pady=5)
     cardEntry.grid(row= 0, column= 1, padx=5, pady=5)
     dateEntry.grid(row= 1, column= 1, padx=5, pady=5)
-    date_placeholder(dateEntry, "MM/YY")
+    # date_placeholder(dateEntry, "MM/YY")
     cvvEntry.grid(row=2, column=1, padx=5, pady=5)
-    save_card.grid(sticky= 'EW', columnspan=2 , padx=10, pady=(19,5))
-    place_order.grid(sticky= 's', padx=10, pady=19)
+    save_card.grid(sticky= 'EW', columnspan= 2 , padx=10, pady=(19,5))
+    place_order.grid(sticky= 'Ew', padx=10, pady=19)
 
 #Function called when the "place order" button
 #Function to validate the entries
@@ -334,9 +336,12 @@ def card_validation():
     response = msg.get()
     if response =="Leave":
         paymentFrame.place_forget()
+        choiceFrame.place_forget()
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
     else:
         paymentFrame.place_forget()
+        choiceFrame.place_forget()
+
         masterFrame.tab("shopping")
 
 
@@ -352,14 +357,15 @@ def credit_selected():
     pay_method()
 
 #Function to add placeholder to entries
-def date_placeholder(entry,placeholder):
-    entry.insert(0,placeholder)
-    entry.bind("<FocusIn>", lambda:clear_placeholder(entry,placeholder))
-    entry.bind("<FocusOut>", lambda:add_placeholder(entry,placeholder))
-def clear_placeholder(entry,placeholder):
+# def date_placeholder(entry,placeholder):
+#     entry.insert(0,placeholder)
+    # entry.bind("<FocusIn>", lambda event :clear_placeholder(event,entry,placeholder))
+    # entry.bind("<FocusOut>", lambda event:add_placeholder(event,entry,placeholder))
+
+def clear_placeholder(event,entry,placeholder):
     if entry.get() == placeholder:
         entry.delete(0,"end")
-def add_placeholder(entry,placeholder):
+def add_placeholder(event,entry,placeholder):
     if not entry.get():
         entry.insert(0, placeholder)
 
@@ -477,11 +483,10 @@ paymentButton.pack(side="bottom",padx=10,pady=12)
 
 ###ADD
 radio_default = customtkinter.IntVar(value=0)
-choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=debit_selected)
-choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2, command=credit_selected)
+choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=pay_method)
+choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2, command=pay_method)
 
 card_label = customtkinter.CTkLabel(master=paymentFrame, text= "Card Number")
-
 date_label = customtkinter.CTkLabel(master=paymentFrame, text= "Expiry Date")
 cvv_label = customtkinter.CTkLabel(master=paymentFrame, text= "CVV")
 cardEntry = customtkinter.CTkEntry(master=paymentFrame)
