@@ -89,7 +89,7 @@ root = customtkinter.CTk()
 #set default size
 root.geometry("410x370")
 #set icon
-root.iconbitmap('f.ico')
+root.iconbitmap('Logo.ico')
 #set window name
 root.title("DorNick")
 #set minimum window size
