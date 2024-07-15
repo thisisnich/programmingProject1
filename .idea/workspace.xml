@@ -9,6 +9,7 @@
       <change afterPath="$PROJECT_DIR$/photos/setting.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/teamProject1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/teamProject1.iml" afterDir="false" />
+    <list default="true" id="1e43a643-585f-42ec-b1d6-bcaa9ecff911" name="Changes" comment="radio buttons">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/4NicholasDubsProject1D3.py" beforeDir="false" afterPath="$PROJECT_DIR$/4NicholasDubsProject1D3.py" afterDir="false" />
     </list>
@@ -58,6 +59,11 @@
     &quot;Python.4NicholasDubsProject1D3.executor&quot;: &quot;Run&quot;,
     &quot;Python.4NicholasDubsProject1D4.executor&quot;: &quot;Run&quot;,
     &quot;Python.4NicholasDubsUITestFile.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DorisTestingGP.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cartLabels.executor&quot;: &quot;Run&quot;,
+    &quot;Python.complex_example.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testingGP.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utility_functions.executor&quot;: &quot;Run&quot;,
     &quot;Python.DorisTestingGP (1).executor&quot;: &quot;Run&quot;,
     &quot;Python.DorisTestingGP2.executor&quot;: &quot;Run&quot;,
     &quot;Python.op.executor&quot;: &quot;Run&quot;,
@@ -66,6 +72,7 @@
     &quot;Python.testingGP.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/OneDrive/Nicholas/NYP/y1s1/Engineering/EGX154/teamProject1/photos&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/NYP/Yr1_S1/Programming/GP Project/programmingProject1&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
@@ -73,6 +80,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\NYP\Yr1_S1\Programming\GP Project\programmingProject1" />
+      <recent name="C:\Users\user\OneDrive\Nicholas\NYP\y1s1\Engineering\EGX154\teamProject1\photos" />
+      <recent name="C:\Users\user\OneDrive\Nicholas\NYP\y1s1\Engineering\EGX154\teamProject1" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\OneDrive\Nicholas\NYP\y1s1\Engineering\EGX154\teamProject1" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -280,8 +291,84 @@
       <option name="project" value="LOCAL" />
       <updated>1720772626343</updated>
     </task>
+    <task id="LOCAL-00005" summary="Added one drink">
+      <option name="closed" value="true" />
+      <created>1719901206294</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1719901206294</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Changed to dictionary, added scrollbar to checkout tab, fixed sizing issues, added icon">
+      <option name="closed" value="true" />
+      <created>1720150987391</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1720150987391</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Settings page and cart system">
+      <option name="closed" value="true" />
+      <created>1720520206954</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1720520206954</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fixed cart, still need add functionality that removes cart item if item is removed from shop page. added images and updated dictionaries">
+      <option name="closed" value="true" />
+      <created>1720587896100</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1720587896100</updated>
+    </task>
+    <task id="LOCAL-00009" summary="comments">
+      <option name="closed" value="true" />
+      <created>1720598741667</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1720598741667</updated>
+    </task>
+    <task id="LOCAL-00010" summary="radio buttons">
+      <option name="closed" value="true" />
+      <created>1720769226505</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1720769226505</updated>
+    </task>
+    <task id="LOCAL-00011" summary="radio buttons">
+      <option name="closed" value="true" />
+      <created>1720769472922</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1720769472922</updated>
+    </task>
+    <task id="LOCAL-00012" summary="radio buttons">
+      <option name="closed" value="true" />
+      <created>1720769714407</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1720769714407</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <option name="localTasksCounter" value="9" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -298,6 +385,15 @@
     <MESSAGE value="small changes and code cleanup" />
     <MESSAGE value="refactored menu to catalog" />
     <MESSAGE value="Cleaned up amt entry, added button frame to add and subtract with the amt label in the middle" />
+    <MESSAGE value="small cleanup" />
+    <MESSAGE value="Added one drink" />
+    <MESSAGE value="Changed to dictionary, added scrollbar to checkout tab, fixed sizing issues, added icon" />
+    <MESSAGE value="Settings page and cart system" />
+    <MESSAGE value="Fixed cart, still need add functionality that removes cart item if item is removed from shop page. added images and updated dictionaries" />
+    <MESSAGE value="comments" />
+    <MESSAGE value="todo list and small cleanup" />
+    <MESSAGE value="radio buttons" />
+    <option name="LAST_COMMIT_MESSAGE" value="radio buttons" />
     <MESSAGE value="added radio buttons and entries for payment method and related frames" />
     <MESSAGE value="modified the billing session and adjusted the payment frame, added message boxes" />
     <option name="LAST_COMMIT_MESSAGE" value="modified the billing session and adjusted the payment frame, added message boxes" />
@@ -309,6 +405,21 @@
           <url>file://$PROJECT_DIR$/4NicholasDubsProject1D1.py</url>
           <line>181</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/4NicholasDubsProject1D2.py</url>
+          <line>143</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/4NicholasDubsProject1D4.py</url>
+          <line>347</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/4NicholasDubsProject1D4.py</url>
+          <line>321</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
