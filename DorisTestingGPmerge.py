@@ -501,7 +501,8 @@ def get_image():
         output = Image.open(f'photos/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('photos/default.jpg')
+        # output = Image.open('photos/Final_logo.jpg')
+        output = logo
         return output
 
 
@@ -591,7 +592,14 @@ place_order.grid(sticky= 'EW', padx=10, pady=19)
 paymentFrame.grid_rowconfigure((0,1,2,3), weight=1)
 paymentFrame.grid_columnconfigure((0,1),weight=1)
 
-thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=("Times New Roman",20))
+#
+custom_font = ('Times New Roman',25)
+thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
+thankyouLabel.pack(padx=10, pady=(10,5))
+logo = Image.open('photos/Final_logo.jpg')
+logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo, size=(300,200))
+logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
+logoLabel.pack(fill='both',expand=True)
 
 
 #combo box to select category, calls cat_callback function when an option is selected
