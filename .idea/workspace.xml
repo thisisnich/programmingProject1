@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e43a643-585f-42ec-b1d6-bcaa9ecff911" name="Changes" comment="small cleanup">
+    <list default="true" id="1e43a643-585f-42ec-b1d6-bcaa9ecff911" name="Changes" comment="modified the billing session and adjusted the payment frame, added message boxes">
+      <change afterPath="$PROJECT_DIR$/logo3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/photos/setting.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/teamProject1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/teamProject1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" beforeDir="false" afterPath="$PROJECT_DIR$/4NicholasDubsProject1D2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/4NicholasDubsProject1D3.py" beforeDir="false" afterPath="$PROJECT_DIR$/4NicholasDubsProject1D3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +39,9 @@
     &quot;accountId&quot;: &quot;603259b9-28bb-4a03-8c78-eb1bc4a2978d&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/DorisTestingGP.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -48,17 +55,150 @@
   &quot;keyToString&quot;: {
     &quot;Python.4NicholasDubsProject1D1.executor&quot;: &quot;Run&quot;,
     &quot;Python.4NicholasDubsProject1D2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.4NicholasDubsProject1D3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.4NicholasDubsProject1D4.executor&quot;: &quot;Run&quot;,
     &quot;Python.4NicholasDubsUITestFile.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DorisTestingGP (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.DorisTestingGP2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.op.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testingGP.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/OneDrive/Nicholas/NYP/y1s1/Engineering/EGX154/teamProject1&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/NYP/Yr1_S1/Programming/GP Project/programmingProject1&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\NYP\Yr1_S1\Programming\GP Project\programmingProject1" />
       <recent name="C:\Users\user\OneDrive\Nicholas\NYP\y1s1\Engineering\EGX154\teamProject1" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\NYP\Yr1_S1\Programming\GP Project\programmingProject1" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.DorisTestingGP (1)">
+    <configuration name="4NicholasDubsProject1D1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="teamProject1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/4NicholasDubsProject1D1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="4NicholasDubsProject1D3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="teamProject1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/4NicholasDubsProject1D3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="DorisTestingGP (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="teamProject1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DorisTestingGP.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="DorisTestingGP2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="teamProject1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DorisTestingGP2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="draft1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="teamProject1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/draft1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.DorisTestingGP (1)" />
+        <item itemvalue="Python.draft1" />
+        <item itemvalue="Python.DorisTestingGP2" />
+        <item itemvalue="Python.4NicholasDubsProject1D1" />
+        <item itemvalue="Python.4NicholasDubsProject1D3" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -100,23 +240,67 @@
       <option name="project" value="LOCAL" />
       <updated>1717719451672</updated>
     </task>
-    <task id="LOCAL-00004" summary="small cleanup">
+    <task id="LOCAL-00004" summary="Cleaned up amt entry, added button frame to add and subtract with the amt label in the middle">
       <option name="closed" value="true" />
-      <created>1717734172384</created>
+      <created>1720513216084</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1717734172384</updated>
+      <updated>1720513216084</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added radio buttons and entries for payment method and related frames">
+      <option name="closed" value="true" />
+      <created>1720582374292</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1720582374292</updated>
+    </task>
+    <task id="LOCAL-00006" summary="modified the billing session and adjusted the payment frame, added message boxes">
+      <option name="closed" value="true" />
+      <created>1720727181458</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1720727181458</updated>
+    </task>
+    <task id="LOCAL-00007" summary="modified the billing session and adjusted the payment frame, added message boxes">
+      <option name="closed" value="true" />
+      <created>1720753029063</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1720753029063</updated>
+    </task>
+    <task id="LOCAL-00008" summary="modified the billing session and adjusted the payment frame, added message boxes">
+      <option name="closed" value="true" />
+      <created>1720772626343</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1720772626343</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="small changes and code cleanup" />
     <MESSAGE value="refactored menu to catalog" />
     <MESSAGE value="Cleaned up amt entry, added button frame to add and subtract with the amt label in the middle" />
-    <MESSAGE value="small cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="small cleanup" />
+    <MESSAGE value="added radio buttons and entries for payment method and related frames" />
+    <MESSAGE value="modified the billing session and adjusted the payment frame, added message boxes" />
+    <option name="LAST_COMMIT_MESSAGE" value="modified the billing session and adjusted the payment frame, added message boxes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -125,11 +309,6 @@
           <url>file://$PROJECT_DIR$/4NicholasDubsProject1D1.py</url>
           <line>181</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/4NicholasDubsProject1D2.py</url>
-          <line>143</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

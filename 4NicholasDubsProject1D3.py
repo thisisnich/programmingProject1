@@ -100,7 +100,7 @@ def sub_button():
         cart[selectedCat][selectedSn] -= 1
     #if it is 0 then print 'cant go below 0' and dont reduce by 1
     else:
-        print("cant go below 0")
+        print("can't go below 0")
     update_labels()
     #print(cart) #Debug print cart
 
