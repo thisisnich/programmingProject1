@@ -11,12 +11,14 @@
 #Add logo Doris
 #Thank you for shopping with us Doris
 #Debug options Doris
-#Save Card info Nicholas                            WIP
+#Save Card info Nicholas                            DONE
+#Merge Files Nicholas                               DONE
 #Clean up comments Nicholas
 ##################################
 import customtkinter
 from CTkMessagebox import CTkMessagebox
 from PIL import Image
+import json
 
 catalog = {
     "Drinks": {
@@ -71,6 +73,8 @@ selectedItem = "N32"
 selectedCat = "Drinks"
 #Selected discount type
 selectedDiscount = "None"
+#Default selected card
+selectedCard = ''
 #Subtotal before gst
 subtotal = 0
 #Total after gst
@@ -112,11 +116,11 @@ def plus_buton():
 
 def sub_button():
     #if the value of the corresponding spot in cart is more than 0 subtract by 1
-    if cart[selectedCat][selectedItem]>1:
+    if cart[selectedCat][selectedItem]>=1:
         cart[selectedCat][selectedItem] -= 1
         #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remover the label in cart that is now 0
         if cart[selectedCat][selectedItem] == 0:
-            remove_cart_label(selectedItem, globals_namespace)
+            remove_cart_label(selectedItem, globals_namespace, False)
     #if it is 0 then print 'cant go below 0' and dont reduce by 1
     else:
         print("can't go below 0")
@@ -309,7 +313,7 @@ def set_amt(event):
     cart[selectedCat][selectedItem]=int(amountEntry.get())
     #call update labels function
     if cart[selectedCat][selectedItem] == 0:
-        remove_cart_label(selectedItem, globals_namespace)
+        remove_cart_label(selectedItem, globals_namespace, False)
     update_labels()
 
 
@@ -347,6 +351,12 @@ def payment_button():
 
 #Function called when payment method is chosen
 def pay_method():
+    global selectedCard
+    if radio_default.get() == 1:
+        selectedCard = 'debit'
+    else:
+        selectedCard = 'credit'
+    print(selectedCard)
     choiceFrame.place_forget()
     paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
 
@@ -359,16 +369,51 @@ def card_validation():
     if not card_number or not expiry_date or not cvvEntry:
         CTkMessagebox(title="Error", message="All fields are required!",icon="warning", option_1="Retry", width=400, height=100, button_width=50, button_height=30)
         return
-    msg= CTkMessagebox(title="Order Confirmation", message="Your purchase is successfully made!", icon="check", option_1="Leave", option_2="Purchase More",width=400, height=100, button_width=75, button_height=30)
+    msg= CTkMessagebox(title="Order Confirmation", message="Confirm purchase?", icon="check", option_1="Ok", option_2="Back",width=400, height=100, button_width=75, button_height=30)
     response = msg.get()
-    if response =="Leave":
+    if response =="Ok":
         paymentFrame.place_forget()
         choiceFrame.place_forget()
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+        print(save_card.get())
+        if save_card.get():
+            info ={
+                "card_number": str(card_number),
+                "card_type": str(selectedCard),
+                "expiry_date": str(expiry_date),
+                "ccv": str(cvv)
+            }
+            save_info(info)
     else:
         paymentFrame.place_forget()
         choiceFrame.place_forget()
         masterFrame.tab("shopping")
+
+def save_info(card_info):
+    print(card_info)
+    try:
+        with open('card_info.json', 'r') as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError:
+                data = []
+    except FileNotFoundError:
+        data= []
+
+
+    card_exists = False
+    for i, card in enumerate(data):
+        if card['card_number'] == card_info['card_number']:
+            data[i] = card_info
+            card_exists = True
+            break
+
+    if not card_exists:
+        data.append(card_info)
+
+    with open('card_info.json', 'w') as file:
+        json.dump(data, file, indent=4)
+
 
 
 #function called when appearance menu is selected sets appearance to the selected type
@@ -401,28 +446,36 @@ def make_cart_label(amt, price, name, namespace, sn):
         namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
         namespace[f'{sn}Label'].grid(column=0, row = 0)
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
-        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace))
+        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace, True))
         namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
     #pack label
     namespace[f'{sn}Frame'].pack(pady=1)
 
 
 #functino to remove label
-def remove_cart_label(sn, namespace):
-    confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
-    response = confirmDelete.get()
-    if response == "Yes":
-        #try forgetting
+def remove_cart_label(sn, namespace, is_cart_button):
+    if is_cart_button:
+        confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
+        response = confirmDelete.get()
+        if response == "Yes":
+            #try forgetting
+            try:
+                namespace[f'{sn}Frame'].pack_forget()
+            #uf label does not exist, continue
+            except:
+                pass
+    else:
         try:
             namespace[f'{sn}Frame'].pack_forget()
-        #uf label does not exist, continue
+        # uf label does not exist, continue
         except:
             pass
-        #check which item needs to be removed, set that item in cart to 0
-        for cat in cart:
-            for item in cart[cat]:
-                if sn == item:
-                    cart[cat][item]= 0
+    #check which item needs to be removed, set that item in cart to 0
+
+    for cat in cart:
+        for item in cart[cat]:
+            if sn == item:
+                cart[cat][item]= 0
         #update labels
         update_labels()
 
@@ -601,7 +654,24 @@ scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), value
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
 #
-# root.bind('<Configure>', update_img)
 
+card1 ={
+    "card_number": "5678",
+    "card_type": "debit",
+    "expiry_date": "11/23",
+    "ccv": "456"
+}
+card2 ={
+    "card_number": "1234",
+    "card_type": "debit",
+    "expiry_date": "09/21",
+    "ccv": "877"
+}
+save_info(card1)
+save_info(card2)
+
+
+
+# root.bind('<Configure>', update_img)
 #start customtkinter window
 root.mainloop()
