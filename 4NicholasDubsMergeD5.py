@@ -7,9 +7,9 @@
 #15/07/24
 ##################################
 #TODO
-#REmove frames when opening a new one Doris
-#Add logo Doris
-#Thank you for shopping with us Doris
+#REmove frames when opening a new one Doris         DONE
+#Add logo Doris                                     DONE
+#Thank you for shopping with us Doris               DONE
 #Debug options Doris
 #Save Card info Nicholas                            DONE
 #Merge Files Nicholas                               DONE
@@ -89,7 +89,7 @@ root = customtkinter.CTk()
 #set default size
 root.geometry("410x370")
 #set icon
-root.iconbitmap('f.ico')
+root.iconbitmap('Logo.ico')
 #set window name
 root.title("DorNick")
 #set minimum window size
@@ -323,7 +323,8 @@ def checkout_button():
         checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
 
     else:
-        CTkMessagebox(title="Error", message="No items in cart", icon="warning", option_1="Back")
+        CTkMessagebox(title="Error", message="No items in cart", icon="warning", option_1="Back", width=250, height=80,
+                      button_width=25,button_height=75)
 
 
 ###ADD
@@ -358,15 +359,15 @@ def card_validation():
     address = addressEntry.get()
 
     if not card_number or not expiry_date or not cvvEntry or not addressEntry:
-        print("All fields are required")  # Debug: print message to remind the user to fill up every field
         CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry",
                           width=400, height=100, button_width=50, button_height=30)
+        print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
-    elif not card_number.isdigit() or expiry_date.isdigit() or cvv.isdigit() \
-        and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
-        print('Invalid Entry!')  #Debug: print message when the entry is not digit
+    elif not card_number.isdigit() or expiry_date.isdigit() or cvv.isdigit(): #\
+        # and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
         CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
                       height=100, button_width=50, button_height=30)
+        print('Invalid Entry!')  # Debug: print message when the entry is not digit
         return 'break'
     # elif (card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
     #     print('Key not accepted')  # Debug: print message when keypress is not accepted
@@ -543,7 +544,7 @@ buttonFrame = customtkinter.CTkFrame(master=leftFrame)
 
 ##ADD
 checkoutButton = customtkinter.CTkButton(master=masterFrame.tab("cart"),text='Checkout',command=checkout_button)
-checkoutButton.pack(side="bottom",padx=10,pady=12)
+checkoutButton.pack(side="bottom",padx=10,pady=12,ipady=10)
 backButton = customtkinter.CTkButton(master=checkoutFrame,text="Back",command=back_button)
 backButton.pack(side="bottom",padx=10,pady=12)
 paymentButton = customtkinter.CTkButton(master=checkoutFrame,text="Continue Payment",command=payment_button)
@@ -576,7 +577,7 @@ dateEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "MM/YY
 dateEntry.grid(row= 1, column= 1, padx=5, pady=5)
 cvvEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "777", width=190)
 cvvEntry.grid(row=2, column=1, padx=5, pady=5)
-addressEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="Postal Code, Blk, Unit", width=190)
+addressEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="S569830, #02-1234", width=190)
 addressEntry.grid(row=3, column=1, padx=5, pady=5)
 
 #setting the default value for the checkbox
@@ -591,7 +592,14 @@ place_order.grid(sticky= 'EW', padx=10, pady=19)
 paymentFrame.grid_rowconfigure((0,1,2,3), weight=1)
 paymentFrame.grid_columnconfigure((0,1),weight=1)
 
-thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=("Times New Roman",20))
+#Displays label and "Logo" image in "thank you frame"
+custom_font = ('Times New Roman',25)
+thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
+thankyouLabel.pack(padx=10, pady=(10,5))
+logo = Image.open('photos/Final_logo.jpg')
+logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
+logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
+logoLabel.pack(fill='both',expand=True)
 
 
 #combo box to select category, calls cat_callback function when an option is selected
