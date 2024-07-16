@@ -10,11 +10,12 @@
 #REmove frames when opening a new one Doris         DONE
 #Add logo Doris                                     DONE
 #Thank you for shopping with us Doris               DONE
-#Debug options Doris
+#Debug options Doris                                DONE
 #Save Card info Nicholas                            DONE
 #Merge Files Nicholas                               DONE
 #Get card info                                      DONE
 #Clean up comments Nicholas
+#To make sure all the functions work normally once the user deleted the existing data and re-enter the data
 ##################################
 import customtkinter
 from CTkMessagebox import CTkMessagebox
@@ -359,6 +360,7 @@ def set_amt(event):
 
 
 ###ADD
+#Function called when "checkout" button is clicked
 def checkout_button():
     cartExists = False
     for cat in cart:
@@ -368,10 +370,11 @@ def checkout_button():
     if cartExists:
         masterFrame.place_forget()
         checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
-
+        print("You are checking out") #Debug: print when the condition is met
     else:
-        CTkMessagebox(title="Error", message="No items in cart", icon="warning", option_1="Back", width=250, height=80,
+        CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", width=400, height=50,
                       button_width=25,button_height=75)
+        print("No items in the cart") #Debug: print when the condition isn't met
 
 
 ###ADD
@@ -379,20 +382,22 @@ def checkout_button():
 def back_button():
     checkoutFrame.place_forget()
     masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+    print("Back button was pressed") #Debug: print when the button is pressed
 
 #Function called when "continue payment" button is clicked
 def payment_button():
     checkoutFrame.place_forget()
     choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+    print("Proceeding to payment section...") #Debug: print message when the button is pressed
 
-#Function called when payment method is chosen
+#Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
     if radio_default.get() == 1:
         selectedCard = 'debit'
     else:
         selectedCard = 'credit'
-    print(selectedCard)
+    print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
     if get_card_info('card_number') != False:
         cardEntry.insert(0, get_card_info('card_number'))
         dateEntry.insert(0, get_card_info('expiry_date'))
@@ -415,12 +420,12 @@ def card_validation():
                           width=400, height=100, button_width=50, button_height=30)
         print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
-    elif not card_number.isdigit() or not cvv.isdigit(): #\
-        # and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
-        CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
-                      height=100, button_width=50, button_height=30)
-        print('Invalid Entry!')  # Debug: print message when the entry is not digit
-        return 'break'
+    # elif not card_number.isdigit() or not cvv.isdigit(): #\
+    #     # and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
+    #     CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
+    #                   height=100, button_width=50, button_height=30)
+    #     print('Invalid Entry!')  # Debug: print message when the entry is not digit
+    #     return 'break'
     # elif (card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
     #     print('Key not accepted')  # Debug: print message when keypress is not accepted
     #     CTkMessagebox(title="Error", message="Please try again.", icon="warning",
@@ -438,16 +443,17 @@ def card_validation():
         choiceFrame.place_forget()
         thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
         save_all_info()
-
+        print("Thank you for shopping with us!") #Debug: print when 'ok' button is pressed
     else:
         paymentFrame.place_forget()
         choiceFrame.place_forget()
-        # masterFrame.tab("")
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-
+        masterFrame.set('shopping') #back to the "shopping" tab
+        print("Have fun shopping!") #Debug: print when the user is back at the shopping tab
 def save_all_info():
     if save_info_default.get() ==1:
-        print(save_allInfo.get())
+        print("You've saved your personal information") #Debug: print when the "checkbox" is ticked
+        print(save_allInfo.get()) #Debug: print all the saved info
         if save_allInfo.get():
             info = {
                 "card_type": str(selectedCard),
@@ -457,6 +463,8 @@ def save_all_info():
                 "address": str(address)
             }
             save_info(info)
+    else:
+        print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
 def save_info(card_info):
     print(card_info)
@@ -555,7 +563,7 @@ def get_image():
         output = Image.open(f'photos/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('photos/default.jpg')
+        output = Image.open('photos/default_logo.jpg')
         return output
 
 
@@ -582,7 +590,6 @@ def get_card_info(info):
         return card_info[info]
     else:
         return False
-
 
 
 
