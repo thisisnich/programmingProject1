@@ -13,6 +13,7 @@
 #Debug options Doris
 #Save Card info Nicholas                            DONE
 #Merge Files Nicholas                               DONE
+#Get card info                                      DONE
 #Clean up comments Nicholas
 ##################################
 import customtkinter
