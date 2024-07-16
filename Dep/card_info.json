@@ -1,0 +1,33 @@
+[
+    {
+        "card_number": "5678",
+        "card_type": "debit",
+        "expiry_date": "11/23",
+        "ccv": "456"
+    },
+    {
+        "card_number": "1234",
+        "card_type": "debit",
+        "expiry_date": "09/21",
+        "ccv": "877"
+    },
+    {
+        "card_number": "1234567890987654",
+        "card_type": "credit",
+        "expiry_date": "9999",
+        "ccv": "000"
+    },
+    {
+        "card_number": "123456789098",
+        "card_type": "debit",
+        "expiry_date": "1234",
+        "ccv": "123"
+    },
+    {
+        "card_number": "234",
+        "card_type": "debit",
+        "expiry_date": "141",
+        "ccv": "41",
+        "address": "1421"
+    }
+]

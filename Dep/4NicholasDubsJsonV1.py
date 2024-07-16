@@ -1,25 +1,24 @@
 ###################################
-#4NicholasDubsProjectD4
+#4NicholasDubsMergeD5
 #Nicholas Dubs
 #ECE2404 Group Team 7
 #Group Project 1
-#Finalizing UI
-#12/07/24
+#Merging of both files
+#15/07/24
 ##################################
 #TODO
-#REmove frames when opening a new one Doris
-#Add logo Doris
-#Thank you for shopping with us Doris
-#Error message when no items in cart Nicholas       DONE
-#Confirmation when removing from cart Nicholas      DONE
+#REmove frames when opening a new one Doris         DONE
+#Add logo Doris                                     DONE
+#Thank you for shopping with us Doris               DONE
 #Debug options Doris
-#Save Card info Nicholas                            WIP
+#Save Card info Nicholas                            DONE
+#Merge Files Nicholas                               DONE
 #Clean up comments Nicholas
-#clean up payment method radio buttons Nicholas     DONE
 ##################################
 import customtkinter
 from CTkMessagebox import CTkMessagebox
 from PIL import Image
+import json
 
 catalog = {
     "Drinks": {
@@ -68,24 +67,17 @@ discounts = {"None" : 0,
 
 
 #Declaring variables
-#Selected item from category
-selectedItem = "N32"
-#Selected Category
-selectedCat = "Drinks"
-#Selected discount type
-selectedDiscount = "None"
-#Subtotal before gst
-subtotal = 0
-#Total after gst
-total = 0
-#Amount of gst
-gstAmt = 0
-#Amount of discount
-discountAmount = 0
-#Total after discount
-afterDiscount = 0
-#Debug value to print cart
-cartOut = ''
+selectedItem = "N32"    #Selected item from category
+selectedCat = "Drinks"  #Selected Category
+selectedDiscount = "None"   #Selected discount type
+selectedCard = ''       #Default selected card
+subtotal = 0            #Subtotal before gst
+total = 0               #Total after gst
+gstAmt = 0              #Amount of gst
+discountAmount = 0      #Amount of discount
+afterDiscount = 0       #Total after discount
+cartOut = ''            #Debug value to print cart
+
 
 #appearance mode set to dark
 customtkinter.set_appearance_mode("dark")
@@ -97,7 +89,7 @@ root = customtkinter.CTk()
 #set default size
 root.geometry("410x370")
 #set icon
-root.iconbitmap('f.ico')
+root.iconbitmap('Logo.ico')
 #set window name
 root.title("DorNick")
 #set minimum window size
@@ -115,14 +107,17 @@ def plus_buton():
 
 def sub_button():
     #if the value of the corresponding spot in cart is more than 0 subtract by 1
-    if cart[selectedCat][selectedItem]>1:
+    if cart[selectedCat][selectedItem]>=1:
         cart[selectedCat][selectedItem] -= 1
         #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remover the label in cart that is now 0
         if cart[selectedCat][selectedItem] == 0:
-            remove_cart_label(selectedItem, globals_namespace)
+            remove_cart_label(selectedItem, globals_namespace, False)
     #if it is 0 then print 'cant go below 0' and dont reduce by 1
     else:
         print("can't go below 0")
+        CTkMessagebox(title="Error", message="Can't go below 0!", icon="cancel", width=350, height=80, button_width=25,
+                      button_height=75)  ###ADD
+        # Warning message will be shown once the value goes below 0
     update_labels()
     #print(cart) #Debug print cart
 
@@ -312,7 +307,7 @@ def set_amt(event):
     cart[selectedCat][selectedItem]=int(amountEntry.get())
     #call update labels function
     if cart[selectedCat][selectedItem] == 0:
-        remove_cart_label(selectedItem, globals_namespace)
+        remove_cart_label(selectedItem, globals_namespace, False)
     update_labels()
 
 
@@ -321,27 +316,120 @@ def checkout_button():
     cartExists = False
     for cat in cart:
         for item in cart[cat]:
-            if cart[cat][item] >=1:
+            if cart[cat][item] >= 1:
                 cartExists = True
     if cartExists:
         masterFrame.place_forget()
-        checkoutFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
-        subtotalLabel.pack(padx=10,pady=12)
-        totalLabel.pack(padx=10, pady=12)
-        gstLabel.pack(padx=10,pady=12)
-        discountComboBox.pack(padx=10,pady=12)
-        discountLabel.pack(padx=10,pady=12)
-        discountAmountLabel.pack(padx=10,pady=12)
-        afterDiscountLabel.pack(padx=10,pady=12)
-    else:
-        CTkMessagebox(title="Error", message="No items in cart",icon="warning", option_1="Back")
+        checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
 
+    else:
+        CTkMessagebox(title="Error", message="No items in cart", icon="warning", option_1="Back", width=250, height=80,
+                      button_width=25,button_height=75)
 
 
 ###ADD
+#Function called when "back" button is selected to bring the user back to the "cart tab"
 def back_button():
     checkoutFrame.place_forget()
     masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+
+#Function called when "continue payment" button is clicked
+def payment_button():
+    checkoutFrame.place_forget()
+    choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+
+#Function called when payment method is chosen
+def pay_method():
+    global selectedCard
+    if radio_default.get() == 1:
+        selectedCard = 'debit'
+    else:
+        selectedCard = 'credit'
+    print(selectedCard)
+    choiceFrame.place_forget()
+    paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+
+#Function called when the "place order" button is pressed
+#Function to validate the entries
+def card_validation():
+    global card_number, expiry_date, cvv, address
+    card_number = cardEntry.get()
+    expiry_date = dateEntry.get()
+    cvv = cvvEntry.get()
+    address = addressEntry.get()
+
+    if not card_number or not expiry_date or not cvvEntry or not addressEntry:
+        CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry",
+                          width=400, height=100, button_width=50, button_height=30)
+        print("All fields are required")  # Debug: print message to remind the user to fill up every field
+        return
+    elif not card_number.isdigit() or not expiry_date.isdigit() or not cvv.isdigit(): #\
+        # and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
+        CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
+                      height=100, button_width=50, button_height=30)
+        print('Invalid Entry!')  # Debug: print message when the entry is not digit
+        return 'break'
+    # elif (card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
+    #     print('Key not accepted')  # Debug: print message when keypress is not accepted
+    #     CTkMessagebox(title="Error", message="Please try again.", icon="warning",
+    #                   option_1="Retry", width=400,
+    #                   height=100, button_width=50, button_height=30)
+    #     return
+    msg= CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check", option_1="Ok",
+                       option_2="Purchase More", width=400, height=100, button_width=75, button_height=30)
+
+        # msg= CTkMessagebox(title="Save data", message="Please confirm your purchase.", icon="question", option_1="Ok",
+        #                    option_2="Back",width=400, height=100, button_width=75, button_height=30)
+    response = msg.get()
+    save_all_info()
+    if response =="Ok":
+        paymentFrame.place_forget()
+        choiceFrame.place_forget()
+        thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+    else:
+        paymentFrame.place_forget()
+        choiceFrame.place_forget()
+        # masterFrame.tab("")
+        masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+
+def save_all_info():
+    if save_info_default.get() ==1:
+        print(save_allInfo.get())
+        if save_allInfo.get():
+            info = {
+                "card_number": str(card_number),
+                "card_type": str(selectedCard),
+                "expiry_date": str(expiry_date),
+                "ccv": str(cvv),
+                "address": str(address)
+            }
+            save_info(info)
+
+def save_info(card_info):
+    print(card_info)
+    try:
+        with open('../card_info.json', 'r') as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError:
+                data = []
+    except FileNotFoundError:
+        data= []
+
+
+    card_exists = False
+    for i, card in enumerate(data):
+        if card['card_number'] == card_info['card_number']:
+            data[i] = card_info
+            card_exists = True
+            break
+
+    if not card_exists:
+        data.append(card_info)
+
+    with open('../card_info.json', 'w') as file:
+        json.dump(data, file, indent=4)
+
 
 
 #function called when appearance menu is selected sets appearance to the selected type
@@ -374,28 +462,36 @@ def make_cart_label(amt, price, name, namespace, sn):
         namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
         namespace[f'{sn}Label'].grid(column=0, row = 0)
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
-        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace))
+        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace, True))
         namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
     #pack label
     namespace[f'{sn}Frame'].pack(pady=1)
 
 
 #functino to remove label
-def remove_cart_label(sn, namespace):
-    confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
-    response = confirmDelete.get()
-    if response == "Yes":
-        #try forgetting
+def remove_cart_label(sn, namespace, is_cart_button):
+    if is_cart_button:
+        confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
+        response = confirmDelete.get()
+        if response == "Yes":
+            #try forgetting
+            try:
+                namespace[f'{sn}Frame'].pack_forget()
+            #uf label does not exist, continue
+            except:
+                pass
+    else:
         try:
             namespace[f'{sn}Frame'].pack_forget()
-        #uf label does not exist, continue
+        # uf label does not exist, continue
         except:
             pass
-        #check which item needs to be removed, set that item in cart to 0
-        for cat in cart:
-            for item in cart[cat]:
-                if sn == item:
-                    cart[cat][item]= 0
+    #check which item needs to be removed, set that item in cart to 0
+
+    for cat in cart:
+        for item in cart[cat]:
+            if sn == item:
+                cart[cat][item]= 0
         #update labels
         update_labels()
 
@@ -406,7 +502,7 @@ def get_image():
         output = Image.open(f'photos/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('photos/default.jpg')
+        output = Image.open('../photos/default.jpg')
         return output
 
 
@@ -427,6 +523,10 @@ checkoutFrame = customtkinter.CTkScrollableFrame(master=root) ###edited
 cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
 cartFrame.pack(side='top',fill='both', expand=True)
 # checkoutFrame.place(anchor= 'center', relheight = .8, relwidth=.65, relx=.5, rely=.5)
+choiceFrame = customtkinter.CTkFrame(master= root)
+paymentFrame = customtkinter.CTkFrame(master= root)
+thankyouFrame = customtkinter.CTkFrame(master=root)
+
 
 #frame on the left of the shopping tab, with inputs
 leftFrame = customtkinter.CTkFrame(master=masterFrame.tab('shopping'))
@@ -444,11 +544,63 @@ buttonFrame = customtkinter.CTkFrame(master=leftFrame)
 
 ##ADD
 checkoutButton = customtkinter.CTkButton(master=masterFrame.tab("cart"),text='Checkout',command=checkout_button)
-checkoutButton.pack(side="bottom",padx=10,pady=12)
+checkoutButton.pack(side="bottom",padx=10,pady=12,ipady=10)
 backButton = customtkinter.CTkButton(master=checkoutFrame,text="Back",command=back_button)
 backButton.pack(side="bottom",padx=10,pady=12)
-paymentButton = customtkinter.CTkButton(master=checkoutFrame,text="Continue Payment")
+paymentButton = customtkinter.CTkButton(master=checkoutFrame,text="Continue Payment",command=payment_button)
 paymentButton.pack(side="bottom",padx=10,pady=12)
+
+###ADD
+#Displays Label and Radio Buttons in the "choice frame"
+choiceLabel= customtkinter.CTkLabel(master=choiceFrame,text="Choose Payment Method")
+choiceLabel.place(anchor='center', relx= 0.5, rely= 0.3)
+#setting the default value for the radio button
+radio_default = customtkinter.IntVar(value=0)
+choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=pay_method)
+choice1.place(anchor='center', relx= 0.5, rely= 0.5)
+choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2, command=pay_method)
+choice2.place(anchor='center', relx= 0.5, rely= 0.6)
+
+#Displays Labels in column 0 of the "payment frame"
+card_label = customtkinter.CTkLabel(master=paymentFrame, text= "Card Number")
+card_label.grid(row=0, column=0, padx=5, pady=5)
+date_label = customtkinter.CTkLabel(master=paymentFrame, text= "Expiry Date")
+date_label.grid(row=1, column=0, padx=5, pady=5)
+cvv_label = customtkinter.CTkLabel(master=paymentFrame, text= "CVV")
+cvv_label.grid(row=2, column=0, padx=5, pady=5)
+address_label = customtkinter.CTkLabel(master=paymentFrame, text= "Address")
+address_label.grid(row=3, column=0, padx=5, pady=5)
+#Displays Entry Widgets in column 1 of the "payment frame"
+cardEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="eg- 1234 5678 9123 4567", width=190)
+cardEntry.grid(row= 0, column= 1, padx=5, pady=5)
+dateEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "MM/YY", width=190)
+dateEntry.grid(row= 1, column= 1, padx=5, pady=5)
+cvvEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "777", width=190)
+cvvEntry.grid(row=2, column=1, padx=5, pady=5)
+addressEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="S569830, #02-1234", width=190)
+addressEntry.grid(row=3, column=1, padx=5, pady=5)
+
+#setting the default value for the checkbox
+save_info_default = customtkinter.IntVar(value=0)
+save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text= "Save information for next purchase",variable= save_info_default, onvalue=1)
+save_allInfo.grid(sticky= 'EW', columnspan= 2 , padx=20, pady=(19,5))
+place_order= customtkinter.CTkButton(master=paymentFrame, text= "Place Order", command=card_validation)
+place_order.grid(sticky= 'EW', padx=10, pady=19)
+
+#Configure rows and columns, centering the grid in the "payment frame"
+#Center the grid in the frame
+paymentFrame.grid_rowconfigure((0,1,2,3), weight=1)
+paymentFrame.grid_columnconfigure((0,1),weight=1)
+
+#Displays label and "Logo" image in "thank you frame"
+custom_font = ('Times New Roman',25)
+thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
+thankyouLabel.pack(padx=10, pady=(10,5))
+logo = Image.open('../photos/Final_logo.jpg')
+logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
+logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
+logoLabel.pack(fill='both',expand=True)
+
 
 #combo box to select category, calls cat_callback function when an option is selected
 catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=list(catalog.keys()), command=cat_callback)
@@ -479,6 +631,12 @@ amountEntry.pack(padx=12,pady=12)
 amountEntry.bind('<KeyPress>',validate_key)
 #on enter press run set_amt
 amountEntry.bind('<Return>',set_amt)
+#on key press, run card_validation
+cardEntry.bind('<KeyPress>',validate_key)
+dateEntry.bind('<KeyPress>',validate_key)
+cvvEntry.bind('<KeyPress>',validate_key)
+addressEntry.bind('<KeyPress>',validate_key)
+
 
 itemImage = customtkinter.CTkImage(light_image=get_image(),
                                    dark_image = get_image(),
@@ -499,25 +657,25 @@ shopSubtotalLabel.pack(padx=10,pady=10)
 
 #label that displays subtotal in checkout tab
 subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=(f'Subtotal: ${subtotal:.2f}'))
-### subtotalLabel.pack(padx=10,pady=12)
+subtotalLabel.pack(padx=10,pady=12)
 #label to display total after gst in checkout tab
 totalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=('Total: $' + str(total)))
-### totalLabel.pack(padx=10, pady=12)
+totalLabel.pack(padx=10, pady=12)
 #Label to display GST amount in checkout tab
 gstLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f"GST: ${gstAmt:.2f}")
-### gstLabel.pack(padx=10,pady=12)
+gstLabel.pack(padx=10,pady=12)
 #Combo box to select discount. calls discount_Callback function
 discountComboBox = customtkinter.CTkComboBox(master=checkoutFrame, values=list(discounts), command=discount_callback)
-### discountComboBox.pack(padx=10,pady=12)
+discountComboBox.pack(padx=10,pady=12)
 #label to show selected discount in checkout tab
 discountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Discount: {(discounts[selectedDiscount] * 100)}%')
-### discountLabel.pack(padx=10,pady=12)
+discountLabel.pack(padx=10,pady=12)
 #label to show amount of discount given
 discountAmountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Discount amount: ${discountAmount}')
-### discountAmountLabel.pack(padx=10,pady=12)
+discountAmountLabel.pack(padx=10,pady=12)
 #label to show final cost after discount
 afterDiscountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Total after discount ${afterDiscount}')
-### afterDiscountLabel.pack(padx=10,pady=12)
+afterDiscountLabel.pack(padx=10,pady=12)
 #label that displays the cart
 
 cartLabel = customtkinter.CTkLabel(master=masterFrame.tab('cart'), text = cartOut)
@@ -534,7 +692,24 @@ scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), value
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
 #
-# root.bind('<Configure>', update_img)
 
+# card1 ={
+#     "card_number": "5678",
+#     "card_type": "debit",
+#     "expiry_date": "11/23",
+#     "ccv": "456"
+# }
+# card2 ={
+#     "card_number": "1234",
+#     "card_type": "debit",
+#     "expiry_date": "09/21",
+#     "ccv": "877"
+# }
+# save_info(card1)
+# save_info(card2)
+
+
+
+# root.bind('<Configure>', update_img)
 #start customtkinter window
 root.mainloop()
