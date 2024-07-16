@@ -357,18 +357,19 @@ def card_validation():
     expiry_date = dateEntry.get()
     cvv = cvvEntry.get()
     address = addressEntry.get()
-
-    if not card_number or not expiry_date or not cvvEntry or not addressEntry:
+    if not card_number or not expiry_date or not cvv or not address:
         CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry",
                           width=400, height=100, button_width=50, button_height=30)
         print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
-    elif not card_number.isdigit() or expiry_date.isdigit() or cvv.isdigit(): #\
-        # and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
-        CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
-                      height=100, button_width=50, button_height=30)
-        print('Invalid Entry!')  # Debug: print message when the entry is not digit
-        return
+    # else:
+    #     validate_entry()
+    # elif not card_number.isdigit() or expiry_date.isdigit() or cvv.isdigit(): #\
+    #     # and(card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
+    #     CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
+    #                   height=100, button_width=50, button_height=30)
+    #     print('Invalid Entry!')  # Debug: print message when the entry is not digit
+    #     return
 
     # elif (card_number.keysym or expiry_date.keysym or cvv.keysym or address.keysym) not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
     #     print('Key not accepted')  # Debug: print message when keypress is not accepted
@@ -391,6 +392,31 @@ def card_validation():
         paymentFrame.place_forget()
         choiceFrame.place_forget()
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+
+def validate_entry(event):
+    # global card_number, expiry_date, cvv, address
+    # card_number = cardEntry.get()
+    # expiry_date = dateEntry.get()
+    # cvv = cvvEntry.get()
+    # address = addressEntry.get()
+    # if not card_number or not expiry_date or not cvvEntry or not addressEntry:
+    #     CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry",
+    #                   width=400, height=100, button_width=50, button_height=30)
+    #     print("All fields are required")  # Debug: print message to remind the user to fill up every field
+    #     return
+    #only accept digits, backspace, Enter, Left or right
+    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
+        CTkMessagebox(title="Error", message="Invalid Entry! Please check your data again.", icon="warning", option_1="Retry", width=400,
+                      height=100, button_width=50, button_height=30)
+        print('Invalid Entry!')  # Debug: print message when the entry is not digit
+        return
+    print(event.keysym) #Debug:print key that was pressed
+    #only accept backspace, Enter, Left or right
+    # elif event.keysym not in ('BackSpace', 'Return', 'Left', 'Right','Delete'):
+    #      print('Key not accepted')  # Debug: print message when keypress is not accepted
+    #      CTkMessagebox(title="Error", message="Please try again.", icon="warning", option_1="Retry",
+    #                    width=400, height=100, button_width=50, button_height=30)
+    #      return
 
 def save_all_info():
     if save_info_default.get() ==1:
@@ -633,10 +659,14 @@ amountEntry.bind('<KeyPress>',validate_key)
 #on enter press run set_amt
 amountEntry.bind('<Return>',set_amt)
 #on key press, run card_validation
-cardEntry.bind('<KeyPress>',card_validation)
-dateEntry.bind('<KeyPress>',card_validation)
-cvvEntry.bind('<KeyPress>',card_validation)
-addressEntry.bind('<KeyPress>',card_validation)
+cardEntry.bind('<KeyPress>',validate_entry)
+dateEntry.bind('<KeyPress>',validate_entry)
+cvvEntry.bind('<KeyPress>',validate_entry)
+addressEntry.bind('<KeyPress>',validate_entry)
+cardEntry.bind('<Return>',card_validation)
+dateEntry.bind('<Return>',card_validation)
+cvvEntry.bind('<Return>',card_validation)
+addressEntry.bind('<Return>',card_validation)
 
 
 itemImage = customtkinter.CTkImage(light_image=get_image(),
