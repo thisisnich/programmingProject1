@@ -569,18 +569,19 @@ def get_card_info(info):
     except FileNotFoundError:
         data= []
     # print(data)
+    card_exists = False
     for i, card in enumerate(data):
         if card['card_type'] == selectedCard:
             card_info = data[i]
+            card_exists= True
             break
-        else:
-            card_info = None
         # print(f'test:{card_info}')
     # print(card_info)
-    if not data:
-        return False
-    else:
+    print(data)
+    if card_exists:
         return card_info[info]
+    else:
+        return False
 
 
 
