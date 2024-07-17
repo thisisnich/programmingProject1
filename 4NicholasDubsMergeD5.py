@@ -99,7 +99,7 @@ root.minsize(410,370)
 
 
 #function run when plus button is pressed
-def plus_buton():
+def plus_button():
     #find location in cart that corresponds to selected category and item and increment by 1
     cart[selectedCat][selectedItem] += 1
     #print(cart) #Debug print cart
@@ -702,7 +702,7 @@ buttonFrame.columnconfigure(0,weight=2)
 buttonFrame.columnconfigure(1,weight=1)
 buttonFrame.columnconfigure(2,weight=2)
 #plus button, calls plus_button when pressed -> increments value in cart by 1
-addButton = customtkinter.CTkButton(master=buttonFrame, text='+', font = ('Roboto', 24), command=plus_buton, width=50)
+addButton = customtkinter.CTkButton(master=buttonFrame, text='+', font = ('Roboto', 24), command=plus_button, width=50)
 addButton.grid(column = 2,row = 0) #column changed
 #label that shows number of items in cart
 itemCountLabel = customtkinter.CTkLabel(master=buttonFrame, text=str(read_cart()))
