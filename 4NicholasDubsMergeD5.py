@@ -293,10 +293,12 @@ def show_cart():
 def validate_key_int(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
-    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right'):
+    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'Delete'):
         # print('key not accepted')  #Debug: print message when keypress is not accepted
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
+
+
 def validate_card_no_key(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
