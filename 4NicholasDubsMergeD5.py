@@ -15,7 +15,8 @@
 #Merge Files Nicholas                               DONE
 #Get card info                                      DONE
 #Clean up comments Nicholas
-#To make sure all the functions work normally once the user deleted the existing data and re-enter the data
+#Credit card data safe
+#Checkout tab error
 ##################################
 import customtkinter
 from CTkMessagebox import CTkMessagebox
@@ -23,7 +24,7 @@ from PIL import Image
 import json
 
 catalog = {
-    "Drinks": {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Drinks": {
         "N32": {"name": "Neo's Green Tea", "price": 3},
         "M13": {"name": "Melo Chocolate Malt Drink", "price": 2.85},
         "V76": {"name": "Very-Fair Full Cream Milk", "price": 3.5},
@@ -468,6 +469,7 @@ def save_all_info():
     else:
         print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
+
 def save_info(card_info):
     print(card_info)
     try:
@@ -643,6 +645,7 @@ paymentButton.pack(side="bottom",padx=10,pady=12)
 #Displays Label and Radio Buttons in the "choice frame"
 choiceLabel= customtkinter.CTkLabel(master=choiceFrame,text="Choose Payment Method")
 choiceLabel.place(anchor='center', relx= 0.5, rely= 0.3)
+
 #setting the default value for the radio button
 radio_default = customtkinter.IntVar(value=0)
 choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=pay_method)
@@ -689,6 +692,9 @@ logo = Image.open('photos/Final_logo.png')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
+#Exit from the program
+exitButton = customtkinter.CTkButton(master=thankyouFrame,text="Exit",anchor='center',command=root.destroy)
+exitButton.pack(side='bottom',pady=(0,15))
 
 
 #combo box to select category, calls cat_callback function when an option is selected
