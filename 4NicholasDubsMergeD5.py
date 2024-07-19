@@ -161,7 +161,7 @@ def item_callback(choice):
           )
     update_labels()
 
-
+#checkoutFrame
 #Function called when discount dropdown selected
 def discount_callback(choice):
     #Declare globals
@@ -175,7 +175,7 @@ def discount_callback(choice):
 def get_items():
     return [catalog[selectedCat][sn]["name"] for sn in catalog[selectedCat]]
 
-
+#checkout frame
 #calculation function
 def calculate_sum():
     #declare globals
@@ -223,7 +223,7 @@ def calculate_sum():
     gstLabel.configure(text=f"GST: ${gstAmt:.2f}")
     afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount:.2f}')
 
-
+#shopping tab
 #function to update image
 def update_img():
     #get height and width of root window
@@ -242,7 +242,6 @@ def update_img():
                         dark_image=get_image(),
                         size=(imgSize,imgSize))
     imageLabel.configure(image=itemImage)
-
 
 #function to update labels
 def update_labels():
@@ -269,7 +268,7 @@ def update_labels():
     #run function to calculate sum
     calculate_sum()
 
-
+#cart tab
 #function to read cart at selected category and selected item
 def read_cart():
     # print(cart)
@@ -294,7 +293,7 @@ def show_cart():
                 #run make cart label function with the item sn and as well as item name, and cost
                 make_cart_label(cart[cat][sn], item_cost, catalog[cat][sn]["name"], globals_namespace, sn)
 
-
+#shopping
 #function to check that only accepted keys are registered
 def validate_key_int(event):
     # print(event.keysym) #Debug:print key that was pressed
@@ -304,7 +303,7 @@ def validate_key_int(event):
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
 
-
+#payment frame
 #function to check that length of card number is not longer than 16
 def validate_card_no_length(event):
     # print(len(cardEntry.get()))
@@ -348,7 +347,7 @@ def validate_key_address(event):
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
 
-
+#shopping tab
 #function called when enter key is pressed
 # sets cart at selected category and selected item to value that is in the entry box
 def set_amt(event):
@@ -362,7 +361,7 @@ def set_amt(event):
         remove_cart_label(selectedItem, globals_namespace, False)
     update_labels()
 
-
+#cart tab
 #Function called when "checkout" button is clicked
 def checkout_button():
     #initialise variable as cart not existing
@@ -385,7 +384,7 @@ def checkout_button():
                       button_width=25,button_height=75)
         print("No items in the cart") #Debug: print when the condition isn't met
 
-
+#checkout frame
 ###ADD
 #Function called when "back" button is selected to bring the user back to the "cart tab"
 def back_button():
@@ -399,6 +398,7 @@ def payment_button():
     choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
     print("Proceeding to payment section...") #Debug: print message when the button is pressed
 
+#payment frame
 #Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
@@ -514,7 +514,7 @@ def scaling_callback(choice: str):
     new_scaling_float = int(choice.replace("%", "")) / 100
     customtkinter.set_widget_scaling(new_scaling_float)
 
-
+#cart tab
 #function to make labels for cart
 def make_cart_label(amt, price, name, namespace, sn):
     global selectedItem
@@ -758,8 +758,6 @@ shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: 
 shopSubtotalLabel.pack(padx=10,pady=10)
 
 
-
-
 #label that displays subtotal in checkout tab
 subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=(f'Subtotal: ${subtotal:.2f}'))
 subtotalLabel.pack(padx=10,pady=12)
@@ -782,7 +780,6 @@ discountAmountLabel.pack(padx=10,pady=12)
 afterDiscountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Total after discount ${afterDiscount}')
 afterDiscountLabel.pack(padx=10,pady=12)
 #label that displays the cart
-
 cartLabel = customtkinter.CTkLabel(master=masterFrame.tab('cart'), text = cartOut)
 cartLabel.pack(padx=10,pady=12)
 
