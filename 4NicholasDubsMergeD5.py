@@ -69,16 +69,16 @@ discounts = {"None" : 0,
 
 
 #Declaring variables
-selectedItem = "N32"    #Selected item from category
-selectedCat = "Drinks"  #Selected Category
+selectedItem = "N32"        #Selected item from category
+selectedCat = "Drinks"      #Selected Category
 selectedDiscount = "None"   #Selected discount type
-selectedCard = ''       #Default selected card
-subtotal = 0            #Subtotal before gst
-total = 0               #Total after gst
-gstAmt = 0              #Amount of gst
-discountAmount = 0      #Amount of discount
-afterDiscount = 0       #Total after discount
-cartOut = ''            #Debug value to print cart
+selectedCard = ''           #Default selected card
+subtotal = 0                #Subtotal before gst
+total = 0                   #Total after gst
+gstAmt = 0                  #Amount of gst
+discountAmount = 0          #Amount of discount
+afterDiscount = 0           #Total after discount
+cartOut = ''                #Debug value to print cart
 
 
 #appearance mode set to dark
@@ -95,7 +95,7 @@ root.iconbitmap('Logo.ico')
 #set window name
 root.title("DorNick")
 #set minimum window size
-root.minsize(410,370)
+root.minsize(410, 370)
 
 
 #function run when plus button is pressed
@@ -107,6 +107,7 @@ def plus_button():
     update_labels()
 
 
+#function run when subtract button is pressed
 def sub_button():
     #if the value of the corresponding spot in cart is more than 0 subtract by 1
     if cart[selectedCat][selectedItem]>=1:
@@ -134,6 +135,7 @@ def cat_callback(choice):
     selectedCat = choice
     #set item list to the new items in the selected cat
     itemList = get_items()
+    #set a temp list to make sure labels updated properly
     temp = list(catalog[selectedCat])
     selectedItem=temp[0]
     update_labels()
@@ -167,6 +169,7 @@ def discount_callback(choice):
     selectedDiscount=choice
     update_labels()
 
+
 #function to get items in a category
 def get_items():
     return [catalog[selectedCat][sn]["name"] for sn in catalog[selectedCat]]
@@ -176,8 +179,8 @@ def get_items():
 def calculate_sum():
     #declare globals
     global subtotal,total, gstAmt, discountAmount, afterDiscount
-    #declare workig value
-    tempCost = 0
+    #declare working value
+    temp_cost = 0
     #while there are items in cart, find the corresponding price, and multiply number of items in cart by price
     for cat in cart:
         for sn in cart[cat]:
@@ -186,13 +189,13 @@ def calculate_sum():
             # print(menu[i][1][y][2])   #Debug: print corresponding price
             #add the total price to tempCost
 
-            tempCost += cart[cat][sn]*catalog[cat][sn]['price']
+            temp_cost += cart[cat][sn]*catalog[cat][sn]['price']
             # print(tempCost)           #Debug: print current temporary Value
     #Set subtotal to the temporary cost
-    subtotal=tempCost
+    subtotal=temp_cost
     #Print subtotal
     # print(f'Subtotal ${subtotal:.2f}') #Debug print new subtotal
-    #Calculate toatal with GST
+    #Calculate total with GST
     total=subtotal*1.09
     #Print total after GST
     # print(f'Total ${total:.2f}') # Debug: print new total
@@ -226,8 +229,8 @@ def update_img():
     # print(f'height: {root.winfo_height()}')     #Debug: print window height
     # print(f'width: {root.winfo_width()}')       #Debug: print window width
     #get max width and height the image can be
-    maxImgHeight = int(root.winfo_height()/5)
-    maxImgWidth = int(root.winfo_width()/6)
+    maxImgHeight = int(root.winfo_height() / 5)
+    maxImgWidth = int(root.winfo_width() / 6)
     # print(f'img height: {maxImgHeight}')        #Debug: print max image height
     # print(f'img width: {maxImgWidth}')          #Debug: print max image width
     #because square image, set image size to be the smallest of teh maximum values
@@ -242,6 +245,7 @@ def update_img():
 
 #function to update labels
 def update_labels():
+    #update the image
     update_img()
     snComboBox.configure(values=itemList)
     #update the label that displays the item code
@@ -278,52 +282,44 @@ def show_cart():
     #declare globals
     global cartOut
     #initialise empty cart output
-    cartOut=''
+    cartOut = ''
     #while there are items in cart get the value and item name
     for cat in cart:
         for sn in cart[cat]:
-            if cart[cat][sn] >=1:
+            #if there is an order for any item, make a new label in cart for that item
+            if cart[cat][sn] >= 1:
                 #calculate cost of item
-                item_cost = cart[cat][sn]*catalog[cat][sn]['price']
+                item_cost = cart[cat][sn] * catalog[cat][sn]['price']
                 #run make cart label function with the item sn and as well as item name, and cost
-                make_cart_label(cart[cat][sn],item_cost,catalog[cat][sn]["name"],globals_namespace,sn)
+                make_cart_label(cart[cat][sn], item_cost, catalog[cat][sn]["name"], globals_namespace, sn)
 
 
 #function to check that only accepted keys are registered
 def validate_key_int(event):
     # print(event.keysym) #Debug:print key that was pressed
-    #only accept digits, backspace, Enter, Left or right
+    #only accept digits, backspace, Enter, delete, Left or right
     if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'Delete'):
         # print('key not accepted')  #Debug: print message when keypress is not accepted
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
 
 
-def validate_card_no_key(event):
-    # print(event.keysym) #Debug:print key that was pressed
-    #only accept digits, backspace, Enter, Left or right
-    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right'):
-        # print('key not accepted')  #Debug: print message when keypress is not accepted
-        return 'break'
-    # print(amountEntry.get())  #Debug: print current stored value in Entry field
-
+#function to check that length of card number is not longer than 16
 def validate_card_no_length(event):
     # print(len(cardEntry.get()))
+    #if length of cardEntry is more than 16 delete everything after that point
     if len(cardEntry.get()) > 16:
-        cardEntry.delete(16, 18)
+        cardEntry.delete(16, 'end')
 
-def validate_cvv_key(event):
-    # print(event.keysym) #Debug:print key that was pressed
-    #only accept digits, backspace, Enter, Left or right
-    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right'):
-        # print('key not accepted')  #Debug: print message when keypress is not accepted
-        return 'break'
-    # print(amountEntry.get())  #Debug: print current stored value in Entry field
 
+#function to check that length of cvv is not longer than 3
 def validate_cvv_length(event):
-    # print(len(cvvEntry.get()))
+    # print(len(cvvEntry.get()))'
+    #if length of cardEntry is more than 3 delete everything after that point
     if len(cvvEntry.get()) > 3:
-        cvvEntry.delete(3, 5)
+        cvvEntry.delete(3, 'end')
+
+
 def validate_date_key(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
@@ -332,11 +328,16 @@ def validate_date_key(event):
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
 
+
+#function to check that length of date is not longer than 5
 def validate_date_length(event):
     # print(len(dateEntry.get()))
+    #if length of cardEntry is more than 5 delete everything after that point
     if len(dateEntry.get()) > 5:
         dateEntry.delete(5,7)
 
+
+#check for only address related characters
 def validate_key_address(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
@@ -361,18 +362,23 @@ def set_amt(event):
     update_labels()
 
 
-###ADD
 #Function called when "checkout" button is clicked
 def checkout_button():
+    #initialise variable as cart not existing
     cartExists = False
+    #if there is an item with an order of 1 or more, set that cart does exist
     for cat in cart:
         for item in cart[cat]:
             if cart[cat][item] >= 1:
                 cartExists = True
+                break
+    #if cart exists, allow checkout
     if cartExists:
+        #plece checkout frame remove masterFrame
         masterFrame.place_forget()
         checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
         print("You are checking out") #Debug: print when the condition is met
+    #if cart does not exist, n=send error message box
     else:
         CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", width=400, height=50,
                       button_width=25,button_height=75)
@@ -540,6 +546,10 @@ def remove_cart_label(sn, namespace, is_cart_button):
             #try forgetting
             try:
                 namespace[f'{sn}Frame'].pack_forget()
+                for cat in cart:
+                    for item in cart[cat]:
+                        if sn == item:
+                            cart[cat][item] = 0
             #uf label does not exist, continue
             except:
                 pass
@@ -551,10 +561,7 @@ def remove_cart_label(sn, namespace, is_cart_button):
             pass
     #check which item needs to be removed, set that item in cart to 0
 
-    for cat in cart:
-        for item in cart[cat]:
-            if sn == item:
-                cart[cat][item]= 0
+
         #update labels
         update_labels()
 
@@ -721,9 +728,9 @@ amountEntry.bind('<KeyPress>',validate_key_int)
 #on enter press run set_amt
 amountEntry.bind('<Return>',set_amt)
 #on key press, run card_validation
-cardEntry.bind('<KeyPress>', validate_card_no_key)
+cardEntry.bind('<KeyPress>', validate_key_int)
 dateEntry.bind('<KeyPress>', validate_date_key)
-cvvEntry.bind('<KeyPress>', validate_cvv_key)
+cvvEntry.bind('<KeyPress>', validate_key_int)
 addressEntry.bind('<KeyPress>',validate_key_address)
 cardEntry.bind('<KeyRelease>', validate_card_no_length)
 dateEntry.bind('<KeyRelease>', validate_date_length)
