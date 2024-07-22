@@ -391,10 +391,10 @@ def remove_cart_label(sn, namespace):
 #get image
 def get_image():
     try:
-        output = Image.open(f'photos/{selectedItem}.jpg')
+        output = Image.open(f'resources/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('photos/default.jpg')
+        output = Image.open('resources/default.jpg')
         return output
 
 

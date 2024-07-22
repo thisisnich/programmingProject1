@@ -1,0 +1,16 @@
+[
+    {
+        "card_type": "debit",
+        "card_number": "1111111111111111",
+        "expiry_date": "11111",
+        "cvv": "111",
+        "address": "111111111111111111111111"
+    },
+    {
+        "card_type": "credit",
+        "card_number": "1234567890987654",
+        "expiry_date": "56764",
+        "cvv": "234",
+        "address": "S12345654, 7#243"
+    }
+]

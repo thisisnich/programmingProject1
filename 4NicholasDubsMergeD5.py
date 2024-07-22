@@ -24,7 +24,7 @@ from PIL import Image
 import json
 
 catalog = {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Drinks": {
+    "Drinks": {
         "N32": {"name": "Neo's Green Tea", "price": 3},
         "M13": {"name": "Melo Chocolate Malt Drink", "price": 2.85},
         "V76": {"name": "Very-Fair Full Cream Milk", "price": 3.5},
@@ -334,14 +334,15 @@ def validate_date_length(event):
     # print(len(dateEntry.get()))
     #if length of cardEntry is more than 5 delete everything after that point
     if len(dateEntry.get()) > 5:
-        dateEntry.delete(5,7)
+        dateEntry.delete(5,'end')
 
 
 #check for only address related characters
 def validate_key_address(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
-    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'S', 'comma', 'numbersign', 'minus', 'space'):
+    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'S', 'comma',
+                                                         'numbersign', 'minus', 'space'):
         # print('key not accepted')  #Debug: print message when keypress is not accepted
 
         return 'break'
@@ -398,10 +399,13 @@ def payment_button():
     choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
     print("Proceeding to payment section...") #Debug: print message when the button is pressed
 
+
+#TODO Doris pls comment and clean up these functions, tqtq
 #payment frame
 #Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
+    #check 
     if radio_default.get() == 1:
         selectedCard = 'debit'
     else:
@@ -441,8 +445,8 @@ def card_validation():
     #                   option_1="Retry", width=400,
     #                   height=100, button_width=50, button_height=30)
     #     return
-    msg= CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check", option_1="Ok",
-                       option_2="Purchase More", width=400, height=100, button_width=75, button_height=30)
+    msg= CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
+                       option_1="Ok",option_2="Purchase More", width=400, height=100, button_width=75, button_height=30)
 
         # msg= CTkMessagebox(title="Save data", message="Please confirm your purchase.", icon="question", option_1="Ok",
         #                    option_2="Back",width=400, height=100, button_width=75, button_height=30)
@@ -472,33 +476,46 @@ def save_all_info():
                 "address": str(address)
             }
             save_info(info)
+            print("Card information saved!")
     else:
         print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
-
+#funtion is passed a dictionary with card information and it is saved to a json file
 def save_info(card_info):
-    print(card_info)
+    #print(card_info)   #DEBUG: print the card info dict that will be saved
+    #try opening file
     try:
-        with open('card_info.json', 'r') as file:
+        #open and read file to get data stored
+        with open('resources/card_info.json') as file:
             try:
+                #try loading data from file
                 data = json.load(file)
             except json.JSONDecodeError:
+                #if no data in file, return an empty list
                 data = []
     except FileNotFoundError:
+        #if no file, return an empty list
         data= []
 
-
+    #initialise a variable to save if the selected card type is already saved.
     card_exists = False
+    #check through the items in the Json file, and compare to selected card types
+    ####CHATGPT CODE####
+    #unsure what enumerate does
+    #code was not buggy with nested for loops and chatGPT suggested to simplify like this
     for i, card in enumerate(data):
+        #if the selected card type is on the file
         if card['card_type'] == card_info['card_type']:
+            #overwrite data at that position with new card info
             data[i] = card_info
+            #set card exists as True
             card_exists = True
             break
-
+    #if the card does not exist yet, append card info to the file
     if not card_exists:
         data.append(card_info)
-
-    with open('card_info.json', 'w') as file:
+    #overwrite new data to file
+    with open('resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
 
@@ -531,9 +548,13 @@ def make_cart_label(amt, price, name, namespace, sn):
         # namespace[f'{name}Frame'].columnconfigure(1, weight=1)
         #Display name, amount ordered and cost of this item
         namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
-        namespace[f'{sn}Label'].grid(column=0, row = 0)
+        namespace[f'{sn}Label'].grid(column=0, row=0)
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
-        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace, True))
+        ###PYCHARM SUGGESTED CODE####
+        #code does not work without lamda function not 100% sure why tho
+        namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'], text='Remove', width=50,
+                                                           command=lambda: remove_cart_label(sn, namespace,
+                                                           True))
         namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
     #pack label
     namespace[f'{sn}Frame'].pack(pady=1)
@@ -542,7 +563,8 @@ def make_cart_label(amt, price, name, namespace, sn):
 #functino to remove label
 def remove_cart_label(sn, namespace, is_cart_button):
     if is_cart_button:
-        confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
+        confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?",
+                                      icon="check", option_1="Cancel", option_2="Yes")
         response = confirmDelete.get()
         if response == "Yes":
             #try forgetting
@@ -561,26 +583,28 @@ def remove_cart_label(sn, namespace, is_cart_button):
         # uf label does not exist, continue
         except:
             pass
-    #check which item needs to be removed, set that item in cart to 0
-
+        #check which item needs to be removed, set that item in cart to 0
 
         #update labels
         update_labels()
 
 
-#get image
+#function to get image from folder and return default image
 def get_image():
+    #try to ket an image with the name being the code of the selected item
     try:
-        output = Image.open(f'photos/{selectedItem}.jpg')
+        output = Image.open(f'resources/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('photos/default_logo.jpg')
+        #if it does not exist, set a default photo
+        output = Image.open('resources/default_logo.png')
         return output
 
 
+#TODO Nicholas continue comments here
 def get_card_info(info):
     try:
-        with open('card_info.json', 'r') as file:
+        with open('resources/card_info.json') as file:
             try:
                 data = json.load(file)
             except json.JSONDecodeError:
@@ -681,7 +705,8 @@ addressEntry.grid(row=3, column=1, padx=5, pady=5)
 
 #setting the default value for the checkbox
 save_info_default = customtkinter.IntVar(value=0)
-save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text= "Save information for next purchase",variable= save_info_default, onvalue=1)
+save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text="Save information for next purchase",
+                                         variable=save_info_default)
 save_allInfo.grid(sticky= 'EW', columnspan= 2 , padx=20, pady=(19,5))
 place_order= customtkinter.CTkButton(master=paymentFrame, text= "Place Order", command=card_validation)
 place_order.grid(sticky= 'EW', padx=10, pady=19)
@@ -693,14 +718,14 @@ paymentFrame.grid_columnconfigure((0,1),weight=1)
 
 #Displays label and "Logo" image in "thank you frame"
 custom_font = ('Times New Roman',25)
-thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
+thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text="Thank you for shopping with us!", font=custom_font)
 thankyouLabel.pack(padx=10, pady=(10,5))
-logo = Image.open('photos/Final_logo.png')
+logo = Image.open('resources/Final_logo.png')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
 #Exit from the program
-exitButton = customtkinter.CTkButton(master=thankyouFrame,text="Exit",anchor='center',command=root.destroy)
+exitButton = customtkinter.CTkButton(master=thankyouFrame, text="Exit", command=root.destroy)
 exitButton.pack(side='bottom',pady=(0,15))
 
 
@@ -754,12 +779,12 @@ codeLabel.pack(padx=10, pady=10)
 #Label that displays price of item in right frame of shopping tab
 priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selectedCat][selectedItem]['price']}')
 priceLabel.pack(padx=10,pady=10)
-shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: ${subtotal:.2f}'))
+shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=f'Subtotal: ${subtotal:.2f}')
 shopSubtotalLabel.pack(padx=10,pady=10)
 
 
 #label that displays subtotal in checkout tab
-subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=(f'Subtotal: ${subtotal:.2f}'))
+subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Subtotal: ${subtotal:.2f}')
 subtotalLabel.pack(padx=10,pady=12)
 #label to display total after gst in checkout tab
 totalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=('Total: $' + str(total)))
@@ -786,31 +811,15 @@ cartLabel.pack(padx=10,pady=12)
 
 #SETTINGS TAB
 appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('settings'), values=["Light", "Dark", "System"],
-                                                          command=appearance_callback)
+                                                 command=appearance_callback)
 appearanceComboBox.pack(pady=10)
 appearanceComboBox.set("Dark")
-scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), values=["80%", "90%", "100%", "110%", "120%","130%","140%","150%"],
-                                                               command=scaling_callback)
+scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), values=["80%", "90%", "100%", "110%", "120%",
+                                                                                   "130%", "140%", "150%"],
+                                              command=scaling_callback)
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
-#
-
-# card1 ={
-#     "card_number": "5678",
-#     "card_type": "debit",
-#     "expiry_date": "11/23",
-#     "ccv": "456"
-# }
-# card2 ={
-#     "card_number": "1234",
-#     "card_type": "debit",
-#     "expiry_date": "09/21",
-#     "ccv": "877"
-# }
-# save_info(card1)
-# save_info(card2)
 
 
-# root.bind('<Configure>', update_img)
 #start customtkinter window
 root.mainloop()

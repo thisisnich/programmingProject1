@@ -408,7 +408,7 @@ def save_all_info():
 def save_info(card_info):
     print(card_info)
     try:
-        with open('../card_info.json', 'r') as file:
+        with open('../resources/card_info.json', 'r') as file:
             try:
                 data = json.load(file)
             except json.JSONDecodeError:
@@ -427,7 +427,7 @@ def save_info(card_info):
     if not card_exists:
         data.append(card_info)
 
-    with open('../card_info.json', 'w') as file:
+    with open('../resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
 
@@ -499,10 +499,10 @@ def remove_cart_label(sn, namespace, is_cart_button):
 #get image
 def get_image():
     try:
-        output = Image.open(f'photos/{selectedItem}.jpg')
+        output = Image.open(f'resources/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('../photos/default.jpg')
+        output = Image.open('../resources/default.jpg')
         return output
 
 
@@ -596,7 +596,7 @@ paymentFrame.grid_columnconfigure((0,1),weight=1)
 custom_font = ('Times New Roman',25)
 thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
 thankyouLabel.pack(padx=10, pady=(10,5))
-logo = Image.open('../photos/Final_logo.jpg')
+logo = Image.open('../resources/Final_logo_DEPRECIATED.jpg')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)

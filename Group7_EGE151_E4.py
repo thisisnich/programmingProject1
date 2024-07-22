@@ -456,7 +456,7 @@ def save_all_info():
 def save_info(card_info):
     print(card_info)
     try:
-        with open('card_info.json', 'r') as file:
+        with open('resources/card_info.json', 'r') as file:
             try:
                 data = json.load(file)
             except json.JSONDecodeError:
@@ -475,7 +475,7 @@ def save_info(card_info):
     if not card_exists:
         data.append(card_info)
 
-    with open('card_info.json', 'w') as file:
+    with open('resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
 #entries validation
@@ -529,16 +529,16 @@ def validate_key_address(event):
 #get image
 def get_image():
     try:
-        output = Image.open(f'photos/{selectedItem}.jpg')
+        output = Image.open(f'resources/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('photos/default_logo.jpg')
+        output = Image.open('resources/default_logo_DEPRECIATED.jpg')
         return output
 
 
 def get_card_info(info):
     try:
-        with open('card_info.json', 'r') as file:
+        with open('resources/card_info.json', 'r') as file:
             try:
                 data = json.load(file)
             except json.JSONDecodeError:
@@ -741,7 +741,7 @@ cvvEntry.bind('<KeyRelease>', validate_cvv_length)
 custom_font = ('Times New Roman',25)
 thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
 thankyouLabel.pack(padx=10, pady=(10,5))
-logo = Image.open('photos/Final_logo.png')
+logo = Image.open('resources/Final_logo.png')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
