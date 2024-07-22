@@ -250,6 +250,8 @@ def make_cart_label(amt, price, name, namespace, sn):
         namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
         namespace[f'{sn}Label'].grid(column=0, row = 0)
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
+        ###PYCHARM SUGGESTED CODE####
+        #code does not work without lamda function not 100% sure why tho
         namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace, True))
         namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
     #pack label
@@ -258,7 +260,9 @@ def make_cart_label(amt, price, name, namespace, sn):
 #functino to remove label
 def remove_cart_label(sn, namespace, is_cart_button):
     if is_cart_button:
-        confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?", icon="check", option_1="Cancel", option_2="Yes")
+        confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?",
+                                      icon="check", option_1="Cancel", option_2="Yes", width=350, height=100,
+                                      button_height=30)
         response = confirmDelete.get()
         if response == "Yes":
             #try forgetting
@@ -301,8 +305,8 @@ def checkout_button():
         print("You are checking out") #Debug: print when the condition is met
     #if cart does not exist, n=send error message box
     else:
-        CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", width=400, height=50,
-                      button_width=25,button_height=75)
+        CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", height=50,
+                      button_width=25, button_height=75)
         print("No items in the cart") #Debug: print when the condition isn't met
 
 
@@ -390,6 +394,7 @@ def payment_button():
 ###choice frame
 
 ###payment frame
+#TODO doris pls comment pay_method, card_validations, and save_all_info tq
 #Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
@@ -416,12 +421,12 @@ def card_validation():
     address = addressEntry.get()
 
     if not card_number or not expiry_date or not cvvEntry or not addressEntry:
-        CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry",
-                          width=400, height=100, button_width=50, button_height=30)
+        CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry", height=100,
+                      button_width=50, button_height=30)
         print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
     msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
-                        option_1="Ok",option_2="Purchase More", width=400, height=100, button_width=75, button_height=30)
+                        option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
     response = msg.get()
     if response == "Ok":
         paymentFrame.place_forget()
@@ -453,28 +458,41 @@ def save_all_info():
         print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
 
+#funtion is passed a dictionary with card information and it is saved to a json file
 def save_info(card_info):
-    print(card_info)
+    #print(card_info)   #DEBUG: print the card info dict that will be saved
+    #try opening file
     try:
-        with open('resources/card_info.json', 'r') as file:
+        #open and read file to get data stored
+        with open('resources/card_info.json') as file:
             try:
+                #try loading data from file
                 data = json.load(file)
             except json.JSONDecodeError:
+                #if no data in file, return an empty list
                 data = []
     except FileNotFoundError:
+        #if no file, return an empty list
         data= []
 
-
+    #initialise a variable to save if the selected card type is already saved.
     card_exists = False
+    #check through the items in the Json file, and compare to selected card types
+    ####CHATGPT CODE####
+    #unsure what enumerate does
+    #code was not buggy with nested for loops and chatGPT suggested to simplify like this
     for i, card in enumerate(data):
+        #if the selected card type is on the file
         if card['card_type'] == card_info['card_type']:
+            #overwrite data at that position with new card info
             data[i] = card_info
+            #set card exists as True
             card_exists = True
             break
-
+    #if the card does not exist yet, append card info to the file
     if not card_exists:
         data.append(card_info)
-
+    #overwrite new data to file
     with open('resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
@@ -516,49 +534,62 @@ def validate_date_length(event):
 def validate_key_address(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
-    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'S', 'comma', 'numbersign', 'minus', 'space'):
+    if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'S', 'comma',
+                                                         'numbersign', 'minus', 'space'):
         # print('key not accepted')  #Debug: print message when keypress is not accepted
 
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
 
 
-
-
-
-#get image
+#function to get image from folder and return default image
 def get_image():
+    #try to ket an image with the name being the code of the selected item
     try:
         output = Image.open(f'resources/{selectedItem}.jpg')
         return output
     except:
-        output = Image.open('resources/default_logo_DEPRECIATED.jpg')
+        #if it does not exist, set a default photo
+        output = Image.open('resources/default_logo.png')
         return output
 
 
+# function to get information from json file
+# Takes argument "info" which is the key with which the data is stored
 def get_card_info(info):
+    # try opening file
     try:
-        with open('resources/card_info.json', 'r') as file:
+        with open('resources/card_info.json') as file:
+            # try reading the file
             try:
                 data = json.load(file)
+            # if cannot read file data is empty
             except json.JSONDecodeError:
                 data = []
+    # if cannot find file data is empty
     except FileNotFoundError:
-        data= []
+        data = []
     # print(data)
+    # initialise variable as card not existing
     card_exists = False
+    card_info={}
+    ###CHATGPT CODE### copied from previous funct
     for i, card in enumerate(data):
+        # check of info of the selected card type is saved
         if card['card_type'] == selectedCard:
             card_info = data[i]
-            card_exists= True
+            card_exists = True
+            # print(f'Information retrieved: {card_info}') #DEBUG: print the info that was retrieved
             break
-        # print(f'test:{card_info}')
-    # print(card_info)
-    print(data)
+
+    # print(data) #Debug: print the data
+    # if the card exists return the data of the selected type
     if card_exists:
         return card_info[info]
+    # if card does not exist return false
     else:
         return False
+
 
 #call get_items to set itemList
 itemList = get_items()
@@ -649,8 +680,9 @@ appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('setting
                                                           command=appearance_callback)
 appearanceComboBox.pack(pady=10)
 appearanceComboBox.set("Dark")
-scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), values=["80%", "90%", "100%", "110%", "120%","130%","140%","150%"],
-                                                               command=scaling_callback)
+scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), values=["80%", "90%", "100%", "110%", "120%",
+                                                                                   "130%", "140%", "150%"],
+                                              command=scaling_callback)
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
 
@@ -690,9 +722,11 @@ choiceLabel= customtkinter.CTkLabel(master=choiceFrame,text="Choose Payment Meth
 choiceLabel.place(anchor='center', relx= 0.5, rely= 0.3)
 #setting default value for the radio button
 radio_default = customtkinter.IntVar(value=0)
-choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1, command=pay_method)
+choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1,
+                                      command=pay_method)
 choice1.place(anchor='center', relx= 0.5, rely= 0.5)
-choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2, command=pay_method)
+choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",variable=radio_default, value= 2,
+                                      command=pay_method)
 choice2.place(anchor='center', relx= 0.5, rely= 0.6)
 
 #payment frame
@@ -717,7 +751,8 @@ addressEntry.grid(row=3, column=1, padx=5, pady=5)
 
 #setting the default value for the checkbox
 save_info_default = customtkinter.IntVar(value=0)
-save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text= "Save information for next purchase",variable= save_info_default, onvalue=1)
+save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text="Save information for next purchase",
+                                         variable=save_info_default)
 save_allInfo.grid(sticky= 'EW', columnspan= 2 , padx=20, pady=(19,5))
 place_order= customtkinter.CTkButton(master=paymentFrame, text= "Place Order", command=card_validation)
 place_order.grid(sticky= 'EW', padx=10, pady=19)
@@ -739,14 +774,14 @@ cvvEntry.bind('<KeyRelease>', validate_cvv_length)
 #thank you frame
 #Displays label and "Logo" image in "thank you frame"
 custom_font = ('Times New Roman',25)
-thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text= "Thank you for shopping with us!", font=custom_font, anchor='center')
+thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text="Thank you for shopping with us!", font=custom_font)
 thankyouLabel.pack(padx=10, pady=(10,5))
 logo = Image.open('resources/Final_logo.png')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
 #Exit from the program
-exitButton = customtkinter.CTkButton(master=thankyouFrame,text="Exit",anchor='center',command=root.destroy)
+exitButton = customtkinter.CTkButton(master=thankyouFrame, text="Exit", command=root.destroy)
 exitButton.pack(side='bottom',pady=(0,15))
 
 # root.bind('<Configure>', update_img)

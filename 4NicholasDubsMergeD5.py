@@ -601,28 +601,38 @@ def get_image():
         return output
 
 
-#TODO Nicholas continue comments here
+#function to get information from json file
+#Takes argument "info" which is the key with which the data is stored
 def get_card_info(info):
+    #try opening file
     try:
         with open('resources/card_info.json') as file:
+            #try reading the file
             try:
                 data = json.load(file)
+            #if cannot read file data is empty
             except json.JSONDecodeError:
                 data = []
+    #if cannot find file data is empty
     except FileNotFoundError:
         data= []
     # print(data)
+    #initialise variable as card not existing
     card_exists = False
+    ###CHATGPT CODE### copied from previous funct
     for i, card in enumerate(data):
+        #check of info of the selected card type is saved
         if card['card_type'] == selectedCard:
             card_info = data[i]
             card_exists= True
+            # print(f'Information retrieved: {card_info}') #DEBUG: print the info that was retrieved
             break
-        # print(f'test:{card_info}')
-    # print(card_info)
-    print(data)
+
+    #print(data) #Debug: print the data
+    #if the card exists return the data of the selected type
     if card_exists:
         return card_info[info]
+    #if card does not exist return false
     else:
         return False
 
