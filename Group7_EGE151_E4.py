@@ -42,9 +42,9 @@ catalog = {
     }
 }
 
-print(catalog)
+# print(catalog) #Debug: print catalog
 cart = {category: {sn: 0 for sn in items} for category, items in catalog.items()}
-print(cart)
+# print(cart) #Debug: print the initialised empty cart
 #for cart buttons
 globals_namespace = globals()
 
@@ -622,13 +622,11 @@ rightFrame.grid(column=1, row=0, sticky ='nsew', pady=19)
 masterFrame.tab('shopping').rowconfigure(0,weight = 1)
 masterFrame.tab('shopping').columnconfigure(0,weight =2)
 masterFrame.tab('shopping').columnconfigure(1,weight =1)
-#frame to hold buttons and the label to show amount
-buttonFrame = customtkinter.CTkFrame(master=leftFrame)
-buttonFrame.pack(padx=10,pady=12)   #pack button frame
-#configure button frame columns
-buttonFrame.columnconfigure(0,weight=2)
-buttonFrame.columnconfigure(1,weight=1)
-buttonFrame.columnconfigure(2,weight=2)
+
+#cart tab
+cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
+cartFrame.pack(side='top',fill='both', expand=True)
+
 #labels and widgets
 #combo box to select category, calls cat_callback function when an option is selected
 catComboBox = customtkinter.CTkComboBox(master=leftFrame, values=list(catalog.keys()), command=cat_callback)
@@ -636,6 +634,13 @@ catComboBox.pack(pady=12, padx=10)
 #combo box to select item, calls sn_callback function when an option is selected
 snComboBox = customtkinter.CTkComboBox(master=leftFrame, values=itemList, command=item_callback)
 snComboBox.pack(padx=10,pady=12)
+#frame to hold buttons and the label to show amount
+buttonFrame = customtkinter.CTkFrame(master=leftFrame)
+buttonFrame.pack(padx=10,pady=12)   #pack button frame
+#configure button frame columns
+buttonFrame.columnconfigure(0,weight=2)
+buttonFrame.columnconfigure(1,weight=1)
+buttonFrame.columnconfigure(2,weight=2)
 #plus button, calls plus_button when pressed -> increments value in cart by 1
 addButton = customtkinter.CTkButton(master=buttonFrame, text='+', font = ('Roboto', 24), command=plus_button, width=50)
 addButton.grid(column = 2,row = 0) #column changed
@@ -665,15 +670,10 @@ priceLabel.pack(padx=10,pady=10)
 shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: ${subtotal:.2f}'))
 shopSubtotalLabel.pack(padx=10,pady=10)
 
-#cart tab
-cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
-cartFrame.pack(side='top',fill='both', expand=True)
+
 #label that displays the cart
-cartLabel = customtkinter.CTkLabel(master=masterFrame.tab('cart'), text = cartOut)
+cartLabel = customtkinter.CTkLabel(master=cartFrame, text = cartOut)
 cartLabel.pack(padx=10,pady=12)
-#button to lead to the "checkout frame"
-checkoutButton = customtkinter.CTkButton(master=masterFrame.tab("cart"),text='Checkout',command=checkout_button)
-checkoutButton.pack(side="bottom",padx=10,pady=12,ipady=10)
 
 #setting tab
 appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('settings'), values=["Light", "Dark", "System"],
@@ -686,6 +686,9 @@ scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), value
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
 
+#button to lead to the "checkout frame"
+checkoutButton = customtkinter.CTkButton(master=masterFrame.tab('cart'),text='Checkout',command=checkout_button)
+checkoutButton.pack(side="bottom",padx=0,pady=12,ipady=10)
 #checkout frame
 #label that displays subtotal in checkout tab
 subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=(f'Subtotal: ${subtotal:.2f}'))
