@@ -77,8 +77,8 @@ root.iconbitmap('Logo.ico') #set icon
 root.title("DorNick")       #set window name
 root.minsize(410, 370)  #set minimum window size
 
-###masterFrame
-##shopping tab
+###Master Frame
+##Shopping tab
 
 #function run when plus button is pressed
 def plus_button():
@@ -208,7 +208,7 @@ def update_labels():
     #run function to calculate sum
     calculate_sum()
 
-##cart tab
+##Cart tab
 #function to read cart at selected category and selected item
 def read_cart():
     # print(cart)
@@ -257,7 +257,7 @@ def make_cart_label(amt, price, name, namespace, sn):
     #pack label
     namespace[f'{sn}Frame'].pack(pady=1)
 
-#functino to remove label
+#function to remove label
 def remove_cart_label(sn, namespace, is_cart_button):
     if is_cart_button:
         confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?",
@@ -310,7 +310,7 @@ def checkout_button():
         print("No items in the cart") #Debug: print when the condition isn't met
 
 
-##setting tab
+##Setting tab
 #function called when appearance menu is selected sets appearance to the selected type
 def appearance_callback(choice: str):
     customtkinter.set_appearance_mode(choice)
@@ -322,7 +322,7 @@ def scaling_callback(choice: str):
     new_scaling_float = int(choice.replace("%", "")) / 100
     customtkinter.set_widget_scaling(new_scaling_float)
 
-###checkout frame
+###Checkout frame
 #calculation function
 def calculate_sum():
     #declare globals
@@ -391,17 +391,17 @@ def payment_button():
     print("Proceeding to payment section...") #Debug: print message when the button is pressed
 
 
-###choice frame
-
-###payment frame
+###Payment frame
 #TODO doris pls comment pay_method, card_validations, and save_all_info tq
 #Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
+    #if the user chose 'debit card' option, the value of radio_default= 1
     if radio_default.get() == 1:
-        selectedCard = 'debit'
+        selectedCard = 'debit' # when the value is 1
+    # if the user chose 'credit card' option, the value of radio_default= 2
     else:
-        selectedCard = 'credit'
+        selectedCard = 'credit' #when the value is 2
     print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
     if get_card_info('card_number') != False:
         cardEntry.insert(0, get_card_info('card_number'))
@@ -415,11 +415,12 @@ def pay_method():
 #Function to validate the entries
 def card_validation():
     global card_number, expiry_date, cvv, address
+    #receiving entries
     card_number = cardEntry.get()
     expiry_date = dateEntry.get()
     cvv = cvvEntry.get()
     address = addressEntry.get()
-
+    #if one of the entries is empty, the warning message will be released
     if not card_number or not expiry_date or not cvvEntry or not addressEntry:
         CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry", height=100,
                       button_width=50, button_height=30)
@@ -428,12 +429,14 @@ def card_validation():
     msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
                         option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
     response = msg.get()
+    #if the user chose the button "ok", this will lead to the "Thank you" frame
     if response == "Ok":
         paymentFrame.place_forget()
         choiceFrame.place_forget()
         thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-        save_all_info()
+        save_all_info() #run function to save card info
         print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
+    # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
     else:
         paymentFrame.place_forget()
         choiceFrame.place_forget()
@@ -442,6 +445,7 @@ def card_validation():
         print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
 
 def save_all_info():
+    #when the checkbox is chosen, the value will become 1
     if save_info_default.get() ==1:
         print("You've saved your personal information") #Debug: print when the "checkbox" is ticked
         print(save_allInfo.get()) #Debug: print all the saved info
@@ -453,7 +457,8 @@ def save_all_info():
                 "cvv": str(cvv),
                 "address": str(address)
             }
-            save_info(info)
+            save_info(info) #run function to save card info to json file
+    #if the checkbox isn't chosen, the value will stay default 0
     else:
         print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
@@ -600,18 +605,18 @@ masterFrame = customtkinter.CTkTabview(master=root)
 masterFrame.place(anchor= 'center', relheight = 0.85, relwidth=0.85, relx=0.5, rely=0.5)
 masterFrame.pack_propagate(False)
 
-#add tabs to master frame
+#add tabs to Master frame
 masterFrame.add('shopping')
 masterFrame.add('cart')
 masterFrame.add('settings')
 
-#add further frames to the master frame
+#add further frames to the Master frame
 checkoutFrame = customtkinter.CTkScrollableFrame(master=root)
 choiceFrame = customtkinter.CTkFrame(master= root)
 paymentFrame = customtkinter.CTkFrame(master= root)
 thankyouFrame = customtkinter.CTkFrame(master=root)
 
-#shopping tab
+#Shopping tab
 #frame on the left of the shopping tab, with inputs
 leftFrame = customtkinter.CTkFrame(master=masterFrame.tab('shopping'))
 leftFrame.grid(column=0, row=0, sticky ='nsew', pady=19)
@@ -623,7 +628,7 @@ masterFrame.tab('shopping').rowconfigure(0,weight = 1)
 masterFrame.tab('shopping').columnconfigure(0,weight =2)
 masterFrame.tab('shopping').columnconfigure(1,weight =1)
 
-#cart tab
+#Cart tab
 cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
 cartFrame.pack(side='top',fill='both', expand=True)
 
@@ -675,7 +680,7 @@ shopSubtotalLabel.pack(padx=10,pady=10)
 cartLabel = customtkinter.CTkLabel(master=cartFrame, text = cartOut)
 cartLabel.pack(padx=10,pady=12)
 
-#setting tab
+#Setting tab
 appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('settings'), values=["Light", "Dark", "System"],
                                                           command=appearance_callback)
 appearanceComboBox.pack(pady=10)
@@ -689,7 +694,8 @@ scalingComboBox.set("100%")
 #button to lead to the "checkout frame"
 checkoutButton = customtkinter.CTkButton(master=masterFrame.tab('cart'),text='Checkout',command=checkout_button)
 checkoutButton.pack(side="bottom",padx=0,pady=12,ipady=10)
-#checkout frame
+
+#Checkout frame
 #label that displays subtotal in checkout tab
 subtotalLabel = customtkinter.CTkLabel(master=checkoutFrame, text=(f'Subtotal: ${subtotal:.2f}'))
 subtotalLabel.pack(padx=10,pady=12)
@@ -719,7 +725,7 @@ backButton = customtkinter.CTkButton(master=checkoutFrame,text="Back",command=ba
 backButton.pack(side="bottom",padx=10,pady=(5,10))
 
 
-#choice frame
+#Choice frame
 #Displays Label and Radio Buttons in the "choice frame"
 choiceLabel= customtkinter.CTkLabel(master=choiceFrame,text="Choose Payment Method")
 choiceLabel.place(anchor='center', relx= 0.5, rely= 0.3)
@@ -732,7 +738,7 @@ choice2= customtkinter.CTkRadioButton(master=choiceFrame,text= "Credit Card",var
                                       command=pay_method)
 choice2.place(anchor='center', relx= 0.5, rely= 0.6)
 
-#payment frame
+#Payment frame
 #Displays Labels in column 0 of the "payment frame"
 card_label = customtkinter.CTkLabel(master=paymentFrame, text= "Card Number")
 card_label.grid(row=0, column=0, padx=5, pady=5)
@@ -755,7 +761,7 @@ addressEntry.grid(row=3, column=1, padx=5, pady=5)
 #setting the default value for the checkbox
 save_info_default = customtkinter.IntVar(value=0)
 save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text="Save information for next purchase",
-                                         variable=save_info_default)
+                                         variable=save_info_default, onvalue=1)
 save_allInfo.grid(sticky= 'EW', columnspan= 2 , padx=20, pady=(19,5))
 place_order= customtkinter.CTkButton(master=paymentFrame, text= "Place Order", command=card_validation)
 place_order.grid(sticky= 'EW', padx=10, pady=19)
@@ -774,7 +780,7 @@ cardEntry.bind('<KeyRelease>', validate_card_no_length)
 dateEntry.bind('<KeyRelease>', validate_date_length)
 cvvEntry.bind('<KeyRelease>', validate_cvv_length)
 
-#thank you frame
+#Thank You frame
 #Displays label and "Logo" image in "thank you frame"
 custom_font = ('Times New Roman',25)
 thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text="Thank you for shopping with us!", font=custom_font)
