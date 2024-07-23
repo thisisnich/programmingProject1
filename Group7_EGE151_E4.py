@@ -142,6 +142,7 @@ def item_callback(choice):
 def get_items():
     return [catalog[selectedCat][sn]["name"] for sn in catalog[selectedCat]]
 
+#added comment
 #function to update image
 def update_img():
     #get height and width of root window
