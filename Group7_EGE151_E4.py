@@ -299,11 +299,11 @@ def checkout_button():
                 break
     #if cart exists, allow checkout
     if cartExists:
-        #plece checkout frame remove masterFrame
+        #place checkout frame, remove masterFrame
         masterFrame.place_forget()
         checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
         print("You are checking out") #Debug: print when the condition is met
-    #if cart does not exist, n=send error message box
+    #if cart does not exist, send error message box
     else:
         CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", height=50,
                       button_width=25, button_height=75)
@@ -496,7 +496,7 @@ def save_info(card_info):
     with open('resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
-#entries validation
+#Entries validation
 #function to check that length of card number is not longer than 16
 def validate_card_no_length(event):
     # print(len(cardEntry.get()))
