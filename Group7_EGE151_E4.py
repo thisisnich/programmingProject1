@@ -64,8 +64,6 @@ total = 0                   #Total after gst
 gstAmt = 0                  #Amount of gst
 discountAmount = 0          #Amount of discount
 afterDiscount = 0           #Total after discount
-cartOut = ''                #Debug value to print cart
-
 #appearance mode set to dark
 customtkinter.set_appearance_mode("dark")
 #colour theme set to dark blue
@@ -123,7 +121,9 @@ def cat_callback(choice):
 def item_callback(choice):
     #declaring global vars
     global selectedItem
-    print(choice) #Debug: print selected item
+    print(f'combobox dropdown clicked {choice}'  # Debug: print choice
+          # f' : {menu[selectedCat][0]}' #Debug: print choice name
+          )
     #check which item name matches an item in the selected category
     for sn in catalog[selectedCat]:
         # print(sn) #Debug: print sn
@@ -131,11 +131,7 @@ def item_callback(choice):
         # print(catalog[selectedCat][sn]['name']) #Debug: print name of item at 'sn'
         if choice == catalog[selectedCat][sn]['name']:
             selectedItem=sn
-    print(selectedItem) #Debug: print the selected sn
-
-    print(f'combobox dropdown clicked {choice}' #Debug: print choice
-          #f' : {menu[selectedCat][0]}' #Debug: print choice name
-          )
+    print(f'item selected: {selectedItem}') #Debug: print the selected sn
     update_labels()
 
 #function to get items in a category
@@ -193,7 +189,7 @@ def update_labels():
     codeLabel.configure(text=selectedItem)
     snComboBox.set(catalog[selectedCat][selectedItem]['name'])
     #update the label that shows number of items in cart
-    itemCountLabel.configure(text=str(read_cart()))
+    itemCountLabel.configure(text=str(cart[selectedCat][selectedItem]))
     #update the label that shows selected discount
     discountLabel.configure(text=f'Discount: {(discounts[selectedDiscount]*100)}%')
     #update label that shows price of item
@@ -209,20 +205,8 @@ def update_labels():
     #run function to calculate sum
     calculate_sum()
 
-##cart tab
-#function to read cart at selected category and selected item
-def read_cart():
-    # print(cart)
-    # print(selectedCat)
-    # print(selectedSn)
-    return cart[selectedCat][selectedItem]
-
 #function to update label to show cart to user
 def show_cart():
-    #declare globals
-    global cartOut
-    #initialise empty cart output
-    cartOut = ''
     #while there are items in cart get the value and item name
     for cat in cart:
         for sn in cart[cat]:
@@ -285,8 +269,8 @@ def remove_cart_label(sn, namespace, is_cart_button):
     #check which item needs to be removed, set that item in cart to 0
 
 
-        #update labels
-        update_labels()
+    #update labels
+    update_labels()
 
 #Function called when "checkout" button is clicked
 def checkout_button():
@@ -646,7 +630,7 @@ buttonFrame.columnconfigure(2,weight=2)
 addButton = customtkinter.CTkButton(master=buttonFrame, text='+', font = ('Roboto', 24), command=plus_button, width=50)
 addButton.grid(column = 2,row = 0) #column changed
 #label that shows number of items in cart
-itemCountLabel = customtkinter.CTkLabel(master=buttonFrame, text=str(read_cart()))
+itemCountLabel = customtkinter.CTkLabel(master=buttonFrame, text=str(cart[selectedCat][selectedItem]))
 itemCountLabel.grid(column = 1, row = 0, padx=12)
 #minus button, calls sub_button when pressed -> decrements value in cart by 1
 subButton = customtkinter.CTkButton(master=buttonFrame, text='-', font = ('Roboto', 24), command=sub_button, width=50)
@@ -671,10 +655,6 @@ priceLabel.pack(padx=10,pady=10)
 shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: ${subtotal:.2f}'))
 shopSubtotalLabel.pack(padx=10,pady=10)
 
-
-#label that displays the cart
-cartLabel = customtkinter.CTkLabel(master=cartFrame, text = cartOut)
-cartLabel.pack(padx=10,pady=12)
 
 #setting tab
 appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('settings'), values=["Light", "Dark", "System"],
