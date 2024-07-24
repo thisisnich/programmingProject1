@@ -1,8 +1,8 @@
 #Programming Group Project
 #ECE151-E4
 #Group 7
-#Dubs Nicholas Francis RuiQiang
-#Thadar Hpone Myat (Doris)
+#Dubs Nicholas Francis RuiQiang (241439P)
+#Thadar Hpone Myat (Doris) (241442L)
 
 import customtkinter
 from CTkMessagebox import CTkMessagebox
@@ -89,13 +89,13 @@ def plus_button():
 
 #function run when subtract button is pressed
 def sub_button():
-    #if the value of the corresponding spot in cart is more than 0 subtract by 1
+    #if the value of the corresponding spot in cart is more than 0, subtract by 1
     if cart[selectedCat][selectedItem]>=1:
         cart[selectedCat][selectedItem] -= 1
-        #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remover the label in cart that is now 0
+        #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remove the label in cart that is now 0
         if cart[selectedCat][selectedItem] == 0:
             remove_cart_label(selectedItem, globals_namespace, False)
-    #if it is 0 then print "can't go below 0" and don't reduce by 1
+    #if it is 0, then print "can't go below 0" and don't reduce by 1
     else:
         print("can't go below 0") #Debug: print message when it's 0
         # Warning message will be shown once the value goes below 0
@@ -153,10 +153,10 @@ def update_img():
     maxImgWidth = int(root.winfo_width() / 6)
     # print(f'img height: {maxImgHeight}')        #Debug: print max image height
     # print(f'img width: {maxImgWidth}')          #Debug: print max image width
-    #because square image, set image size to be the smallest of teh maximum values
+    #because square image, set image size to be the smallest of the maximum values
     imgSize = min(maxImgWidth, maxImgHeight)
 
-    #update image  with selected item serial number and set image size to maximum size
+    #update image with selected item serial number and set image size to maximum size
     itemImage.configure(light_image=get_image(),
                         dark_image=get_image(),
                         size=(imgSize,imgSize))
@@ -186,8 +186,7 @@ def set_amt(event):
 
 #function to update labels
 def update_labels():
-    #update the image
-    update_img()
+    update_img() #update the image
     snComboBox.configure(values=itemList)
     #update the label that displays the item code
     codeLabel.configure(text=selectedItem)
@@ -202,7 +201,7 @@ def update_labels():
     #When using amountEntry.delete() subsequent entries return empty when enter is pressed
     # if amountEntry.get()!='':
     #     amountEntry.delete(0,'end')
-    #update the placeholder text in the entry to the amount in cart: doesnt do anything if entry isnt cleared
+    #update the placeholder text in the entry to the amount in cart: doesn't do anything if entry isn't cleared
     amountEntry.configure(placeholder_text=cart[selectedCat][selectedItem])
     #Run function to make new cart labels
     show_cart()
@@ -230,7 +229,7 @@ def show_cart():
             if cart[cat][sn] >= 1:
                 #calculate cost of item
                 item_cost = cart[cat][sn] * catalog[cat][sn]['price']
-                #run make cart label function with the item sn and as well as item name, and cost
+                #run make_cart_label function with the item 'sn' and as well as item name, and cost
                 make_cart_label(cart[cat][sn], item_cost, catalog[cat][sn]["name"], globals_namespace, sn)
 
 #function to make labels for cart
@@ -253,6 +252,8 @@ def make_cart_label(amt, price, name, namespace, sn):
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
         ###PYCHARM SUGGESTED CODE####
         #code does not work without lamda function not 100% sure why tho
+        #lambda is required since we need to pass arguments to "remove_cart_label" function
+        #lambda creates a small, throwaway function which will not be reused elsewhere
         namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace, True))
         namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
     #pack label
@@ -269,28 +270,26 @@ def remove_cart_label(sn, namespace, is_cart_button):
             #try forgetting
             try:
                 namespace[f'{sn}Frame'].pack_forget()
+                # check which item needs to be removed, set that item in cart to 0
                 for cat in cart:
                     for item in cart[cat]:
                         if sn == item:
                             cart[cat][item] = 0
-            #uf label does not exist, continue
+            #if label does not exist, continue
             except:
                 pass
     else:
         try:
             namespace[f'{sn}Frame'].pack_forget()
-        # uf label does not exist, continue
+        # if label does not exist, continue
         except:
             pass
-    #check which item needs to be removed, set that item in cart to 0
 
-
-        #update labels
-        update_labels()
+        update_labels() #update labels
 
 #Function called when "checkout" button is clicked
 def checkout_button():
-    #initialise variable as cart not existing
+    #initialise variable as cart is not existing
     cartExists = False
     #if there is an item with an order of 1 or more, set that cart does exist
     for cat in cart:
@@ -312,7 +311,7 @@ def checkout_button():
 
 
 ##Setting tab
-#function called when appearance menu is selected sets appearance to the selected type
+#function called when appearance menu is selected, sets appearance to the selected type
 def appearance_callback(choice: str):
     customtkinter.set_appearance_mode(choice)
 
@@ -350,7 +349,7 @@ def calculate_sum():
     # print(f'Total ${total:.2f}') # Debug: print new total
     #calculate the amount of gst charged
     gstAmt = subtotal*0.09
-    #Pring amount of gst charged
+    #Print amount of gst charged
     # print(f'GST ${gstAmt:.2f}') #Debug: print new gst amount
     #print(discounts[selectedDiscount])  #Debug: print selected discount
     #Calculate the amount of discount given based on the selected discount
@@ -371,7 +370,7 @@ def calculate_sum():
     gstLabel.configure(text=f"GST: ${gstAmt:.2f}")
     afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount:.2f}')
 
-#Function called when discount dropdown selected
+#Function called when discount dropdown is selected
 def discount_callback(choice):
     #Declare globals
     global selectedDiscount
@@ -381,12 +380,13 @@ def discount_callback(choice):
 
 #Function called when "back" button is selected to bring the user back to the "cart tab"
 def back_button():
-    checkoutFrame.place_forget()
+    checkoutFrame.place_forget() #remove 'checkout' frame
     masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-    print("Back button was pressed") #Debug: print when the button is pressed
+    print("Back to the cart") #Debug: print when the button is pressed
 
 #Function called when "continue payment" button is clicked
 def payment_button():
+    #remove 'checkout' frame and place 'choice' frame
     checkoutFrame.place_forget()
     choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
     print("Proceeding to payment section...") #Debug: print message when the button is pressed
@@ -409,6 +409,7 @@ def pay_method():
         dateEntry.insert(0, get_card_info('expiry_date'))
         cvvEntry.insert(0, get_card_info('cvv'))
         addressEntry.insert(0, get_card_info('address'))
+    #remove 'choice' frame and place 'payment' frame
     choiceFrame.place_forget()
     paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
 
@@ -432,6 +433,7 @@ def card_validation():
     response = msg.get()
     #if the user chose the button "ok", this will lead to the "Thank you" frame
     if response == "Ok":
+        #remove 'payment' frame, 'choice' frame and place 'thank you' frame
         paymentFrame.place_forget()
         choiceFrame.place_forget()
         thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
@@ -439,12 +441,15 @@ def card_validation():
         print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
     # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
     else:
+        #remove 'payment' frame, 'choice' frame and 'cart' frame, place 'master' frame
         paymentFrame.place_forget()
         choiceFrame.place_forget()
+        cartFrame.pack_forget() # the labels in the "cart" will be removed after the payment
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-        masterFrame.set('shopping')  # back to the "shopping" tab
+        masterFrame.set('shopping')  # setting to bring back to the "shopping" tab
         print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
 
+#Function to save the entries if the "save" checkbox is clicked
 def save_all_info():
     #when the checkbox is chosen, the value will become 1
     if save_info_default.get() ==1:
@@ -487,6 +492,8 @@ def save_info(card_info):
     ####CHATGPT CODE####
     #unsure what enumerate does
     #code was not buggy with nested for loops and chatGPT suggested to simplify like this
+    #enumerate is used to iterate over the 'data' list with both index 'i' and the element 'card'
+    #provides the index 'i' along with 'card' element, helps modify the list 'data' at the specific index
     for i, card in enumerate(data):
         #if the selected card type is on the file
         if card['card_type'] == card_info['card_type']:
@@ -506,7 +513,7 @@ def save_info(card_info):
 #function to check that length of card number is not longer than 16
 def validate_card_no_length(event):
     # print(len(cardEntry.get()))
-    #if length of cardEntry is more than 16 delete everything after that point
+    #if length of cardEntry is more than 16, delete everything after that point
     if len(cardEntry.get()) > 16:
         cardEntry.delete(16, 'end')
 
@@ -514,7 +521,7 @@ def validate_card_no_length(event):
 #function to check that length of cvv is not longer than 3
 def validate_cvv_length(event):
     # print(len(cvvEntry.get()))'
-    #if length of cardEntry is more than 3 delete everything after that point
+    #if length of cardEntry is more than 3, delete everything after that point
     if len(cvvEntry.get()) > 3:
         cvvEntry.delete(3, 'end')
 
@@ -531,7 +538,7 @@ def validate_date_key(event):
 #function to check that length of date is not longer than 5
 def validate_date_length(event):
     # print(len(dateEntry.get()))
-    #if length of cardEntry is more than 5 delete everything after that point
+    #if length of cardEntry is more than 5, delete everything after that point
     if len(dateEntry.get()) > 5:
         dateEntry.delete(5,7)
 
@@ -546,7 +553,6 @@ def validate_key_address(event):
 
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
-
 
 #function to get image from folder and return default image
 def get_image():
@@ -569,10 +575,10 @@ def get_card_info(info):
             # try reading the file
             try:
                 data = json.load(file)
-            # if cannot read file data is empty
+            # if cannot read file, data is empty
             except json.JSONDecodeError:
                 data = []
-    # if cannot find file data is empty
+    # if cannot find file, data is empty
     except FileNotFoundError:
         data = []
     # print(data)
@@ -581,7 +587,7 @@ def get_card_info(info):
     card_info={}
     ###CHATGPT CODE### copied from previous funct
     for i, card in enumerate(data):
-        # check of info of the selected card type is saved
+        # check if info of the selected card type is saved
         if card['card_type'] == selectedCard:
             card_info = data[i]
             card_exists = True
@@ -589,10 +595,10 @@ def get_card_info(info):
             break
 
     # print(data) #Debug: print the data
-    # if the card exists return the data of the selected type
+    # if the card exists, return the data of the selected type
     if card_exists:
         return card_info[info]
-    # if card does not exist return false
+    # if card does not exist, return false
     else:
         return False
 
@@ -621,10 +627,10 @@ thankyouFrame = customtkinter.CTkFrame(master=root)
 #frame on the left of the shopping tab, with inputs
 leftFrame = customtkinter.CTkFrame(master=masterFrame.tab('shopping'))
 leftFrame.grid(column=0, row=0, sticky ='nsew', pady=19)
-#frame on right of shopping tab with display like item code and price per item
+#frame on right of shopping tab with displays like item code and price per item
 rightFrame = customtkinter.CTkFrame(master=masterFrame.tab('shopping'))
 rightFrame.grid(column=1, row=0, sticky ='nsew', pady=19)
-#confugure rows and columns of shopping tab
+#configure rows and columns of shopping tab
 masterFrame.tab('shopping').rowconfigure(0,weight = 1)
 masterFrame.tab('shopping').columnconfigure(0,weight =2)
 masterFrame.tab('shopping').columnconfigure(1,weight =1)
@@ -658,9 +664,9 @@ subButton = customtkinter.CTkButton(master=buttonFrame, text='-', font = ('Robot
 subButton.grid(column = 0, row=0) #column changed
 amountEntry=customtkinter.CTkEntry(master=leftFrame,placeholder_text=str(cart[selectedCat][selectedItem]))
 amountEntry.pack(padx=12,pady=12)
-#on key press run validate_key
+#on key press, run validate_key
 amountEntry.bind('<KeyPress>',validate_key_int)
-#on enter press run set_amt
+#on enter press, run set_amt
 amountEntry.bind('<Return>',set_amt)
 itemImage = customtkinter.CTkImage(light_image=get_image(),
                                    dark_image = get_image(),
@@ -675,7 +681,6 @@ priceLabel=customtkinter.CTkLabel(master=rightFrame, text = f'${catalog[selected
 priceLabel.pack(padx=10,pady=10)
 shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: ${subtotal:.2f}'))
 shopSubtotalLabel.pack(padx=10,pady=10)
-
 
 #label that displays the cart
 cartLabel = customtkinter.CTkLabel(master=cartFrame, text = cartOut)
@@ -692,7 +697,7 @@ scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), value
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
 
-#button to lead to the "checkout frame"
+#button to lead to the "checkout frame", calls checkout_button function when an option is selected
 checkoutButton = customtkinter.CTkButton(master=masterFrame.tab('cart'),text='Checkout',command=checkout_button)
 checkoutButton.pack(side="bottom",padx=0,pady=12,ipady=10)
 
@@ -718,10 +723,10 @@ discountAmountLabel.pack(padx=10,pady=12)
 #label to show final cost after discount
 afterDiscountLabel = customtkinter.CTkLabel(master=checkoutFrame, text=f'Total after discount ${afterDiscount}')
 afterDiscountLabel.pack(padx=10,pady=12)
-#button to lead to the "choice frame"
+#button to lead to the "choice frame", calls payment_button function when an option is selected
 paymentButton = customtkinter.CTkButton(master=checkoutFrame,text="Continue Payment",command=payment_button)
 paymentButton.pack(side="bottom",padx=10,pady=(15,5))
-#button to return back to the cart tab
+#button to return back to the 'cart tab', calls back_button function when an option is selected
 backButton = customtkinter.CTkButton(master=checkoutFrame,text="Back",command=back_button)
 backButton.pack(side="bottom",padx=10,pady=(5,10))
 
@@ -732,6 +737,7 @@ choiceLabel= customtkinter.CTkLabel(master=choiceFrame,text="Choose Payment Meth
 choiceLabel.place(anchor='center', relx= 0.5, rely= 0.3)
 #setting default value for the radio button
 radio_default = customtkinter.IntVar(value=0)
+#setting values for each option, calls pay_method function when an option is selected
 choice1= customtkinter.CTkRadioButton(master=choiceFrame,text= "Debit Card",variable=radio_default, value= 1,
                                       command=pay_method)
 choice1.place(anchor='center', relx= 0.5, rely= 0.5)
@@ -764,15 +770,15 @@ save_info_default = customtkinter.IntVar(value=0)
 save_allInfo = customtkinter.CTkCheckBox(master=paymentFrame, text="Save information for next purchase",
                                          variable=save_info_default, onvalue=1)
 save_allInfo.grid(sticky= 'EW', columnspan= 2 , padx=20, pady=(19,5))
+#calls card_validation function when an option is selected
 place_order= customtkinter.CTkButton(master=paymentFrame, text= "Place Order", command=card_validation)
 place_order.grid(sticky= 'EW', padx=10, pady=19)
 
 #Configure rows and columns, centering the grid in the "payment frame"
-#Center the grid in the frame
 paymentFrame.grid_rowconfigure((0,1,2,3), weight=1)
 paymentFrame.grid_columnconfigure((0,1),weight=1)
 
-#on key press, run card_validation
+#on key press, run respective validation function
 cardEntry.bind('<KeyPress>', validate_key_int)
 dateEntry.bind('<KeyPress>', validate_date_key)
 cvvEntry.bind('<KeyPress>', validate_key_int)
