@@ -441,13 +441,15 @@ def card_validation():
         print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
     # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
     else:
-        #remove 'payment' frame, 'choice' frame and 'cart' frame, place 'master' frame
+        #remove 'payment' frame, 'choice' frame, 'checkout' frame and 'cart' frame, place 'master' frame
         paymentFrame.place_forget()
         choiceFrame.place_forget()
+        checkoutFrame.place_forget()
         cartFrame.pack_forget() # the labels in the "cart" will be removed after the payment
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
         masterFrame.set('shopping')  # setting to bring back to the "shopping" tab
         print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
+
 
 #Function to save the entries if the "save" checkbox is clicked
 def save_all_info():
