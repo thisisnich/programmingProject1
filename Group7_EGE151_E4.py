@@ -677,13 +677,7 @@ priceLabel.pack(padx=10,pady=10)
 shopSubtotalLabel = customtkinter.CTkLabel(master=rightFrame, text=(f'Subtotal: ${subtotal:.2f}'))
 shopSubtotalLabel.pack(padx=10,pady=10)
 
-#label that displays the cart
-cartLabel = customtkinter.CTkLabel(master=cartFrame, text = cartOut)
-cartLabel.pack(padx=10,pady=12)
-
 #Setting tab
-
-#setting tab
 appearanceComboBox = customtkinter.CTkOptionMenu(master=masterFrame.tab('settings'), values=["Light", "Dark", "System"],
                                                           command=appearance_callback)
 appearanceComboBox.pack(pady=10)
