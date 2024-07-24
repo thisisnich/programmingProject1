@@ -394,7 +394,7 @@ def payment_button():
 
 ###Payment frame
 #TODO doris pls comment pay_method, card_validations, and save_all_info tq
-#to solve after payment problem 
+#to solve after payment problem ..del data
 #Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
