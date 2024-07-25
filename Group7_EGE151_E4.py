@@ -256,7 +256,7 @@ def make_cart_label(amt, price, name, namespace, sn):
 def remove_cart_label(sn, namespace, is_cart_button):
     if is_cart_button:
         confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?",
-                                      icon="check", option_1="Cancel", option_2="Yes", width=350, height=100,
+                                      icon="question", option_1="Cancel", option_2="Yes", width=350, height=100,
                                       button_height=30)
         response = confirmDelete.get()
         if response == "Yes":
