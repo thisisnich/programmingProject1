@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" modified="2024-07-23T09:50:32.154Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0" etag="VE5IYfQd9YObXs7mKlMd" version="24.7.3" type="github">
+  <diagram name="Page-1" id="WflQklf6aRjooLY64xzL">
+    <mxGraphModel dx="520" dy="577" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="V75rJ9f6S_gMskjJnjVx-4" target="V75rJ9f6S_gMskjJnjVx-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-4" value="start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="85" y="10" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-5" value="return output" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="85" y="400" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="V75rJ9f6S_gMskjJnjVx-9" target="V75rJ9f6S_gMskjJnjVx-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-9" value="set output to a png with name &quot;selectedItem&quot;" style="whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="75" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-14" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="V75rJ9f6S_gMskjJnjVx-11" target="V75rJ9f6S_gMskjJnjVx-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-15" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="V75rJ9f6S_gMskjJnjVx-11" target="V75rJ9f6S_gMskjJnjVx-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-11" value="Error?" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="77.5" y="210" width="115" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="V75rJ9f6S_gMskjJnjVx-13">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="140" y="370" as="targetPoint" />
+            <mxPoint x="320" y="350" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="310" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="V75rJ9f6S_gMskjJnjVx-13" value="set output to default image " style="whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="250" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
