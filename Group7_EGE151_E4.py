@@ -2,7 +2,7 @@
 #ECE151-E4
 #Group 7
 #Dubs Nicholas Francis RuiQiang (241439P)
-#Thadar Hpone Myat (Doris) (241442L)
+#Thadar Hpone Myat @ Doris (241442L)
 
 import customtkinter
 from CTkMessagebox import CTkMessagebox
