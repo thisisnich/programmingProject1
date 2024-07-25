@@ -71,7 +71,7 @@ customtkinter.set_default_color_theme("dark-blue")
 
 root = customtkinter.CTk()  #define root window
 root.geometry("410x370")    #set default size
-root.iconbitmap('resources/Logo.ico') #set icon
+root.iconbitmap('resources/Logo_dark.ico') #set icon
 root.title("DorNick")       #set window name
 root.minsize(410, 370)  #set minimum window size
 
@@ -152,9 +152,10 @@ def update_img():
     #because square image, set image size to be the smallest of the maximum values
     imgSize = min(maxImgWidth, maxImgHeight)
 
+    dark, light = get_image()
     #update image with selected item serial number and set image size to maximum size
-    itemImage.configure(light_image=get_image(),
-                        dark_image=get_image(),
+    itemImage.configure(light_image=light,
+                        dark_image=dark,
                         size=(imgSize,imgSize))
     imageLabel.configure(image=itemImage)
 
@@ -568,11 +569,12 @@ def get_image():
     #try to ket an image with the name being the code of the selected item
     try:
         output = Image.open(f'resources/{selectedItem}.jpg')
-        return output
+        return output, output
     except:
         #if it does not exist, set a default photo
-        output = Image.open('resources/default_logo.png')
-        return output
+        dark = Image.open('resources/default_logo_dark.png')
+        light = Image.open('resources/default_logo_light.png')
+        return dark, light
 
 
 # function to get information from json file
@@ -677,8 +679,9 @@ amountEntry.pack(padx=12,pady=12)
 amountEntry.bind('<KeyPress>',validate_key_int)
 #on enter press, run set_amt
 amountEntry.bind('<Return>',set_amt)
-itemImage = customtkinter.CTkImage(light_image=get_image(),
-                                   dark_image = get_image(),
+dark, light = get_image()
+itemImage = customtkinter.CTkImage(light_image=light,
+                                   dark_image = dark,
                                    size=(90,90))
 imageLabel = customtkinter.CTkLabel(rightFrame, image=itemImage, text='')
 imageLabel.pack(padx=10, pady=0)
@@ -797,8 +800,9 @@ cvvEntry.bind('<KeyRelease>', validate_cvv_length)
 custom_font = ('Times New Roman',25)
 thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text="Thank you for shopping with us!", font=custom_font)
 thankyouLabel.pack(padx=10, pady=(10,5))
-logo = Image.open('resources/Final_logo.png')
-logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
+darkLogo = Image.open('resources/Final_logo_dark.png')
+lightLogo = Image.open('resources/Final_logo_light.png')
+logoImage = customtkinter.CTkImage(light_image=lightLogo, dark_image=darkLogo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
 #Exit from the program

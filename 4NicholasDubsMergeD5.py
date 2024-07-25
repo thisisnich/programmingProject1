@@ -597,7 +597,7 @@ def get_image():
         return output
     except:
         #if it does not exist, set a default photo
-        output = Image.open('resources/default_logo.png')
+        output = Image.open('resources/default_logo_dark.png')
         return output
 
 
@@ -730,7 +730,7 @@ paymentFrame.grid_columnconfigure((0,1),weight=1)
 custom_font = ('Times New Roman',25)
 thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text="Thank you for shopping with us!", font=custom_font)
 thankyouLabel.pack(padx=10, pady=(10,5))
-logo = Image.open('resources/Final_logo.png')
+logo = Image.open('resources/Final_logo_dark.png')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
