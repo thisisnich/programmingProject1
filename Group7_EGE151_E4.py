@@ -271,6 +271,7 @@ def remove_cart_label(sn, namespace, is_cart_button):
             except:
                 pass
     else:
+        print('removing label')
         try:
             namespace[f'{sn}Frame'].pack_forget()
         # if label does not exist, continue
@@ -434,6 +435,19 @@ def card_validation():
         #print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
     # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
     else:
+        #loop while category exists in cart
+        for cat in cart:
+            #loop while there is an item in the category
+            for item in cart[cat]:
+                #if there is one or more items in the cart for this item
+                if cart[cat][item] >=1:
+                    # print(item)   # Debug: print the item
+                    # print(cart[cat][item])    # Debug: print how many of this item in cart
+                    #set it to 0
+                    cart[cat][item]=0
+                    #remove the label for that item in the cart
+                    remove_cart_label(item,globals_namespace, False)
+
         #remove 'payment' frame, 'choice' frame, 'checkout' frame and 'cart' frame, place 'master' frame
         paymentFrame.place_forget()
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
