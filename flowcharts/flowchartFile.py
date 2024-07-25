@@ -72,7 +72,7 @@ customtkinter.set_default_color_theme("dark-blue")
 
 root = customtkinter.CTk()  #define root window
 root.geometry("410x370")    #set default size
-root.iconbitmap('Logo.ico') #set icon
+root.iconbitmap('../resources/Logo.ico') #set icon
 root.title("DorNick")       #set window name
 root.minsize(410, 370)  #set minimum window size
 
@@ -454,10 +454,11 @@ def card_validation():
         masterFrame.set('shopping')  # back to the "shopping" tab
         print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
 
+#DONE
 def save_all_info():
     if save_info_default.get() ==1:
-        print("You've saved your personal information") #Debug: print when the "checkbox" is ticked
-        print(save_allInfo.get()) #Debug: print all the saved info
+        # print("You've saved your personal information") #Debug: print when the "checkbox" is ticked
+        # print(save_allInfo.get()) #Debug: print all the saved info
         if save_allInfo.get():
             info = {
                 "card_type": str(selectedCard),
@@ -468,9 +469,9 @@ def save_all_info():
             }
             save_info(info)
     else:
-        print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
+        # print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
-
+#DONE
 #funtion is passed a dictionary with card information and it is saved to a json file
 def save_info(card_info):
     #print(card_info)   #DEBUG: print the card info dict that will be saved

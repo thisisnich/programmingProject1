@@ -71,7 +71,7 @@ customtkinter.set_default_color_theme("dark-blue")
 
 root = customtkinter.CTk()  #define root window
 root.geometry("410x370")    #set default size
-root.iconbitmap('Logo.ico') #set icon
+root.iconbitmap('resources/Logo.ico') #set icon
 root.title("DorNick")       #set window name
 root.minsize(410, 370)  #set minimum window size
 
@@ -500,7 +500,7 @@ def save_info(card_info):
     #check through the items in the Json file, and compare to selected card types
     ####CHATGPT CODE####
     #unsure what enumerate does
-    #code was not buggy with nested for loops and chatGPT suggested to simplify like this
+    #chatGPT suggested to simplify like this
     #enumerate is used to iterate over the 'data' list with both index 'i' and the element 'card'
     #provides the index 'i' along with 'card' element, helps modify the list 'data' at the specific index
     for i, card in enumerate(data):
