@@ -106,9 +106,9 @@ def sub_button():
 def cat_callback(choice):
     #set global variables
     global selectedCat, itemList,selectedItem
-    print(f'combobox dropdown clicked {choice}'  # Debug: print the selected cat
+    # print(f'combobox dropdown clicked {choice}'  # Debug: print the selected cat
           # f' : {menu[selectedCat][0]}' #Debug: print the name
-          )
+          # )
     selectedCat = choice
     #set item list to the new items in the selected cat
     itemList = get_items()
@@ -121,9 +121,9 @@ def cat_callback(choice):
 def item_callback(choice):
     #declaring global vars
     global selectedItem
-    print(f'combobox dropdown clicked {choice}'  # Debug: print choice
-          # f' : {menu[selectedCat][0]}' #Debug: print choice name
-          )
+    # print(f'combobox dropdown clicked {choice}'  # Debug: print choice
+    #       # f' : {menu[selectedCat][0]}' #Debug: print choice name
+    #       )
     #check which item name matches an item in the selected category
     for sn in catalog[selectedCat]:
         # print(sn) #Debug: print sn
@@ -131,7 +131,7 @@ def item_callback(choice):
         # print(catalog[selectedCat][sn]['name']) #Debug: print name of item at 'sn'
         if choice == catalog[selectedCat][sn]['name']:
             selectedItem=sn
-    print(f'item selected: {selectedItem}') #Debug: print the selected sn
+    # print(f'item selected: {selectedItem}') #Debug: print the selected sn
     update_labels()
 
 #function to get items in a category
@@ -287,7 +287,7 @@ def checkout_button():
         #plece checkout frame remove masterFrame
         masterFrame.place_forget()
         checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
-        print("You are checking out") #Debug: print when the condition is met
+        # print("You are checking out") #Debug: print when the condition is met
     #if cart does not exist, n=send error message box
     else:
         CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", height=50,
@@ -367,13 +367,13 @@ def discount_callback(choice):
 def back_button():
     checkoutFrame.place_forget()
     masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-    print("Back button was pressed") #Debug: print when the button is pressed
+    # print("Back button was pressed") #Debug: print when the button is pressed
 
 #Function called when "continue payment" button is clicked
 def payment_button():
     checkoutFrame.place_forget()
     choiceFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
-    print("Proceeding to payment section...") #Debug: print message when the button is pressed
+    # print("Proceeding to payment section...") #Debug: print message when the button is pressed
 
 
 ###choice frame
@@ -387,7 +387,7 @@ def pay_method():
         selectedCard = 'debit'
     else:
         selectedCard = 'credit'
-    print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
+    # print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
     if get_card_info('card_number') != False:
         cardEntry.insert(0, get_card_info('card_number'))
         dateEntry.insert(0, get_card_info('expiry_date'))
@@ -408,28 +408,26 @@ def card_validation():
     if not card_number or not expiry_date or not cvvEntry or not addressEntry:
         CTkMessagebox(title="Error", message="All fields are required!", icon="warning", option_1="Retry", height=100,
                       button_width=50, button_height=30)
-        print("All fields are required")  # Debug: print message to remind the user to fill up every field
+        # print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
     msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
                         option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
     response = msg.get()
     if response == "Ok":
         paymentFrame.place_forget()
-        choiceFrame.place_forget()
         thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
         save_all_info()
-        print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
+        # print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
     else:
         paymentFrame.place_forget()
-        choiceFrame.place_forget()
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
         masterFrame.set('shopping')  # back to the "shopping" tab
-        print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
+        # print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
 
 def save_all_info():
     if save_info_default.get() ==1:
-        print("You've saved your personal information") #Debug: print when the "checkbox" is ticked
-        print(save_allInfo.get()) #Debug: print all the saved info
+        # print("You've saved your personal information") #Debug: print when the "checkbox" is ticked
+        # print(save_allInfo.get()) #Debug: print all the saved info
         if save_allInfo.get():
             info = {
                 "card_type": str(selectedCard),
@@ -440,7 +438,8 @@ def save_all_info():
             }
             save_info(info)
     else:
-        print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
+        return
+        # print("No data/new data was saved") #Debug: print when the user didn't choose the saving option
 
 
 #funtion is passed a dictionary with card information and it is saved to a json file
@@ -516,7 +515,7 @@ def validate_date_length(event):
 
 
 #check for only address related characters
-def validate_key_address(event):
+def validate_address_key(event):
     # print(event.keysym) #Debug:print key that was pressed
     #only accept digits, backspace, Enter, Left or right
     if not event.char.isdigit() and event.keysym not in ('BackSpace', 'Return', 'Left', 'Right', 'S', 'comma',
@@ -750,7 +749,7 @@ paymentFrame.grid_columnconfigure((0,1),weight=1)
 cardEntry.bind('<KeyPress>', validate_key_int)
 dateEntry.bind('<KeyPress>', validate_date_key)
 cvvEntry.bind('<KeyPress>', validate_key_int)
-addressEntry.bind('<KeyPress>',validate_key_address)
+addressEntry.bind('<KeyPress>', validate_address_key)
 cardEntry.bind('<KeyRelease>', validate_card_no_length)
 dateEntry.bind('<KeyRelease>', validate_date_length)
 cvvEntry.bind('<KeyRelease>', validate_cvv_length)
