@@ -486,7 +486,7 @@ def save_info(card_info):
     #try opening file
     try:
         #open and read file to get data stored
-        with open('resources/card_info.json') as file:
+        with open('../resources/card_info.json') as file:
             try:
                 #try loading data from file
                 data = json.load(file)
@@ -515,7 +515,7 @@ def save_info(card_info):
     if not card_exists:
         data.append(card_info)
     #overwrite new data to file
-    with open('resources/card_info.json', 'w') as file:
+    with open('../resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
 
@@ -597,7 +597,7 @@ def get_image():
         return output
     except:
         #if it does not exist, set a default photo
-        output = Image.open('resources/default_logo_dark.png')
+        output = Image.open('../resources/default_logo_dark.png')
         return output
 
 
@@ -606,7 +606,7 @@ def get_image():
 def get_card_info(info):
     #try opening file
     try:
-        with open('resources/card_info.json') as file:
+        with open('../resources/card_info.json') as file:
             #try reading the file
             try:
                 data = json.load(file)
@@ -730,7 +730,7 @@ paymentFrame.grid_columnconfigure((0,1),weight=1)
 custom_font = ('Times New Roman',25)
 thankyouLabel = customtkinter.CTkLabel(master=thankyouFrame, text="Thank you for shopping with us!", font=custom_font)
 thankyouLabel.pack(padx=10, pady=(10,5))
-logo = Image.open('resources/Final_logo_dark.png')
+logo = Image.open('../resources/Final_logo_dark.png')
 logoImage = customtkinter.CTkImage(light_image=logo, dark_image=logo,size=(400,400))
 logoLabel = customtkinter.CTkLabel(thankyouFrame,image=logoImage,text='')
 logoLabel.pack(fill='both',expand=True)
