@@ -2,7 +2,7 @@
 #ECE151-E4
 #Group 7
 #Dubs Nicholas Francis RuiQiang (241439P)
-#Thadar Hpone Myat (Doris) (241442L)
+#Thadar Hpone Myat @ Doris (241442L)
 
 import customtkinter
 from CTkMessagebox import CTkMessagebox
@@ -291,7 +291,7 @@ def make_cart_label(amt, price, name, namespace, sn):
 def remove_cart_label(sn, namespace, is_cart_button):
     if is_cart_button:
         confirmDelete = CTkMessagebox(title="Confirm", message="Are you sure you want to remove this item?",
-                                      icon="check", option_1="Cancel", option_2="Yes", width=350, height=100,
+                                      icon="question", option_1="Cancel", option_2="Yes", width=350, height=100,
                                       button_height=30)
         response = confirmDelete.get()
         if response == "Yes":
@@ -338,7 +338,7 @@ def checkout_button():
     else:
         CTkMessagebox(title="Error", message="No items in the cart", icon="warning", option_1="Back", height=50,
                       button_width=25, button_height=75)
-        print("No items in the cart") #Debug: print when the condition isn't met
+        #print("No items in the cart") #Debug: print when the condition isn't met
 
 
 ##Setting tab
@@ -486,7 +486,7 @@ def card_validation():
                     #remove the label for that item in the cart
                     remove_cart_label(item,globals_namespace, False)
 
-        #remove 'payment' frame, 'choice' frame, 'checkout' frame and 'cart' frame, place 'master' frame
+        #remove 'payment' frame and place 'master' frame
         paymentFrame.place_forget()
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
         masterFrame.set('shopping')  # setting to bring back to the "shopping" tab
@@ -744,7 +744,7 @@ scalingComboBox.set("100%")
 
 #button to lead to the "checkout frame", calls checkout_button function when an option is selected
 checkoutButton = customtkinter.CTkButton(master=masterFrame.tab('cart'),text='Checkout',command=checkout_button)
-checkoutButton.pack(side="bottom",padx=0,pady=12,ipady=10)
+checkoutButton.pack(side="bottom",padx=0,pady=12,ipady=5)
 
 #Checkout frame
 #label that displays subtotal in checkout tab
