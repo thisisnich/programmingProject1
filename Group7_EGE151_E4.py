@@ -210,7 +210,8 @@ def update_labels():
     # if amountEntry.get()!='':
     #     amountEntry.delete(0,'end')
     #update the placeholder text in the entry to the amount in cart: doesn't do anything if entry isn't cleared
-    amountEntry.configure(placeholder_text=cart[selectedCat][selectedItem])
+    amountEntry.delete(0,'end')
+    amountEntry.insert(0,cart[selectedCat][selectedItem])
     #Run function to make new cart labels
     show_cart()
     #run function to calculate sum
@@ -234,14 +235,17 @@ def show_cart():
                 #calculate cost of item
                 item_cost = cart[cat][sn] * catalog[cat][sn]['price']
                 #run make_cart_label function with the item 'sn' and as well as item name, and cost
-                make_cart_label(cart[cat][sn], item_cost, catalog[cat][sn]["name"], globals_namespace, sn)
+                make_cart_label(cart[cat][sn], item_cost, catalog[cat][sn]["name"], globals_namespace,cat, sn)
 
 #function to make labels for cart
-def make_cart_label(amt, price, name, namespace, sn):
+def make_cart_label(amt, price, name, namespace,cat, sn):
     global selectedItem
     #try to configure an existing label with the serial number. i.e. sn = N32 frame = N32Frame
     try:
-        namespace[f'{sn}Label'].configure(text=f'{name:<16}{amt:^8}${price:.2f}')
+        namespace[f'{sn}Label'].configure(text=f'{name:<16}{amt:^{len(str(amt))+6}}${price:.2f}')
+        namespace[f'{sn}Entry'].delete(0,'end')
+        namespace[f'{sn}Entry'].insert(0,cart[cat][sn])
+        namespace[f'{sn}Entry'].configure(width=(23+(len(str(cart[cat][sn])))*7))
         #print('label already exists')      #Debug: if label already exists
     #if label doesnt exist, create a new label
     except:
@@ -261,9 +265,9 @@ def make_cart_label(amt, price, name, namespace, sn):
         namespace[f'{sn}ButtonFrame']=customtkinter.CTkFrame(namespace[f'{sn}Frame'])
         namespace[f'{sn}ButtonFrame'].grid(column = 1, row = 0)  # pack button frame
         # configure button frame columns
-        namespace[f'{sn}ButtonFrame'].columnconfigure(0, weight=2)
+        namespace[f'{sn}ButtonFrame'].columnconfigure(0, weight=4)
         namespace[f'{sn}ButtonFrame'].columnconfigure(1, weight=1)
-        namespace[f'{sn}ButtonFrame'].columnconfigure(2, weight=2)
+        namespace[f'{sn}ButtonFrame'].columnconfigure(2, weight=4)
         # plus button, calls plus_button when pressed -> increments value in cart by 1
         namespace[f'{sn}AddButton'] = customtkinter.CTkButton(master=namespace[f'{sn}ButtonFrame'], text='+',
                                                               font=('Roboto', 24), command=lambda : plus_button(sn, True),
@@ -271,7 +275,7 @@ def make_cart_label(amt, price, name, namespace, sn):
         namespace[f'{sn}AddButton'].grid(column=3, row=0)  # column changed
         namespace[f'{sn}Entry'] = customtkinter.CTkEntry(master=namespace[f'{sn}ButtonFrame'],
                                                          placeholder_text=str(cart[selectedCat][selectedItem]),
-                                                         width=60,height=35)
+                                                         width = 30, height=35)
         namespace[f'{sn}Entry'].grid(column=2, row=0)
         namespace[f'{sn}Entry'].bind('<KeyPress>', validate_key_int)
         namespace[f'{sn}Entry'].bind('<Return>', lambda event: set_amt(event, sn,True,f'{sn}Entry'))
@@ -318,6 +322,12 @@ def remove_cart_label(sn, namespace, is_cart_button):
 
         update_labels() #update labels
 
+
+def update_cart_labels():
+    for cat in cart:
+        for item in cart[cat]:
+            if cart[cat][item] >= 1:
+                print(item)
 #Function called when "checkout" button is clicked
 def checkout_button():
     #initialise variable as cart is not existing
@@ -793,22 +803,22 @@ choice2.place(anchor='center', relx= 0.5, rely= 0.6)
 #Payment frame
 #Displays Labels in column 0 of the "payment frame"
 card_label = customtkinter.CTkLabel(master=paymentFrame, text= "Card Number")
-card_label.grid(row=0, column=0, padx=5, pady=5)
+card_label.grid(row=0, column=0, padx=5, pady=5, sticky ='E')
 date_label = customtkinter.CTkLabel(master=paymentFrame, text= "Expiry Date")
-date_label.grid(row=1, column=0, padx=5, pady=5)
+date_label.grid(row=1, column=0, padx=5, pady=5, sticky ='E')
 cvv_label = customtkinter.CTkLabel(master=paymentFrame, text= "CVV")
-cvv_label.grid(row=2, column=0, padx=5, pady=5)
+cvv_label.grid(row=2, column=0, padx=5, pady=5, sticky ='E')
 address_label = customtkinter.CTkLabel(master=paymentFrame, text= "Address")
-address_label.grid(row=3, column=0, padx=5, pady=5)
+address_label.grid(row=3, column=0, padx=5, pady=5, sticky ='E')
 #Displays Entry Widgets in column 1 of the "payment frame"
 cardEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="eg- 1234 5678 9123 4567", width=190)
-cardEntry.grid(row= 0, column= 1, padx=5, pady=5)
+cardEntry.grid(row= 0, column= 1, padx=5, pady=5, sticky ='W')
 dateEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "MM/YY", width=190)
-dateEntry.grid(row= 1, column= 1, padx=5, pady=5)
+dateEntry.grid(row= 1, column= 1, padx=5, pady=5, sticky ='W')
 cvvEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text= "777", width=190)
-cvvEntry.grid(row=2, column=1, padx=5, pady=5)
+cvvEntry.grid(row=2, column=1, padx=5, pady=5, sticky ='W')
 addressEntry = customtkinter.CTkEntry(master=paymentFrame, placeholder_text="S569830, #02-1234", width=190)
-addressEntry.grid(row=3, column=1, padx=5, pady=5)
+addressEntry.grid(row=3, column=1, padx=5, pady=5, sticky ='W')
 
 #setting the default value for the checkbox
 save_info_default = customtkinter.IntVar(value=0)
