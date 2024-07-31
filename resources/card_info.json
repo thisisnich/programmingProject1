@@ -1,9 +1,9 @@
 [
     {
         "card_type": "debit",
-        "card_number": "1111111111111111",
-        "expiry_date": "11/11",
-        "cvv": "890",
-        "address": "12342"
+        "card_number": "1234567898765432",
+        "expiry_date": "23454",
+        "cvv": "231",
+        "address": "1234"
     }
 ]

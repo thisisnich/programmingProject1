@@ -255,7 +255,8 @@ def make_cart_label(amt, price, name, namespace,cat, sn):
         namespace[f'{sn}Frame'].columnconfigure(0, weight=3)
         # namespace[f'{name}Frame'].columnconfigure(1, weight=1)
         #Display name, amount ordered and cost of this item
-        namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'], text=f'{name:<16}{amt:^8}${price:.2f}')
+        namespace[f'{sn}Label'] = customtkinter.CTkLabel(namespace[f'{sn}Frame'],
+                                                         text=f'{name:<16}{amt:^{len(str(amt))+6}}${price:.2f}')
         namespace[f'{sn}Label'].grid(column=0, row = 0)
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
         ###PYCHARM SUGGESTED CODE####
@@ -448,10 +449,15 @@ def pay_method():
         selectedCard = 'credit' #when the value is 2
     #print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
     if get_card_info('card_number') != False:
+        cardEntry.delete(0, 'end')
+        dateEntry.delete(0, 'end')
+        cvvEntry.delete(0, 'end')
+        addressEntry.delete(0, 'end')
         cardEntry.insert(0, get_card_info('card_number'))
         dateEntry.insert(0, get_card_info('expiry_date'))
         cvvEntry.insert(0, get_card_info('cvv'))
         addressEntry.insert(0, get_card_info('address'))
+
     #remove 'choice' frame and place 'payment' frame
     choiceFrame.place_forget()
     paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
@@ -471,6 +477,8 @@ def card_validation():
                       button_width=50, button_height=30)
         # print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
+    save_all_info()  # run function to save card info
+
     msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
                         option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
     response = msg.get()
@@ -479,7 +487,6 @@ def card_validation():
         #remove 'payment' frame, 'choice' frame and place 'thank you' frame
         paymentFrame.place_forget()
         thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-        save_all_info() #run function to save card info
         #print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
     # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
     else:
@@ -526,6 +533,7 @@ def save_all_info():
 
 #funtion is passed a dictionary with card information and it is saved to a json file
 def save_info(card_info):
+    print('saved info')
     #print(card_info)   #DEBUG: print the card info dict that will be saved
     #try opening file
     try:
