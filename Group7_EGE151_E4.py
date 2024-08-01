@@ -79,7 +79,7 @@ root.minsize(410, 370)  #set minimum window size
 ##Shopping tab
 
 #function run when plus button is pressed
-def plus_button(sn,is_cart_button):
+def plus_button(sn):
     #find location in cart that corresponds to selected category and item and increment by 1
     for cat in cart:
         for item in cart[cat]:
@@ -91,21 +91,28 @@ def plus_button(sn,is_cart_button):
 
 #function run when subtract button is pressed
 def sub_button(sn,is_cart_button):
-    for cat in cart:
-        for item in cart[cat]:
-            if item == sn:
-                #if the value of the corresponding spot in cart is more than 0, subtract by 1
-                if cart[cat][item]>=1:
-                    cart[cat][item] -= 1
+    if is_cart_button:
+        for cat in cart:
+            for item in cart[cat]:
+                if item == sn:
+                    #if the value of the corresponding spot in cart is more than 0, subtract by 1
                     #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remove the label in cart that is now 0
-                    if cart[cat][item] == 0:
-                        remove_cart_label(selectedItem, globals_namespace, is_cart_button)
-                #if it is 0, then print "can't go below 0" and don't reduce by 1
-                else:
-                    print("can't go below 0") #Debug: print message when it's 0
-                    # Warning message will be shown once the value goes below 0
-                    CTkMessagebox(title="Error", message="Can't go below 0!", icon="cancel", width=350, height=80, button_width=25,
-                                  button_height=75)
+                    if cart[cat][item] == 1:
+                        remove_cart_label(sn, globals_namespace, is_cart_button)
+                    elif cart[cat][item]>=1:
+                        cart[cat][item] -= 1
+    else:
+        if cart[selectedCat][selectedItem]>=1:
+            cart[selectedCat][selectedItem] -= 1
+            #if the amount of items is zero, run remove_cart_label, and pass the selected serial number -> remove the label in cart that is now 0
+            if cart[selectedCat][selectedItem] == 0:
+                remove_cart_label(selectedItem, globals_namespace, is_cart_button)
+        #if it is 0, then print "can't go below 0" and don't reduce by 1
+        else:
+            print("can't go below 0") #Debug: print message when it's 0
+            # Warning message will be shown once the value goes below 0
+            CTkMessagebox(title="Error", message="Can't go below 0!", icon="cancel", width=350, height=80, button_width=25,
+                          button_height=75)
     update_labels()
     #print(cart) #Debug: print cart
 
@@ -178,18 +185,17 @@ def validate_key_int(event):
 #function called when enter key is pressed
 # sets cart at selected category and selected item to value that is in the entry box
 def set_amt(event, sn, is_cart, entry):
-    print(entry)
+    # print(entry)
     #print('-----')             #Debug: print lines to show what the read input is
     # print(amountEntry.get())  #Debug: print read input
     #print('-----')             #Debug: print lines to show what the read input is
     #set cart value to the value stored in Entry
-    for cat in cart:
-        for item in cart[cat]:
-            if item == sn:
-                cart[cat][item]=int(globals_namespace[entry].get())
-                #call update labels function
-                if cart[cat][item] == 0:
-                    remove_cart_label(sn, globals_namespace, is_cart)
+    if is_cart and int(globals_namespace[entry].get())==0:
+        remove_cart_label(sn, globals_namespace, is_cart)
+    else:
+        cart[selectedCat][selectedItem]=int(globals_namespace[entry].get())
+        if cart[selectedCat][selectedItem] == 0:
+            remove_cart_label(sn, globals_namespace, is_cart)
     update_labels()
 
 #function to update labels
@@ -271,7 +277,7 @@ def make_cart_label(amt, price, name, namespace,cat, sn):
         namespace[f'{sn}ButtonFrame'].columnconfigure(2, weight=4)
         # plus button, calls plus_button when pressed -> increments value in cart by 1
         namespace[f'{sn}AddButton'] = customtkinter.CTkButton(master=namespace[f'{sn}ButtonFrame'], text='+',
-                                                              font=('Roboto', 24), command=lambda : plus_button(sn, True),
+                                                              font=('Roboto', 24), command=lambda : plus_button(sn),
                                             width=30, height=25)
         namespace[f'{sn}AddButton'].grid(column=3, row=0)  # column changed
         namespace[f'{sn}Entry'] = customtkinter.CTkEntry(master=namespace[f'{sn}ButtonFrame'],
@@ -313,6 +319,8 @@ def remove_cart_label(sn, namespace, is_cart_button):
             #if label does not exist, continue
             except:
                 pass
+        else:
+            print('no')
     else:
         try:
             # print('removing label') # Debug: print when a label is removed
@@ -719,7 +727,7 @@ buttonFrame.columnconfigure(1,weight=1)
 buttonFrame.columnconfigure(2,weight=2)
 #plus button, calls plus_button when pressed -> increments value in cart by 1
 addButton = customtkinter.CTkButton(master=buttonFrame, text='+', font = ('Roboto', 24),
-                                    command=lambda :plus_button(selectedItem,False), width=50)
+                                    command=lambda :plus_button(selectedItem), width=50)
 addButton.grid(column = 2,row = 0) #column changed
 #label that shows number of items in cart
 itemCountLabel = customtkinter.CTkLabel(master=buttonFrame, text=str(cart[selectedCat][selectedItem]))
