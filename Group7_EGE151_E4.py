@@ -142,7 +142,7 @@ def item_callback(choice):
     #check which item name matches an item in the selected category
     for sn in catalog[selectedCat]:
         # print(sn) #Debug: print sn
-        #when the selected item is matched, set the selected item to selectedSbn
+        #when the selected item is matched, set the selected item to selectedItem
         # print(catalog[selectedCat][sn]['name']) #Debug: print name of item at 'sn'
         if choice == catalog[selectedCat][sn]['name']:
             selectedItem=sn
@@ -669,7 +669,7 @@ def read_from_file():
 
 #function to get image from folder and return default image
 def get_image():
-    #try to ket an image with the name being the code of the selected item
+    #try to get an image with the name being the code of the selected item
     try:
         output = Image.open(f'resources/{selectedItem}.jpg')
         return output, output
