@@ -605,8 +605,8 @@ def validate_date_key(event):
 def validate_date_length(event):
     # print(len(dateEntry.get()))
     #if length of cardEntry is more than 5, delete everything after that point
-    if len(dateEntry.get()) > 4:
-        dateEntry.delete(4,7)
+    if len(dateEntry.get()) > 5:
+        dateEntry.delete(5,7)
 
 
 #check for only address related characters
