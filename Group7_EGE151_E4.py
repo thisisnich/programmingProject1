@@ -10,7 +10,7 @@ from PIL import Image
 import json
 
 catalog = {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Drinks": {
+    "Drinks": {
         "N32": {"name": "Neo's Green Tea", "price": 3},
         "M13": {"name": "Melo Chocolate Malt Drink", "price": 2.85},
         "V76": {"name": "Very-Fair Full Cream Milk", "price": 3.5},
@@ -29,7 +29,7 @@ catalog = {
         "D72": {"name": "Duitoni Cheese 270g", "price": 5.6}
     },
     "Household": {
-        "FP78": {"name": "FP Facial Tissues", "price": 9.5},
+        "FP76": {"name": "FP Facial Tissues", "price": 9.5},
         "FP32": {"name": "FP Premium Kitchen Towel", "price": 5.85},
         "K22": {"name": "Klinex Toilet Tissue Rolls", "price": 7.5},
         "D14": {"name": "Danny Softener", "price": 9.85}
@@ -59,6 +59,7 @@ selectedCat = "Drinks"      #Selected Category
 selectedItem = "N32"        #Selected item from category
 selectedDiscount = "None"   #Selected discount type
 selectedCard = ''           #Default selected card
+billtext = ''               #Default bill text(address)
 subtotal = 0                #Subtotal before gst
 total = 0                   #Total after gst
 gstAmt = 0                  #Amount of gst
@@ -152,7 +153,6 @@ def item_callback(choice):
 def get_items():
     return [catalog[selectedCat][sn]["name"] for sn in catalog[selectedCat]]
 
-#added comment
 #function to update image
 def update_img():
     #get height and width of root window
@@ -266,7 +266,6 @@ def make_cart_label(amt, price, name, namespace,cat, sn):
         namespace[f'{sn}Label'].grid(column=0, row = 0)
         #Button to remove item from cart, runs remove_cart_label function, passes serial number
         ###PYCHARM SUGGESTED CODE####
-        #code does not work without lamda function not 100% sure why tho
         #lambda is required since we need to pass arguments to "remove_cart_label" function
         #lambda creates a small, throwaway function which will not be reused elsewhere
         namespace[f'{sn}ButtonFrame']=customtkinter.CTkFrame(namespace[f'{sn}Frame'])
@@ -292,7 +291,6 @@ def make_cart_label(amt, price, name, namespace,cat, sn):
                                             width=30,height=25)
         namespace[f'{sn}SubButton'].grid(column=0, row=0)  # column changed
 
-        #
         # namespace[f'{sn}Button'] = customtkinter.CTkButton(namespace[f'{sn}Frame'],text='Remove', width = 50, command=lambda: remove_cart_label(sn, namespace, True))
         # namespace[f'{sn}Button'].grid(column=2, row=0, padx=10, pady=5)
     #pack label
@@ -331,12 +329,12 @@ def remove_cart_label(sn, namespace, is_cart_button):
 
         update_labels() #update labels
 
-
 def update_cart_labels():
     for cat in cart:
         for item in cart[cat]:
             if cart[cat][item] >= 1:
                 print(item)
+
 #Function called when "checkout" button is clicked
 def checkout_button():
     #initialise variable as cart is not existing
@@ -349,7 +347,7 @@ def checkout_button():
                 break
     #if cart exists, allow checkout
     if cartExists:
-        #place checkout frame, remove masterFrame
+        #place 'checkout' frame, remove 'master' frame
         masterFrame.place_forget()
         checkoutFrame.place(anchor='center', relheight=0.8, relwidth=0.65, relx=0.5, rely=0.5)
         # print("You are checking out") #Debug: print when the condition is met
@@ -364,7 +362,6 @@ def checkout_button():
 #function called when appearance menu is selected, sets appearance to the selected type
 def appearance_callback(choice: str):
     customtkinter.set_appearance_mode(choice)
-
 
 #function called when item in scaling menu is selected, sets scaling to selected number
 def scaling_callback(choice: str):
@@ -404,7 +401,7 @@ def calculate_sum():
     #print(discounts[selectedDiscount])  #Debug: print selected discount
     #Calculate the amount of discount given based on the selected discount
     # print(selectedDiscount) #Debug: print selected discount
-    discountAmount = total*discounts[selectedDiscount]
+    discountAmount = total*(discounts[selectedDiscount])
     #Print the amount of discount deducted
     # print(f'Discount amt: {discountAmount:.2f}') #Debug: print new discount amount
     #calculate total after discount
@@ -413,12 +410,17 @@ def calculate_sum():
     # print(f'Total after discount ${afterDiscount:.2f}') #new price after discount
 
     # update labels to reflect the totals
-    discountAmountLabel.configure(text=f'Discount amount: ${discountAmount:.2f}')
     subtotalLabel.configure(text=f'Subtotal: ${subtotal:.2f}')
     shopSubtotalLabel.configure(text=f'Subtotal: ${subtotal:.2f}')
     totalLabel.configure(text=f'Total: ${total:.2f}')
     gstLabel.configure(text=f"GST: ${gstAmt:.2f}")
+    discountAmountLabel.configure(text=f'Discount amount: ${discountAmount:.2f}')
     afterDiscountLabel.configure(text=f'Total after discount ${afterDiscount:.2f}')
+    #for billing statement
+    billTotalLabel.configure(text=f'Total ${afterDiscount:.2f}')
+    billSubTLabel.configure(text=f'Subtotal: ${subtotal:.2f}')
+    billGSTLabel.configure(text=f"GST: ${gstAmt:.2f}")
+    billDiscountLabel.configure(text=f'Discount amount: ${discountAmount:.2f}')
 
 #Function called when discount dropdown is selected
 def discount_callback(choice):
@@ -444,17 +446,15 @@ def payment_button():
 
 
 ###Payment frame
-#TODO doris pls comment pay_method, card_validations, and save_all_info tq
-#to solve after payment problem ..del data
 #Function called when "payment method" is chosen
 def pay_method():
     global selectedCard
     #if the user chose 'debit card' option, the value of radio_default= 1
     if radio_default.get() == 1:
-        selectedCard = 'debit' # when the value is 1
+        selectedCard = 'Debit' # when the value is 1
     # if the user chose 'credit card' option, the value of radio_default= 2
     else:
-        selectedCard = 'credit' #when the value is 2
+        selectedCard = 'Credit' #when the value is 2
     #print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
     if get_card_info('card_number') != False:
         cardEntry.delete(0, 'end')
@@ -469,11 +469,13 @@ def pay_method():
     #remove 'choice' frame and place 'payment' frame
     choiceFrame.place_forget()
     paymentFrame.place(anchor= 'center', relheight = 0.8, relwidth=0.65, relx=0.5, rely=0.5)
+    #configuring the label to update in the billing statement
+    selectedCardLabel.configure(text=f"Payment method: {selectedCard} card")
 
 #Function called when the "place order" button is pressed
 #Function to validate the entries
 def card_validation():
-    global card_number, expiry_date, cvv, address
+    global card_number, expiry_date, cvv, address, billtext
     #receiving entries
     card_number = cardEntry.get()
     expiry_date = dateEntry.get()
@@ -486,37 +488,19 @@ def card_validation():
         # print("All fields are required")  # Debug: print message to remind the user to fill up every field
         return
     save_all_info()  # run function to save card info
-
-    msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
-                        option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
-    response = msg.get()
-    #if the user chose the button "ok", this will lead to the "Thank you" frame
-    if response == "Ok":
-        #remove 'payment' frame, 'choice' frame and place 'thank you' frame
-        paymentFrame.place_forget()
-        thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-        #print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
-    # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
-    else:
-        #loop while category exists in cart
-        for cat in cart:
-            #loop while there is an item in the category
-            for item in cart[cat]:
-                #if there is one or more items in the cart for this item
-                if cart[cat][item] >=1:
-                    # print(item)   # Debug: print the item
-                    # print(cart[cat][item])    # Debug: print how many of this item in cart
-                    #set it to 0
-                    cart[cat][item]=0
-                    #remove the label for that item in the cart
-                    remove_cart_label(item,globals_namespace, False)
-
-        #remove 'payment' frame and place 'master' frame
-        paymentFrame.place_forget()
-        masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-        masterFrame.set('shopping')  # setting to bring back to the "shopping" tab
-        #print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
-
+    #remove 'payment' frame and place 'bill' frame
+    paymentFrame.place_forget()
+    billFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+    bill = read_from_file() #run function to read the data file
+    #to display address info in 'bill' frame
+    #if no new data is saved, the already existed address of respective card in the file will be shown
+    if bill:
+        if selectedCard == 'Debit':
+            billtext = bill[0]['address']
+        else:
+            billtext = bill[1]['address']
+    #configuring the label to update in the billing statement
+    billtextLabel.configure(text=f'{billtext}')
 
 #Function to save the entries if the "save" checkbox is clicked
 def save_all_info():
@@ -561,7 +545,6 @@ def save_info(card_info):
     card_exists = False
     #check through the items in the Json file, and compare to selected card types
     ####CHATGPT CODE####
-    #unsure what enumerate does
     #chatGPT suggested to simplify like this
     #enumerate is used to iterate over the 'data' list with both index 'i' and the element 'card'
     #provides the index 'i' along with 'card' element, helps modify the list 'data' at the specific index
@@ -579,6 +562,18 @@ def save_info(card_info):
     #overwrite new data to file
     with open('resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
+
+    bill = read_from_file() #run function to read the data file
+    #to display address info in 'bill' frame
+    #if new data was saved, the new address of respective card will be shown
+    if bill:
+        for i, card in enumerate(data):
+            # if the selected card type is on the file
+            if card['card_type'] == card_info['card_type']:
+                billtext = card['address']  # for the billing statement
+    # configuring the label to update in the billing statement
+    billtextLabel.configure(text=f'{billtext}')
+
 
 #Entries validation
 #function to check that length of card number is not longer than 16
@@ -610,8 +605,8 @@ def validate_date_key(event):
 def validate_date_length(event):
     # print(len(dateEntry.get()))
     #if length of cardEntry is more than 5, delete everything after that point
-    if len(dateEntry.get()) > 5:
-        dateEntry.delete(5,7)
+    if len(dateEntry.get()) > 4:
+        dateEntry.delete(4,7)
 
 
 #check for only address related characters
@@ -624,6 +619,53 @@ def validate_address_key(event):
 
         return 'break'
     # print(amountEntry.get())  #Debug: print current stored value in Entry field
+
+#function to check that length of address is not longer than 21
+def validate_address_length(event):
+    # print(len(addressEntry.get()))
+    #if length of address Entry is more than 21, delete everything after that point
+    if len(addressEntry.get()) > 21:
+        addressEntry.delete(21,'end')
+
+###Detail frame
+#Function to run when the 'ok' button is clicked
+def okButton():
+    msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
+                        option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
+    response = msg.get()
+    # if the user chose the button "ok", this will lead to the "Thank you" frame
+    if response == "Ok":
+        # remove 'bill' frame and place 'thank you' frame
+        billFrame.place_forget()
+        thankyouFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+        # print("Thank you for shopping with us!")  # Debug: print when 'ok' button is pressed
+    # if the user chose to "purchase more", this will lead back to the "Shopping" tab of the Master Frame
+    else:
+        # loop while category exists in cart
+        for cat in cart:
+            # loop while there is an item in the category
+            for item in cart[cat]:
+                # if there is one or more items in the cart for this item
+                if cart[cat][item] >= 1:
+                    # print(item)   # Debug: print the item
+                    # print(cart[cat][item])    # Debug: print how many of this item in cart
+                    # set it to 0
+                    cart[cat][item] = 0
+                    # remove the label for that item in the cart
+                    remove_cart_label(item, globals_namespace, False)
+
+        # remove 'payment' frame , 'bill' frame and place 'master' frame
+        billFrame.place_forget()
+        paymentFrame.place_forget()
+        masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
+        masterFrame.set('shopping')  # setting to bring back to the "shopping" tab
+        # print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
+
+#Function to read the file
+def read_from_file():
+    with open('resources/card_info.json') as file:
+        data= json.load(file)
+    return data
 
 #function to get image from folder and return default image
 def get_image():
@@ -693,6 +735,7 @@ masterFrame.add('settings')
 checkoutFrame = customtkinter.CTkScrollableFrame(master=root)
 choiceFrame = customtkinter.CTkFrame(master= root)
 paymentFrame = customtkinter.CTkFrame(master= root)
+billFrame = customtkinter.CTkFrame(master= root) #add
 thankyouFrame = customtkinter.CTkFrame(master=root)
 
 #Shopping tab
@@ -706,10 +749,6 @@ rightFrame.grid(column=1, row=0, sticky ='nsew', pady=19)
 masterFrame.tab('shopping').rowconfigure(0,weight = 1)
 masterFrame.tab('shopping').columnconfigure(0,weight =2)
 masterFrame.tab('shopping').columnconfigure(1,weight =1)
-
-#Cart tab
-cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
-cartFrame.pack(side='top',fill='both', expand=True)
 
 #labels and widgets
 #combo box to select category, calls cat_callback function when an option is selected
@@ -767,6 +806,10 @@ scalingComboBox = customtkinter.CTkOptionMenu(masterFrame.tab("settings"), value
                                               command=scaling_callback)
 scalingComboBox.pack(pady=10)
 scalingComboBox.set("100%")
+
+#Cart tab
+cartFrame = customtkinter.CTkScrollableFrame(master=masterFrame.tab('cart'))
+cartFrame.pack(side='top',fill='both', expand=True)
 
 #button to lead to the "checkout frame", calls checkout_button function when an option is selected
 checkoutButton = customtkinter.CTkButton(master=masterFrame.tab('cart'),text='Checkout',command=checkout_button)
@@ -857,6 +900,35 @@ addressEntry.bind('<KeyPress>', validate_address_key)
 cardEntry.bind('<KeyRelease>', validate_card_no_length)
 dateEntry.bind('<KeyRelease>', validate_date_length)
 cvvEntry.bind('<KeyRelease>', validate_cvv_length)
+addressEntry.bind('<KeyRelease>', validate_address_length)
+
+#Bill Frame
+detailFrame = customtkinter.CTkScrollableFrame(master=billFrame) #creating scrollable frame in the 'bill' frame
+detailFrame.pack(side='top', fill='both', expand=True)
+detailLabel= customtkinter.CTkLabel(master=detailFrame,text="Payment Detail",font=('Arial',16,'bold'))
+detailLabel.pack(side="top",padx=10,pady=10)
+billdetialLabel = customtkinter.CTkLabel(master=detailFrame,text="Billing Address:",font=('Arial',14,'bold'))
+billdetialLabel.pack(padx=10,pady=(10,0))
+#Label to display the address, either new info or existed data
+billtextLabel = customtkinter.CTkLabel(master=detailFrame,text=f'{billtext}',padx=10,pady=5)
+billtextLabel.pack(padx=10,pady=(0,10))
+#Label to display selected card
+selectedCardLabel= customtkinter.CTkLabel(master=detailFrame,text=f"Payment Method: {selectedCard}",font=('Arial',14,'bold'))
+selectedCardLabel.pack(padx=10,pady=12)
+#Labels for billing statement
+billSubTLabel = customtkinter.CTkLabel(master=detailFrame, text=(f'Subtotal: ${subtotal:.2f}'))
+billSubTLabel.pack(padx=10,pady=5)
+billDiscountLabel = customtkinter.CTkLabel(master=detailFrame, text=f'Discount amount: ${discountAmount}')
+billDiscountLabel.pack(padx=10,pady=5)
+taxLabel = customtkinter.CTkLabel(master=detailFrame, text= "Taxes included")
+taxLabel.pack(padx=10,pady=(5,0))
+billGSTLabel = customtkinter.CTkLabel(master=detailFrame, text=f"GST: ${gstAmt:.2f}")
+billGSTLabel.pack(padx=10,pady=(0,5))
+billTotalLabel = customtkinter.CTkLabel(master=detailFrame, text=f'Total ${afterDiscount}',font=('Arial',16,'bold'))
+billTotalLabel.pack(padx=10,pady=(5,12))
+#button to leave 'bill' frame
+okButton = customtkinter.CTkButton(master=billFrame,text='Ok',command=okButton)
+okButton.pack(side='bottom',pady=12,ipadx=5)
 
 #Thank You frame
 #Displays label and "Logo" image in "thank you frame"
