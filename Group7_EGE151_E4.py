@@ -119,8 +119,8 @@ def sub_button(sn,is_cart_button):
 
 #function called when category dropbox value is selected
 def cat_callback(choice):
-    #set global variables
-    global selectedCat, itemList,selectedItem
+    #set global variables that are changed in the function
+    global selectedCat, itemList, selectedItem
     # print(f'combobox dropdown clicked {choice}'  # Debug: print the selected cat
           # f' : {menu[selectedCat][0]}' #Debug: print the name
           # )
@@ -134,7 +134,7 @@ def cat_callback(choice):
 
 #Function called when item dropdown is selected
 def item_callback(choice):
-    #declaring global vars
+    #declaring global vars that are changed in the function
     global selectedItem
     # print(f'combobox dropdown clicked {choice}'  # Debug: print choice
     #       # f' : {menu[selectedCat][0]}' #Debug: print choice name
@@ -245,7 +245,6 @@ def show_cart():
 
 #function to make labels for cart
 def make_cart_label(amt, price, name, namespace,cat, sn):
-    global selectedItem
     #try to configure an existing label with the serial number. i.e. sn = N32 frame = N32Frame
     try:
         namespace[f'{sn}Label'].configure(text=f'{name:<16}{amt:^{len(str(amt))+6}}${price:.2f}')
@@ -372,7 +371,7 @@ def scaling_callback(choice: str):
 ###Checkout frame
 #calculation function
 def calculate_sum():
-    #declare globals
+    #declaring global vars that are changed in the function
     global subtotal,total, gstAmt, discountAmount, afterDiscount
     #declare working value
     temp_cost = 0
@@ -632,7 +631,7 @@ def validate_address_length(event):
 #Function to run when the 'ok' button is clicked
 def okButton():
     #message box will be released when the 'ok' button is pressed
-    msg = CTkMessagebox(title="Congratulations!", message="Your purchase is successfully made!", icon="check",
+    msg = CTkMessagebox(title="Congratulations!", message="Your purchase has been successfully made!", icon="check",
                         option_1="Ok", option_2="Purchase More", height=100, button_width=75, button_height=30)
     response = msg.get()
     # if the user chose the button "ok", this will lead to the "Thank you" frame
