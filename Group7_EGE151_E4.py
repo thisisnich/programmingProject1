@@ -372,6 +372,7 @@ def scaling_callback(choice: str):
 #calculation function
 def calculate_sum():
     #declaring global vars that are changed in the function
+
     global subtotal,total, gstAmt, discountAmount, afterDiscount
     #declare working value
     temp_cost = 0
@@ -454,11 +455,18 @@ def pay_method():
     else:
         selectedCard = 'Credit' #when the value is 2
     #print(f"You're paying with {selectedCard} card.") #Debug: print the selected card
-    if get_card_info('card_number') != False:
+    if cardEntry.get():
+        #delete values in entries
         cardEntry.delete(0, 'end')
         dateEntry.delete(0, 'end')
         cvvEntry.delete(0, 'end')
         addressEntry.delete(0, 'end')
+        cardEntry.configure(placeholder_text="eg- 1234 5678 9123 4567")
+        dateEntry.configure(placeholder_text="MM/YY")
+        cvvEntry.configure(placeholder_text="777")
+        addressEntry.configure(placeholder_text="S569830, #02-1234")
+    #if there is information stored for the selected card, insert it into the entries
+    if get_card_info('card_number') != False:
         cardEntry.insert(0, get_card_info('card_number'))
         dateEntry.insert(0, get_card_info('expiry_date'))
         cvvEntry.insert(0, get_card_info('cvv'))
@@ -489,15 +497,10 @@ def card_validation():
     #remove 'payment' frame and place 'bill' frame
     paymentFrame.place_forget()
     billFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
-    bill = read_from_file() #run function to read the data file
     #to display address info in 'bill' frame
     #if no new data is saved, the already existed address of respective card in the file will be shown
-    if bill:
-        if selectedCard == 'Debit':
-            billtext = bill[0]['address']
-        else:
-            billtext = bill[1]['address']
-        # print(f"Billing Address: {billtext}") #Debug: print the address in the billing statement
+    billtext = addressEntry.get()
+    # print(f"Billing Address: {billtext}") #Debug: print the address in the billing statement
     #configuring the label to update in the billing statement
     billtextLabel.configure(text=f'{billtext}')
 
@@ -562,15 +565,10 @@ def save_info(card_info):
     with open('resources/card_info.json', 'w') as file:
         json.dump(data, file, indent=4)
 
-    bill = read_from_file() #run function to read the data file
     #to display address info in 'bill' frame
     #if new data was saved, the new address of respective card will be shown
-    if bill:
-        for i, card in enumerate(data):
-            # if the selected card type is on the file
-            if card['card_type'] == card_info['card_type']:
-                billtext = card['address']  # for the billing statement
-                # print(f"Billing Address: {billtext}") #Debug: print the new address in the billing statement
+    billtext = addressEntry.get()  # for the billing statement
+    # print(f"Billing Address: {billtext}") #Debug: print the new address in the billing statement
     # configuring the label to update in the billing statement
     billtextLabel.configure(text=f'{billtext}')
 
@@ -661,12 +659,6 @@ def okButton():
         masterFrame.place(anchor='center', relheight=0.85, relwidth=0.85, relx=0.5, rely=0.5)
         masterFrame.set('shopping')  # setting to bring back to the "shopping" tab
         # print("Have fun shopping!")  # Debug: print when the user is back at the shopping tab
-
-#Function to read the file
-def read_from_file():
-    with open('resources/card_info.json') as file:
-        data= json.load(file)
-    return data
 
 #function to get image from folder and return default image
 def get_image():
