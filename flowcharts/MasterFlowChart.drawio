@@ -544,7 +544,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-39" value="timer0 loop" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;strokeWidth=2;" vertex="1" parent="EYy0UujzQKRnxK-3GbW3-1">
-          <mxGeometry x="480" y="635" width="120" height="60" as="geometry" />
+          <mxGeometry x="580" y="360" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-40" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="EYy0UujzQKRnxK-3GbW3-1" source="EYy0UujzQKRnxK-3GbW3-42" target="EYy0UujzQKRnxK-3GbW3-43">
           <mxGeometry relative="1" as="geometry" />
@@ -553,17 +553,17 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-42" value="is global var Clicked?" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="EYy0UujzQKRnxK-3GbW3-1">
-          <mxGeometry x="465" y="725" width="150" height="130" as="geometry" />
+          <mxGeometry x="565" y="450" width="150" height="130" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-43" value="wait 100ms" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="EYy0UujzQKRnxK-3GbW3-1">
-          <mxGeometry x="480" y="885" width="120" height="60" as="geometry" />
+          <mxGeometry x="580" y="610" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="EYy0UujzQKRnxK-3GbW3-1" source="EYy0UujzQKRnxK-3GbW3-43" target="EYy0UujzQKRnxK-3GbW3-39">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="460" y="605" as="targetPoint" />
+            <mxPoint x="560" y="330" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="440" y="915" />
-              <mxPoint x="440" y="665" />
+              <mxPoint x="540" y="640" />
+              <mxPoint x="540" y="390" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -571,13 +571,13 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-46" value="set Clicked to false" style="whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;" vertex="1" parent="EYy0UujzQKRnxK-3GbW3-1">
-          <mxGeometry x="690" y="760" width="120" height="60" as="geometry" />
+          <mxGeometry x="790" y="485" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="EYy0UujzQKRnxK-3GbW3-1" source="EYy0UujzQKRnxK-3GbW3-48" target="EYy0UujzQKRnxK-3GbW3-43">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="EYy0UujzQKRnxK-3GbW3-48" value="sendData&lt;br&gt;(selectedRow, selectedPlant)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;strokeWidth=2;" vertex="1" parent="EYy0UujzQKRnxK-3GbW3-1">
-          <mxGeometry x="690" y="885" width="120" height="60" as="geometry" />
+          <mxGeometry x="790" y="610" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -752,7 +752,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="JAjGVVVo3_46oenevZ6K" name="LEVEL">
-    <mxGraphModel dx="1572" dy="910" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1310" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
